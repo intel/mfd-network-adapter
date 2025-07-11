@@ -1,0 +1,2638 @@
+<Oid-O-Matic>
+    <Driver Name="Oids_e100.reg">
+        <Oid Name="OID_PRO100_INTERRUPT_ER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202ED"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SIG_FAILURE">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204de"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020206"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_AES128">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c2"/>
+        </Oid>
+        <Oid Name="OID_VLAN_VLANTYPE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0101A2"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAC_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010113"/>
+        </Oid>
+        <Oid Name="OID_802_3_MAXIMUM_LIST_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="01010104"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_FRAME_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010106"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_RX_CACHED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E8"/>
+        </Oid>
+        <Oid Name="OID_TCP_TASK_OFFLOAD">
+            <OidSetting Name="Value" Type="Scalar" Value="FC010201"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_QUERY_MAX_SA_CAPABILITY">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204F9"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020209"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RCV_SU_BYTE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204EE"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_HEARTBEAT_FAILURE">
+            <OidSetting Name="Value" Type="Scalar" Value="01020205"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_AES256">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204bd"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_ONE_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="01020102"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="00010105"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_HEADER_ESP_AH_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E0"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SEND_BASIC_TBD">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FB"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_SHA1">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d8"/>
+        </Oid>
+        <Oid Name="OID_PRO100_XMT_TCO_FRAMES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E6"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_ILR_SUSPENDED">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_SECONDARY_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FB"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_AES192">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204be"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_ADD_NO_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d0"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_STRIP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C6"/>
+        </Oid>
+        <Oid Name="OID_PNP_QUERY_POWER">
+            <OidSetting Name="Value" Type="Scalar" Value="FD010102"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_SEND_PACKETS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010115"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010B"/>
+        </Oid>
+        <Oid Name="OID_PRO100_INTERRUPT_SWI">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EE"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020201"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020208"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_LATE_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="01020207"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_DEFERRED">
+            <OidSetting Name="Value" Type="Scalar" Value="01020201"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_AES192">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c1"/>
+        </Oid>
+        <Oid Name="OID_PRO100_PHONELINE_SPEED_QUERY">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E1"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_TOTAL_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010111"/>
+        </Oid>
+        <Oid Name="OID_GEN_CURRENT_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010F"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_HEADER_AH_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E2"/>
+        </Oid>
+        <Oid Name="OID_PRO100_FC_RCV_PAUSE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E8"/>
+        </Oid>
+        <Oid Name="OID_PRO100_INTERRUPT_FR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_READ_HB_POINTER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CC"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DESCRIPTION">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CF"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SEND_NPQ_NO_RESOURCES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C8"/>
+        </Oid>
+        <Oid Name="OID_INTEL_QUERY_TAGGING_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E9"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_XMIT_PKT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204ED"/>
+        </Oid>
+        <Oid Name="OID_PRO100_RESET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F5"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_XMIT_BYTE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204EF"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_MD5">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d9"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020103"/>
+        </Oid>
+        <Oid Name="OID_INTEL_AUTO_NEG_REG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FE"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_OFFLOAD">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204FE"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020207"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_PRO100_XMIT_RCV_COLL_DETET_ERR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FE"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_PERMANENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010101"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_QUEUE_LENGTH">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020E"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_HEADER_ESP_WITH_INT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E3"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SEND_NO_RESOURCES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FC"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000009"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_PRIMARY_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FC"/>
+        </Oid>
+        <Oid Name="OID_PNP_ENABLE_WAKEUP">
+            <OidSetting Name="Value" Type="Scalar" Value="FD010106"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_HEADER_ESP_WITH_INT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204DF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_TYPE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B7"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_RECACHE_NO_HIT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff204cc"/>
+        </Oid>
+        <Oid Name="OID_PRO100_INTERRUPT_CAN">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F1"/>
+        </Oid>
+        <Oid Name="OID_PRO100_FC_RCV_UNSUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E7"/>
+        </Oid>
+        <Oid Name="OID_INTEL_QUERY_ADAPTER_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DA"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020202"/>
+        </Oid>
+        <Oid Name="OID_GEN_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010110"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020C"/>
+        </Oid>
+        <Oid Name="OID_802_3_CURRENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010102"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_TOTAL_BYTES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010A"/>
+        </Oid>
+        <Oid Name="OID_PRO100_BER_IMPROVEMENT_ENABLED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DC"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020102"/>
+        </Oid>
+        <Oid Name="OID_802_3_MAC_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010105"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_UNDERRUN">
+            <OidSetting Name="Value" Type="Scalar" Value="01020204"/>
+        </Oid>
+        <Oid Name="OID_PRO100_INTERRUPT_MDI">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EF"/>
+        </Oid>
+        <Oid Name="OID_VLAN_VLANID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0101A0"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRO100_ADAPTIVE_PREFERRED_TX_METHOD">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DE"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_ILR_MONITOR_RESET_HISTORY">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_READ_COMPATABILITY">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DE"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020A"/>
+        </Oid>
+        <Oid Name="OID_GEN_LINK_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="00010107"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_DES">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204db"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FLASH_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D3"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000044"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%binary"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_MORE_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="01020103"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_RX_NOT_CACHED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E7"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_ILR_MONITOR_SIG_FAIL_HISTORY">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c4"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CE"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010C"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_COLLISION_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204ce"/>
+        </Oid>
+        <Oid Name="OID_PRO100_CNA_BACKOFF">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EA"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020101"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PART_NUMBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FF"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_HEADER_ESP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E1"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_MD5">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204dd"/>
+        </Oid>
+        <Oid Name="OID_PRO100_INTERRUPT_FCP">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EC"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_READ_SMBUS_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E2"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PART_NUMBER_EX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EB"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020104"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RESET_SU_HANG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204F1"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D1"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_MEM_BASE_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RESET_ADD_SA">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d4"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RESET_SIG_FAIL">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d5"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010109"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_TUNNEL_PKT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS_CHANGES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BB"/>
+        </Oid>
+        <Oid Name="OID_INTEL_QUERY_ADAPTER_ENABLED_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D9"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_RX_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E9"/>
+        </Oid>
+        <Oid Name="OID_PRO100_XMIT_TOTAL_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FF"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_TUNNEL_PKT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d3"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SW_LARGESEND_BYTES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202CE"/>
+        </Oid>
+        <Oid Name="OID_PRO100_TX_HANG_RESET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D8"/>
+        </Oid>
+        <Oid Name="OID_GEN_PROTOCOL_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010112"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_TX_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204EA"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_PRIMARY_PHY_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FA"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010108"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D0"/>
+        </Oid>
+        <Oid Name="OID_PRO100_INTERRUPT_RNR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F0"/>
+        </Oid>
+        <Oid Name="OID_PRO100_BER_ERRORS_COUNTER_SYMBOL">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D9"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_DES">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d7"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_HEADER_ESP_AH_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E4"/>
+        </Oid>
+        <Oid Name="OID_PRO100_DEBUG_TEST_ACTION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F4"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_OVERRUN">
+            <OidSetting Name="Value" Type="Scalar" Value="01020203"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CD"/>
+        </Oid>
+        <Oid Name="OID_INTEL_XMIT_TOTAL_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B8"/>
+        </Oid>
+        <Oid Name="OID_PRO100_ADAPTIVE_IFS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EB"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_RECACHE_ENC_FAIL_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204ca"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRO100_ADAPTIVE_CARRIER_LOSS_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DD"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_MAX_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="01020202"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_IO_BASE_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DB"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_ILR_SUSPEND_SIG_FAIL_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c6"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_SECONDARY_PHY_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201F9"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_TOTAL_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204F0"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020204"/>
+        </Oid>
+        <Oid Name="OID_INTEL_AUTO_NEG_PARTNER_REG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FD"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_ILR_MONITOR_TIMER">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c3"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RCV_INLINE_PKT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204EB"/>
+        </Oid>
+        <Oid Name="OID_VLAN_VLANNAME">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0101A1"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_PRO100_RCV_TCO_FRAMES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRO100_ADAPTIVE_STALLED_INTERRUPT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DF"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_ILR_SUSPEND_RESET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c7"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SEND_COALESCE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FA"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_SHA1">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204dc"/>
+        </Oid>
+        <Oid Name="OID_PRO100_BER_ERRORS_COUNTER_FRAME">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DA"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_INSERT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C5"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_NO_BUFFER">
+            <OidSetting Name="Value" Type="Scalar" Value="00020105"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SEND_HPQ_IMMEDIATE_DATA">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F8"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_PRIMARY_PHY_DEVICE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201F8"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_PRO100_INTERRUPT_CX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F3"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_CACHE_REPLACE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204cd"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_TCP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CA"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_CRC_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020D"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_TIMES_CRS_LOST">
+            <OidSetting Name="Value" Type="Scalar" Value="01020206"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SEND_HPQ_SMART_COALESCE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F7"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TX_GOOD_BYTES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BD"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_WIDTH">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B6"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_AES128">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204bf"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_3DES">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d6"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DUPLEX_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EA"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_RECACHE_SIG_FAIL_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204cb"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_ERROR_ALIGNMENT">
+            <OidSetting Name="Value" Type="Scalar" Value="01020101"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_TX_3DES">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204da"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SEND_HPQ_COALESCE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F6"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_AES256">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c0"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_ILR_SIGFAIL_WORKAROUND_ACTIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204c8"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_MINIPORT_REQ">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_TCO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E6"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHYSICAL_ADAPTER_IRQ">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B9"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RCV_SU_PKT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204EC"/>
+        </Oid>
+        <Oid Name="OID_802_3_MULTICAST_LIST">
+            <OidSetting Name="Value" Type="Scalar" Value="01010103"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_IP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CB"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_SECONDARY_PHY_DEVICE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201F7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_HEADER_AH_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E6"/>
+        </Oid>
+        <Oid Name="OID_PRO100_SW_LARGESEND_PACKETS_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202CF"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_ADD_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204d1"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020205"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_PRO100_RCV_SHORT_FRAMES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FD"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010116"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_RX_HEADER_ESP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0204E5"/>
+        </Oid>
+        <Oid Name="OID_GEN_MEDIA_CONNECT_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010114"/>
+        </Oid>
+        <Oid Name="OID_INTEL_SLOT_NUMBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201ED"/>
+        </Oid>
+        <Oid Name="OID_PRO100_FC_XMT_PAUSE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RX_GOOD_BYTES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BC"/>
+        </Oid>
+        <Oid Name="OID_IPSEC_SA_COLLISION_TX">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0204cf"/>
+        </Oid>
+        <Oid Name="OID_PRO100_PHONELINE_POWER_QUERY">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E3"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_UDP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTER_AUTONEGOTIATION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BA"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B5"/>
+        </Oid>
+        <Oid Name="OID_PRO100_BER_CURRENT_ZERO_LOCKED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DB"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_NUMBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EE"/>
+        </Oid>
+    </Driver>
+    <Driver Name="Oids_e1k_e1q_ixe.reg">
+        <Oid Name="OID_INTEL_GET_PHY_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02015B"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000000D"/>
+        </Oid>
+        <Oid Name="OID_INTEL_NPAR_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020159"/>
+        </Oid>
+        <Oid Name="OID_INTEL_NPAR_TX_BW_CONFIG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020158"/>
+        </Oid>
+        <Oid Name="OID_GEN_CURRENT_PACKET_FILTER">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FW_RECOVERY_MODE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02013E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LAN_PORT_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020275"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_VMQ_QUEUE_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020188"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00005000"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_SRIOV_QUEUE_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020169"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00005000"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_SRIOV_STAT_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020157"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00005000"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_VIRTUALIZATION_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02015D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00005000"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_CAUSE_TXHANG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_CAUSE_TXLINKLOSS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020265"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000004"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GLORT_BASE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020151"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GLORT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020150"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GLORT_MASK">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02014F"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GLORT_MAIN_VSI">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02014E"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_NVGRE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020154"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_NVGRE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C3"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_VXLAN_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020142"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_VXLAN_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020143"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_NVGRE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_VXLAN_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020141"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_OUTER_IP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020153"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_OUTER_IP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020152"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_ENCAP_PACKET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020148"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_ENCAP_PACKET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020147"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_ENCAP_PACKET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020146"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EETRACK_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02015C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000004"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEE_LINK_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020184"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000004"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEE_RX_LPI_ACTIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02017A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000004"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEE_TX_LPI_ACTIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020179"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000004"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEE_TX_LPI_ENTRY_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020178"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000004"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEE_RX_LPI_ENTRY_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020177"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000004"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_SAN_MAC_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02018A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_FRAMES_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020192"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_FRAMES_FAILED_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020191"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_FRAMES_TX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020190"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_SA_COUNT_INBOUND">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020186"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_SA_COUNT_OUTBOUND">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020185"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020206"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FILTER_ADDS_COLLIDED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020274"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TNCRS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_EX_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202AD"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FILTER_REMOVES_FAILED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020271"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAC_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010113"/>
+        </Oid>
+        <Oid Name="OID_802_3_MAXIMUM_LIST_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="01010104"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_FRAME_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010106"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_LONGEST_FILTER_LIST">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02026C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020209"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_IDLE_ERROR_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029F"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_ONE_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="01020102"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="00010105"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PTC1522">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D9"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RECEIVE_LENGTH_ERRORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FB"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_LNKC_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202AA"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RECEIVE_JABBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E5"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020275"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_STATISTICS">
+            <OidSetting Name="Value" Type="Scalar" Value="00020106"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000100"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TSCTC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_FLX_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202AC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_IGP_CABLE_LENGTH">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020287"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_STRIP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C6"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010B"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_SEND_PACKETS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010115"/>
+            <OidSetting Name="value" Type="Scalar" Value="00010115"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020201"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020208"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_TOTAL_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010111"/>
+        </Oid>
+        <Oid Name="OID_INTEL_XOFF_PACKET_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F8"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_REMOTE_RECEIVER_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A2"/>
+        </Oid>
+        <Oid Name="OID_GEN_CURRENT_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010F"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_BC_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202AE"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRC127">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_RECEIVE_ERROR_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A0"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CEXTERR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C6"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CC"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FLASH_SIG_WORD">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_GENUINE_NIC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020196"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DESCRIPTION">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_DEC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C8"/>
+        </Oid>
+        <Oid Name="OID_INTEL_QUERY_TAGGING_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICRXPTC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02027E"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_HASH">
+            <OidSetting Name="Value" Type="Scalar" Value="0001021F"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_LOCAL_RECEIVER_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A3"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICTXQMTC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020278"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_RECEIVE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRC64">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F5"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020103"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_AUTO_NEG_REG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FE"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020207"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RECEIVE_SHORT_GOOD_CRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E8"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_PERMANENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010101"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_QUEUE_LENGTH">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_MAG_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A9"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000000C"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_PRIMARY_SECONDARY_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020288"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_DISCARDS">
+            <OidSetting Name="Value" Type="Scalar" Value="0002021C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_SLOT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201ED"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_TYPE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B7"/>
+        </Oid>
+        <Oid Name="OID_GEN_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020219"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020202"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PTC127">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DD"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_IAC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02027F"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010110"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RECEIVE_SHORT_BAD_CRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_XON_PACKET_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FA"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_CURRENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010102"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D3"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010A"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RSS_CPU_TRANSITIONS">
+            <OidSetting Name="value" Type="Scalar" Value="FF02018E"/>
+        </Oid>
+        <Oid Name="OID_GEN_HARDWARE_STATUS">
+            <OidSetting Name="value" Type="Scalar" Value="00010102"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTER_FEATURES_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DA"/>
+            <OidSetting Name="Bits" Type="Array">
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="Insert Vlan"/>
+                <OidSettingValue ValueName="Strip Vlan"/>
+                <OidSettingValue ValueName="Insert ISL"/>
+                <OidSettingValue ValueName="Strip ISL"/>
+                <OidSettingValue ValueName="CSO TxIp v4"/>
+                <OidSettingValue ValueName="CSO RxIp v4"/>
+                <OidSettingValue ValueName="CSO TxTCP"/>
+                <OidSettingValue ValueName="CSO RxTCP"/>
+                <OidSettingValue ValueName="CSO TxUDP"/>
+                <OidSettingValue ValueName="CSO RxUDP"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="LSO V1"/>
+                <OidSettingValue ValueName="FDIR"/>
+                <OidSettingValue ValueName="TSS"/>
+                <OidSettingValue ValueName="RSS"/>
+                <OidSettingValue ValueName="Header Split"/>
+                <OidSettingValue ValueName="Jumbo Frame"/>
+                <OidSettingValue ValueName="RXHash"/>
+                <OidSettingValue ValueName="DCA"/>
+                <OidSettingValue ValueName="LSOV2 IPV4"/>
+                <OidSettingValue ValueName="LSOV2 IPV6"/>
+                <OidSettingValue ValueName="SW RSC"/>
+                <OidSettingValue ValueName="HW RSC"/>
+                <OidSettingValue ValueName="DCB"/>
+                <OidSettingValue ValueName="FCOE"/>
+                <OidSettingValue ValueName="DCB FW"/>
+                <OidSettingValue ValueName="DCB FW Incompt"/>
+                <OidSettingValue ValueName="WOL"/>
+                <OidSettingValue ValueName="NPAR"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+            </OidSetting>
+            <OidSetting Name="Format" Type="Scalar" Value="%bitfield"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020102"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TOTAL_PACKET_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E0"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTER_FEATURES_ENABLED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D9"/>
+            <OidSetting Name="Bits" Type="Array">
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="Insert Vlan"/>
+                <OidSettingValue ValueName="Strip Vlan"/>
+                <OidSettingValue ValueName="Insert ISL"/>
+                <OidSettingValue ValueName="Strip ISL"/>
+                <OidSettingValue ValueName="CSO TxIp v4"/>
+                <OidSettingValue ValueName="CSO RxIp v4"/>
+                <OidSettingValue ValueName="CSO TxTCP"/>
+                <OidSettingValue ValueName="CSO RxTCP"/>
+                <OidSettingValue ValueName="CSO TxUDP"/>
+                <OidSettingValue ValueName="CSO RxUDP"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="LSO V1"/>
+                <OidSettingValue ValueName="FDIR"/>
+                <OidSettingValue ValueName="TSS"/>
+                <OidSettingValue ValueName="RSS"/>
+                <OidSettingValue ValueName="Header Split"/>
+                <OidSettingValue ValueName="Jumbo Frame"/>
+                <OidSettingValue ValueName="RXHash"/>
+                <OidSettingValue ValueName="DCA"/>
+                <OidSettingValue ValueName="LSOV2 IPV4"/>
+                <OidSettingValue ValueName="LSOV2 IPV6"/>
+                <OidSettingValue ValueName="SW RSC"/>
+                <OidSettingValue ValueName="HW RSC"/>
+                <OidSettingValue ValueName="DCB"/>
+                <OidSettingValue ValueName="FCOE"/>
+                <OidSettingValue ValueName="DCB FW"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+            </OidSetting>
+            <OidSetting Name="Format" Type="Scalar" Value="%bitfield"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FC_MODE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201AB"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHYSICAL_LAYER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020167"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_IP_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202AB"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_LINK_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="00010107"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PTC255">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_SCALE_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="00010203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICRXOC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020276"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IOAT_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000080"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FLASH_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D3"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000048"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%binary"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_MORE_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="01020103"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TSCTFC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C3"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_D0_STANDBY_STATE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020298"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TOTAL_OCTET_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CE"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010C"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TOTAL_PACKET_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DF"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020101"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_DEVICE_OBJECT_NAME">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A9"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_ISCSIBOOT_MODE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020195"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FILTER_MATCHES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02026E"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_READ_SMBUS_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E2"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020104"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PART_NUMBER_EX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EB"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PART_NUMBER_EX_STRING">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02017F"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000000B"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PTC511">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DB"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D1"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_MEM_BASE_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_RCV_QUEUES_ACTIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A3"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ALGNERRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202CA"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010109"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS_CHANGES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BB"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ATR_MDL_TOO_SHORT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02026A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008 "/>
+        </Oid>
+        <Oid Name="OID_INTEL_XOFF_PACKET_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICTXPTC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02027C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_XON_PACKET_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F9"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FILTER_MISSES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02026D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CURRENT_ITR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020292"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LAN_PORT_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FILTER_ADDS_FAILED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020273"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_PRIMARY_PHY_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FA"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010108"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICTXATC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02027B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CURRENT_IFS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D0"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RSS_INDIRECTION_TABLE_UPDATES">
+            <OidSetting Name="value" Type="Scalar" Value="FF02018F"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRC255">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F3"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_OVERRUN">
+            <OidSetting Name="Value" Type="Scalar" Value="01020203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="0002021A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_QUERY_ANS_API_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201AE"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICRXATC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02027D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CD"/>
+        </Oid>
+        <Oid Name="OID_INTEL_XMIT_TOTAL_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B8"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_HOT_PLUG_RESETS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202CF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_PRIMARY_PHY_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FC"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FREE_FILTERS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02026F"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PTC1023">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DA"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020204"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_CLEARED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PTC64">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DE"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_AUTO_NEG_PARTNER_REG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FD"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRC1522">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F0"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_MMA_LIST">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A8"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000003c"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_DISCARDS">
+            <OidSetting Name="Value" Type="Scalar" Value="0002021B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RX_PACKETS_DROPPED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020193"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_IGP_CABLE_QUALITY">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020286"/>
+        </Oid>
+        <Oid Name="OID_GEN_VLAN_ID">
+            <OidSetting Name="value" Type="Scalar" Value="0001021C"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_RCV_QUEUES_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICTXQEC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020279"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_MC_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A8"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_INSERT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C5"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_NO_BUFFER">
+            <OidSetting Name="Value" Type="Scalar" Value="00020105"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FILTER_ADDS_SUCCEEDED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020272"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_XMIT_QUEUES_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_POLARITY_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A1"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRC511">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F2"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_INTERRUPT_ICRXDMTC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020277"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_TCP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CA"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_XMIT_QUEUES_ACTIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019F"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FCRUC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F6"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_SCALE_PARAMETERS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010204"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_CRC_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020D"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_RESET">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TX_GOOD_BYTES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BD"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_WIDTH">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B6"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_LONGEST_FILTER_LIST_HASH">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02026B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DUPLEX_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EA"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_ERROR_ALIGNMENT">
+            <OidSetting Name="Value" Type="Scalar" Value="01020101"/>
+        </Oid>
+        <Oid Name="OID_GEN_INTERRUPT_MODERATION">
+            <OidSetting Name="Size" Type="Scalar" Value="0000000C"/>
+            <OidSetting Name="value" Type="Scalar" Value="00010209"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_MINIPORT_REQ">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_WORD_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E7"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHYSICAL_ADAPTER_IRQ">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FDIR_FILTER_REMOVES_SUCCEEDED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020270"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_WAKEUP_ARP_EVENTS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202AF"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PRC1023">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F1"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_MULTICAST_LIST">
+            <OidSetting Name="Value" Type="Scalar" Value="01010103"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000002A"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_INTEL_SEQUENCE_ERRORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_IP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CB"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_FRAMES_RX">
+            <OidSetting Name="value" Type="Scalar" Value="FF020192"/>
+        </Oid>
+        <Oid Name="OID_INTEL_SYM_ERRORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FF"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020205"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010116"/>
+            <OidSetting Name="value" Type="Scalar" Value="00010116"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RECEIVE_OVERSIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E6"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TOTAL_OCTET_TX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E2"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MEDIA_CONNECT_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010114"/>
+            <OidSetting Name="value" Type="Scalar" Value="00010114"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_FRAMES_TX">
+            <OidSetting Name="value" Type="Scalar" Value="FF020190"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_MDIX_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A4"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DIAG_CABLE_LENGTH">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202A5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RX_GOOD_BYTES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_POWER_QUERY">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201AF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_UDP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTER_AUTONEGOTIATION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BA"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IPSEC_FRAMES_FAILED_RX">
+            <OidSetting Name="value" Type="Scalar" Value="FF020191"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_INC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_PHY_LINK_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202B0"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_NUMBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EE"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RXERRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C9"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_VLAN_ID_LIST">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000020"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_REGISTERED_NDIS_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019B"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_OFFLOAD_ENCAPSULATION">
+            <OidSetting Name="Value" Type="Scalar" Value="0101010A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000001C"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_RECEIVE_FILTER_ENUM_QUEUES">
+            <OidSetting Name="value" Type="Scalar" Value="00010225"/>
+        </Oid>
+        <Oid Name="OID_RECEIVE_FILTER_ENUM_FILTERS">
+            <OidSetting Name="value" Type="Scalar" Value="00010229"/>
+        </Oid>
+        <Oid Name="OID_GEN_MEDIA_SUPPORTED">
+            <OidSetting Name="value" Type="Scalar" Value="00010103"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OS2BMC_BMC_TX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02017E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OS2BMC_BMC_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02017D"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OS2BMC_HOST_TX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02017C"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OS2BMC_HOST_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02017B"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OS2BMC_STATE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020175"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TS_LINKTHROTTLE_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020181"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TS_TEMPERATURE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020180"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCIE_ERRORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020171"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000018"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_THERMAL_SENSOR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020170"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000000C"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LTR_MIN">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02016F"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LTR_MAX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02016E"/>
+        </Oid>
+        <Oid Name="OID_TCP_RSC_STATISTICS">
+            <OidSetting Name="Value" Type="Scalar" Value="0002021D"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000028"/>
+        </Oid>
+        <Oid Name="OID_TCP_OFFLOAD_HARDWARE_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="FC01020D"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000128"/>
+        </Oid>
+        <Oid Name="OID_GEN_LINK_STATE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010207"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000028"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_CAUSE_TXHANG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_CAUSE_TXLINKLOSS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020265"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FLASH_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D3"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RCV_ILL_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020183"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RCV_BC_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020182"/>
+        </Oid>
+    </Driver>
+    <Driver Name="Oids_e1g_e1e.reg">
+        <Oid Name="OID_INTEL_GET_KMRN_INBAND_PARAM">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020193"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020206"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_TOTAL_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FD"/>
+        </Oid>
+        <Oid Name="OID_VLAN_VLANTYPE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0101A2"/>
+        </Oid>
+        <Oid Name="OID_E1000_TOTAL_PACKET_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E0"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_MISSED_PACKETS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FE"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAC_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010113"/>
+        </Oid>
+        <Oid Name="OID_802_3_MAXIMUM_LIST_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="01010104"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_FRAME_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010106"/>
+        </Oid>
+        <Oid Name="OID_E1000_FCRUC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F6"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_ONE_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="01020102"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="00010105"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_RCV_QUEUE_PKT_CTRS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A0"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000020"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string64"/>
+        </Oid>
+        <Oid Name="OID_E1000_MULTICAST_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EE"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_STRIP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C6"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_PNP_QUERY_POWER">
+            <OidSetting Name="Value" Type="Scalar" Value="FD010102"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_SEND_PACKETS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010115"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010B"/>
+        </Oid>
+        <Oid Name="OID_E1000_PTC255">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DC"/>
+        </Oid>
+        <Oid Name="OID_E1000_SAC_WRITE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202BF"/>
+        </Oid>
+        <Oid Name="OID_E1000_ERRATA_RESETS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D0"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020208"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_LATE_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="01020207"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_DEFERRED">
+            <OidSetting Name="Value" Type="Scalar" Value="01020201"/>
+        </Oid>
+        <Oid Name="OID_E1000_SEQUENCE_ERRORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FC"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_TOTAL_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010111"/>
+        </Oid>
+        <Oid Name="OID_E1000_PTC511">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DB"/>
+        </Oid>
+        <Oid Name="OID_GEN_CURRENT_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010F"/>
+        </Oid>
+        <Oid Name="OID_E1000_PRC1023">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F1"/>
+        </Oid>
+        <Oid Name="OID_E1000_BROADCAST_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CC"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_GENUINE_NIC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020196"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DESCRIPTION">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_DEC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_RECEIVE_OVERSIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E6"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EF"/>
+        </Oid>
+        <Oid Name="OID_E1000_DAC_READ_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C2"/>
+        </Oid>
+        <Oid Name="OID_E1000_NUM_TX_QUEUED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D4"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C8"/>
+        </Oid>
+        <Oid Name="OID_IP6_OFFLOAD_STATS">
+            <OidSetting Name="Value" Type="Scalar" Value="FC01020A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000050"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%dec"/>
+        </Oid>
+        <Oid Name="OID_E1000_PRC127">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F4"/>
+        </Oid>
+        <Oid Name="OID_INTEL_QUERY_TAGGING_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E9"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_HASH">
+            <OidSetting Name="Value" Type="Scalar" Value="0001021F"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_E1000_PRC255">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F3"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020103"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_AUTO_NEG_REG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FE"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_E1000_PRC1522">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F0"/>
+        </Oid>
+        <Oid Name="OID_E1000_TNCRS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C7"/>
+        </Oid>
+        <Oid Name="OID_802_3_PERMANENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010101"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_E1000_BROADCAST_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EF"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_QUEUE_LENGTH">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020E"/>
+        </Oid>
+        <Oid Name="OID_E1000_XON_PACKET_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_PRIMARY_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FC"/>
+        </Oid>
+        <Oid Name="OID_PNP_ENABLE_WAKEUP">
+            <OidSetting Name="Value" Type="Scalar" Value="FD010106"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_TYPE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B7"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020202"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_RECEIVE_NO_BUFFER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E9"/>
+        </Oid>
+        <Oid Name="OID_GEN_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010110"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_SAC_READ_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C0"/>
+        </Oid>
+        <Oid Name="OID_802_3_CURRENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010102"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_TOTAL_BYTES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010A"/>
+        </Oid>
+        <Oid Name="OID_TCP4_OFFLOAD_STATS">
+            <OidSetting Name="Value" Type="Scalar" Value="FC010207"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000028"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%dec"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTER_FEATURES_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DA"/>
+            <OidSetting Name="Bits" Type="Array">
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="Insert Vlan"/>
+                <OidSettingValue ValueName="Strip Vlan"/>
+                <OidSettingValue ValueName="Insert ISL"/>
+                <OidSettingValue ValueName="Strip ISL"/>
+                <OidSettingValue ValueName="CSO TxIp v4"/>
+                <OidSettingValue ValueName="CSO RxIp v4"/>
+                <OidSettingValue ValueName="CSO TxTCP"/>
+                <OidSettingValue ValueName="CSO RxTCP"/>
+                <OidSettingValue ValueName="CSO TxUDP"/>
+                <OidSettingValue ValueName="CSO RxUDP"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="LSO V1"/>
+                <OidSettingValue ValueName="FDIR"/>
+                <OidSettingValue ValueName="TSS"/>
+                <OidSettingValue ValueName="RSS"/>
+                <OidSettingValue ValueName="Header Split"/>
+                <OidSettingValue ValueName="Jumbo Frame"/>
+                <OidSettingValue ValueName="RXHash"/>
+                <OidSettingValue ValueName="DCA"/>
+                <OidSettingValue ValueName="LSOV2 IPV4"/>
+                <OidSettingValue ValueName="LSOV2 IPV6"/>
+                <OidSettingValue ValueName="SW RSC"/>
+                <OidSettingValue ValueName="HW RSC"/>
+                <OidSettingValue ValueName="DCB"/>
+                <OidSettingValue ValueName="FCOE"/>
+                <OidSettingValue ValueName="DCB FW"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+            </OidSetting>
+            <OidSetting Name="Format" Type="Scalar" Value="%bitfield"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020102"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_MAC_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010105"/>
+        </Oid>
+        <Oid Name="OID_E1000_TOTAL_PACKET_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DF"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_UNDERRUN">
+            <OidSetting Name="Value" Type="Scalar" Value="01020204"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTER_FEATURES_ENABLED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D9"/>
+            <OidSetting Name="Bits" Type="Array">
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="Insert Vlan"/>
+                <OidSettingValue ValueName="Strip Vlan"/>
+                <OidSettingValue ValueName="Insert ISL"/>
+                <OidSettingValue ValueName="Strip ISL"/>
+                <OidSettingValue ValueName="CSO TxIp v4"/>
+                <OidSettingValue ValueName="CSO RxIp v4"/>
+                <OidSettingValue ValueName="CSO TxTCP"/>
+                <OidSettingValue ValueName="CSO RxTCP"/>
+                <OidSettingValue ValueName="CSO TxUDP"/>
+                <OidSettingValue ValueName="CSO RxUDP"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="LSO V1"/>
+                <OidSettingValue ValueName="FDIR"/>
+                <OidSettingValue ValueName="TSS"/>
+                <OidSettingValue ValueName="RSS"/>
+                <OidSettingValue ValueName="Header Split"/>
+                <OidSettingValue ValueName="Jumbo Frame"/>
+                <OidSettingValue ValueName="RXHash"/>
+                <OidSettingValue ValueName="DCA"/>
+                <OidSettingValue ValueName="LSOV2 IPV4"/>
+                <OidSettingValue ValueName="LSOV2 IPV6"/>
+                <OidSettingValue ValueName="SW RSC"/>
+                <OidSettingValue ValueName="HW RSC"/>
+                <OidSettingValue ValueName="DCB"/>
+                <OidSettingValue ValueName="FCOE"/>
+                <OidSettingValue ValueName="DCB FW"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+                <OidSettingValue ValueName="reserved"/>
+            </OidSetting>
+            <OidSetting Name="Format" Type="Scalar" Value="%bitfield"/>
+        </Oid>
+        <Oid Name="OID_VLAN_VLANID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0101A0"/>
+        </Oid>
+        <Oid Name="OID_E1000_SYM_ERRORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FF"/>
+        </Oid>
+        <Oid Name="OID_TCP6_OFFLOAD_STATS">
+            <OidSetting Name="Value" Type="Scalar" Value="FC010208"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000028"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%dec"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_HOT_PLUG_RESETS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202CF"/>
+        </Oid>
+        <Oid Name="OID_GEN_LINK_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="00010107"/>
+        </Oid>
+        <Oid Name="OID_E1000_MULTICAST_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D8"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_PTC1023">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DA"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_SCALE_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="00010203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_E1000_PTC64">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DE"/>
+        </Oid>
+        <Oid Name="OID_INTEL_IOAT_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000080"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CONNECTION_OFFLOAD_TOTAL">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019A"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_FLASH_INFO">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D3"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000048"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%binary"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_MORE_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="01020103"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CE"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010C"/>
+        </Oid>
+        <Oid Name="OID_E1000_ALGNERRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202CA"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020101"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_RECEIVE_SHORT_GOOD_CRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E8"/>
+        </Oid>
+        <Oid Name="OID_E1000_GOOD_OCTET_TX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202EB"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_DEVICE_OBJECT_NAME">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0201a9"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000800"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_ISCSIBOOT_MODE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020195"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020104"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PART_NUMBER_EX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EB"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_READ_SMBUS_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E2"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_E1000_TOTAL_OCTET_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E4"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_RECEIVE_LENGTH_ERRORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FB"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D1"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_MEM_BASE_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_RCV_QUEUES_ACTIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A3"/>
+        </Oid>
+        <Oid Name="OID_E1000_PTC1522">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D9"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010109"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS_CHANGES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BB"/>
+        </Oid>
+        <Oid Name="OID_GEN_PROTOCOL_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010112"/>
+        </Oid>
+        <Oid Name="OID_E1000_GOOD_OCTET_RX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202ED"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LAN_PORT_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHY_PRIMARY_PHY_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FA"/>
+        </Oid>
+        <Oid Name="OID_E1000_RXERRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C9"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010108"/>
+        </Oid>
+        <Oid Name="OID_E1000_DEFERRED_PROCESSING">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202CE"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CURRENT_IFS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D0"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_RCV_QUEUE_BYTE_CTRS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A1"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000020"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string64"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_OVERRUN">
+            <OidSetting Name="Value" Type="Scalar" Value="01020203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_TSCTFC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C3"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CD"/>
+        </Oid>
+        <Oid Name="OID_INTEL_XMIT_TOTAL_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B8"/>
+        </Oid>
+        <Oid Name="OID_IP4_OFFLOAD_STATS">
+            <OidSetting Name="Value" Type="Scalar" Value="FC010209"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000050"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%dec"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_MAX_COLLISIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="01020202"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_IO_BASE_ADDR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201DB"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020204"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_CLEARED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_AUTO_NEG_PARTNER_REG">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201FD"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_E1000_CEXTERR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C6"/>
+        </Oid>
+        <Oid Name="OID_VLAN_VLANNAME">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0101A1"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_EEPROM_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201E7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_RCV_QUEUES_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201A2"/>
+        </Oid>
+        <Oid Name="OID_E1000_DPC_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D2"/>
+        </Oid>
+        <Oid Name="OID_E1000_DAC_WRITE_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C1"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_INSERT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C5"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_NO_BUFFER">
+            <OidSetting Name="Value" Type="Scalar" Value="00020105"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_XOFF_PACKET_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F8"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_XMIT_QUEUES_SUPPORTED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019E"/>
+        </Oid>
+        <Oid Name="OID_E1000_TSCTC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202C4"/>
+        </Oid>
+        <Oid Name="OID_E1000_RECEIVE_JABBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_TCP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CA"/>
+        </Oid>
+        <Oid Name="OID_E1000_XON_PACKET_RECEIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FA"/>
+        </Oid>
+        <Oid Name="OID_E1000_PRC64">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_XMIT_QUEUE_BYTE_CTRS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000020"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string64"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_NUM_XMIT_QUEUES_ACTIVE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019F"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_SCALE_PARAMETERS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010204"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_CRC_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020D"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_RESET">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_NUM_FREE_TXDESCRIPTORS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_TX_GOOD_BYTES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BD"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_WIDTH">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B6"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DUPLEX_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EA"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_ERROR_ALIGNMENT">
+            <OidSetting Name="Value" Type="Scalar" Value="01020101"/>
+        </Oid>
+        <Oid Name="OID_E1000_RECEIVE_SHORT_BAD_CRC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E7"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RESET_MINIPORT_REQ">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D2"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PHYSICAL_ADAPTER_IRQ">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B9"/>
+        </Oid>
+        <Oid Name="OID_E1000_RESET_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D3"/>
+        </Oid>
+        <Oid Name="OID_802_3_MULTICAST_LIST">
+            <OidSetting Name="Value" Type="Scalar" Value="01010103"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000002A"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_IP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CB"/>
+        </Oid>
+        <Oid Name="OID_E1000_PTC127">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202DD"/>
+        </Oid>
+        <Oid Name="OID_E1000_XOFF_PACKET_TRANSMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F7"/>
+        </Oid>
+        <Oid Name="OID_E1000_PRC511">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202F2"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010116"/>
+        </Oid>
+        <Oid Name="OID_GEN_MEDIA_CONNECT_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010114"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_XMIT_QUEUE_PKT_CTRS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000020"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string64"/>
+        </Oid>
+        <Oid Name="OID_INTEL_SLOT_NUMBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201ED"/>
+        </Oid>
+        <Oid Name="OID_INTEL_RX_GOOD_BYTES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_DPC_LOOPS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202D1"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CONNECTION_OFFLOAD_PEAK">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020199"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_UDP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C9"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTER_AUTONEGOTIATION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BA"/>
+        </Oid>
+        <Oid Name="OID_INTEL_ADAPTIVE_IFS_TIMES_INC">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02029D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_E1000_TOTAL_OCTET_TX">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202E2"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B5"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CONNECTION_OFFLOAD_CURRENT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020198"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_NUMBER">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EE"/>
+        </Oid>
+        <Oid Name="OID_INTEL_GET_REGISTERED_NDIS_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="FF02019B"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_LINK_STATE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010207"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000028"/>
+        </Oid>
+        <Oid Name="OID_INTEL_CURRENT_ITR">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020292"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+    </Driver>
+    <Driver Name="Oids_ixg.reg">
+        <Oid Name="OID_GEN_RECEIVE_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010109"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020206"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS_CHANGES_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201BB"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAC_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010113"/>
+        </Oid>
+        <Oid Name="OID_802_3_MAXIMUM_LIST_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="01010104"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_FRAME_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010106"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020209"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_PROTOCOL_OPTIONS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010112"/>
+        </Oid>
+        <Oid Name="OID_802_3_XMIT_ONE_COLLISION">
+            <OidSetting Name="Value" Type="Scalar" Value="01020102"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="00010105"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BUFFER_SPACE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010108"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D0"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_STRIP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C6"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_SEND_PACKETS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010115"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010B"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020201"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020208"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_OVERRUN">
+            <OidSetting Name="Value" Type="Scalar" Value="01020203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="0002021A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CD"/>
+        </Oid>
+        <Oid Name="OID_GEN_MAXIMUM_TOTAL_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="00010111"/>
+        </Oid>
+        <Oid Name="OID_GEN_CURRENT_LOOKAHEAD">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010F"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_UDP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CC"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020204"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DESCRIPTION">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010D"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%string"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_LINK_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EF"/>
+        </Oid>
+        <Oid Name="OID_INTEL_QUERY_TAGGING_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="ff0201e9"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_DISCARDS">
+            <OidSetting Name="Value" Type="Scalar" Value="0002021B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_HASH">
+            <OidSetting Name="Value" Type="Scalar" Value="0001021F"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020103"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020207"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_QTAG_INSERT_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C5"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_PERMANENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010101"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_NO_BUFFER">
+            <OidSetting Name="Value" Type="Scalar" Value="00020105"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_QUEUE_LENGTH">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020E"/>
+        </Oid>
+        <Oid Name="OID_INTEL_PCI_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EC"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000010"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_DISCARDS">
+            <OidSetting Name="Value" Type="Scalar" Value="0002021C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_TYPE">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B7"/>
+        </Oid>
+        <Oid Name="OID_GEN_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="00020219"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_DIRECTED_FRAMES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020202"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_TCP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CA"/>
+        </Oid>
+        <Oid Name="OID_IXGB_RX_PACKET_DROP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0202FF"/>
+        </Oid>
+        <Oid Name="OID_GEN_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010110"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000002"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020C"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_SCALE_PARAMETERS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010204"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_CRC_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020D"/>
+        </Oid>
+        <Oid Name="OID_802_3_CURRENT_ADDRESS">
+            <OidSetting Name="Value" Type="Scalar" Value="01010102"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000006"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_WIDTH">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B6"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex"/>
+        </Oid>
+        <Oid Name="OID_GEN_TRANSMIT_BLOCK_SIZE">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010A"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_LARGE_SEND_TOTAL_BYTES">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C7"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_DUPLEX_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201EA"/>
+        </Oid>
+        <Oid Name="OID_GEN_INTERRUPT_MODERATION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010209"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000000c"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020102"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_802_3_RCV_ERROR_ALIGNMENT">
+            <OidSetting Name="Value" Type="Scalar" Value="01020101"/>
+        </Oid>
+        <Oid Name="OID_GEN_CURRENT_PACKET_FILTER">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010E"/>
+        </Oid>
+        <Oid Name="OID_802_3_MULTICAST_LIST">
+            <OidSetting Name="Value" Type="Scalar" Value="01010103"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000300"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%ethernet"/>
+        </Oid>
+        <Oid Name="OID_GEN_MULTICAST_FRAMES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_IP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CB"/>
+        </Oid>
+        <Oid Name="OID_GEN_LINK_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="00010107"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_BYTES_RCV">
+            <OidSetting Name="Value" Type="Scalar" Value="0002020B"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_RECEIVE_SCALE_CAPABILITIES">
+            <OidSetting Name="Value" Type="Scalar" Value="00010203"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000400"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_GEN_BROADCAST_BYTES_XMIT">
+            <OidSetting Name="Value" Type="Scalar" Value="00020205"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_DRIVER_VERSION">
+            <OidSetting Name="Value" Type="Scalar" Value="00010116"/>
+        </Oid>
+        <Oid Name="OID_GEN_MEDIA_CONNECT_STATUS">
+            <OidSetting Name="Value" Type="Scalar" Value="00010114"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_TCP_FAILED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201CE"/>
+        </Oid>
+        <Oid Name="OID_GEN_VENDOR_ID">
+            <OidSetting Name="Value" Type="Scalar" Value="0001010C"/>
+        </Oid>
+        <Oid Name="OID_GEN_XMIT_OK">
+            <OidSetting Name="Value" Type="Scalar" Value="00020101"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000008"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_TX_UDP_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201C9"/>
+        </Oid>
+        <Oid Name="OID_REEDTOWN_STATS">
+            <OidSetting Name="Value" Type="Scalar" Value="FF020192"/>
+            <OidSetting Name="Size" Type="Scalar" Value="00000180"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string64"/>
+        </Oid>
+        <Oid Name="OID_INTEL_BUS_SPEED">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201B5"/>
+        </Oid>
+        <Oid Name="OID_GEN_RCV_ERROR">
+            <OidSetting Name="Value" Type="Scalar" Value="00020104"/>
+        </Oid>
+        <Oid Name="OID_OFFLOAD_ENCAPSULATION">
+            <OidSetting Name="Value" Type="Scalar" Value="0101010A"/>
+            <OidSetting Name="Size" Type="Scalar" Value="0000001c"/>
+            <OidSetting Name="Format" Type="Scalar" Value="%hex_string32"/>
+        </Oid>
+        <Oid Name="OID_INTEL_OFFLOAD_CHECKSUM_RX_IP_SUCCEEDED_COUNT">
+            <OidSetting Name="Value" Type="Scalar" Value="FF0201D1"/>
+        </Oid>
+    </Driver>
+</Oid-O-Matic>

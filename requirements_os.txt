@@ -1,0 +1,25 @@
+arping - arping
+awk - gawk
+cat - coreutils
+dhclient - dhcp
+echo - coreutils
+ether-wake - etherwake
+ethtool - ethtool
+find - findutils
+ifconfig - net-tools
+ifenslave - kernel
+insmod - kmod
+ip - iproute
+iptables - iptables
+ls - coreutils
+lspci - pciutils
+modprobe - kmod
+netstat - net-tools
+nmcli - NetworkManager
+nproc - coreutils
+print - Not a standalone tool, it's a shell built-in command
+sysctl - procps-ng
+tee - coreutils
+wc - coreutils
+xargs - findutils
+cat - coreutils
