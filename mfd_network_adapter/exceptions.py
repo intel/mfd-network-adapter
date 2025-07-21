@@ -6,7 +6,6 @@
 class NetworkAdapterModuleException(Exception):
     """Handle module exception."""
 
-
 class VlanNotFoundException(Exception):
     """Handle errors while parsing VLANs."""
 
@@ -17,3 +16,7 @@ class NetworkInterfaceIncomparableObject(Exception):
 
 class VirtualFunctionCreationException(Exception):
     """Exception raised when VF creation process fails."""
+
+
+class VlanAlreadyExistsException(Exception):
+    """Exception raised when attempting to create or assign a VLAN that already exists on the network interface."""
