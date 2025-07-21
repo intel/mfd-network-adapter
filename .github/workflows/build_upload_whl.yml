@@ -76,6 +76,7 @@ jobs:
           fetch-depth: 0
           path: ${{ inputs.SOURCE_PATH }}
           ref: ${{ inputs.BRANCH_NAME }}
+          repository: ${{ inputs.REPOSITORY_NAME }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
