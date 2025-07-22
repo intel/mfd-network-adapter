@@ -178,7 +178,7 @@ jobs:
           password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish comment how to build .whl
-        if: inputs.RELEASE_BUILD == false && github.repository_owner == github.actor # skip for forks
+        if: inputs.RELEASE_BUILD == false && (github.event.pull_request == null || github.event.pull_request.head.repo.full_name != github.repository) # skip for forks
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GH_TOKEN }}
