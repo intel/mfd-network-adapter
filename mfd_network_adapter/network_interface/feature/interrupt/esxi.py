@@ -121,9 +121,9 @@ class EsxiInterrupt(BaseFeatureInterrupt):
         for line in dmesg_result:
             rx_pattern_result = re.search(i40en_rx_pattern, line)
             tx_pattern_result = re.search(i40en_tx_pattern, line)
-            if not rx_rate and rx_pattern_result:
+            if rx_rate is None and rx_pattern_result:
                 rx_rate = int(rx_pattern_result.groupdict()["rate"])
-            elif not tx_rate and tx_pattern_result:
+            elif tx_rate is None and tx_pattern_result:
                 tx_rate = int(tx_pattern_result.groupdict()["rate"])
         return rx_rate, tx_rate
 
