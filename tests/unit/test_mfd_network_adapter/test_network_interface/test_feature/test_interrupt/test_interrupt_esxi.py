@@ -47,7 +47,7 @@ class TestEsxiNetworkInterface:
             2023-11-06T15:22:19.331Z cpu4:2098152)
             i40en: i40en_ValidateRxItr:213: Setting RX Interrupt Throttle Rate to 50 usec
             2023-11-06T15:22:19.331Z cpu4:2098152)
-            i40en: i40en_ValidateTxItr:257: Setting TX Interrupt Throttle Rate to 100 usec
+            i40en: i40en_ValidateTxItr:257: Setting TX Interrupt Throttle Rate to 0 usec
             2023-11-06T15:22:19.332Z cpu4:2098152)VMK_PCI: 617: 0000:4b:00.1: allocated 25 MSIX interrupts
             2023-11-06T15:22:19.428Z cpu54:2098147)VMK_PCI: 617: 0000:b1:00.0: allocated 49 MSIX interrupts
             2023-11-06T15:22:21.807Z cpu54:2098147)VMK_PCI: 617: 0000:b1:00.1: allocated 49 MSIX interrupts"""
@@ -65,7 +65,7 @@ class TestEsxiNetworkInterface:
         )
         assert interrupt_obj.interrupt.get_interrupt_moderation_rate(pci_address=PCIAddress(data="0000:4b:00.1")) == (
             50,
-            100,
+            0,
         )
 
     def test_get_interrupt_moderation_rate_icen(self, interrupt_obj, mocker):
@@ -189,7 +189,7 @@ ixgben_GetConfig:951: 0000:af:00.1: feature.tx:   numQueue = 12
         2023-11-11T03:32:59.783Z cpu37:2098285)ixgben: ixgben_GetConfig:955: \
 0000:af:00.1: config.vmdq:  queuesPerPool = 4
         2023-11-11T03:32:59.783Z cpu37:2098285)ixgben: ixgben_GetConfig:957: \
-0000:af:00.1: config.intr:  paired = 1, rxITR = 79, txITR = 428
+0000:af:00.1: config.intr:  paired = 1, rxITR = 0, txITR = 428
         2023-11-11T03:32:59.783Z cpu37:2098285)ixgben: ixgben_ValidateOptions:318: Enabled MddEnabled
         2023-11-11T03:32:59.784Z cpu37:2098285)VMK_PCI: 623: device 0000:af:00.1 allocated 13 MSIX interrupts
         2023-11-11T03:32:59.784Z cpu37:2098285)ixgben: indrv_InitUplinkCB:538: 0000:af:00.1: numRssqPerPool=4, rssQid0=8
@@ -243,7 +243,7 @@ device Up notification, reset logical space needed
         assert interrupt_obj.interrupt.get_interrupt_moderation_rate(
             is_ens=True, pci_address=PCIAddress(data="0000:af:00.1")
         ) == (
-            79,
+            0,
             428,
         )
 
