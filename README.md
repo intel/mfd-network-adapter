@@ -2047,7 +2047,7 @@ get_netq_defq_rss_queues(self, netq_rss: bool) -> list
 [Windows]
 
 > [!IMPORTANT]  
->  This feature is under development. All source code and features on the main branch are for the purpose of testing or evaluation and not production ready. Method requires DLLs in `c:\NET_ADAPTER` directory to read OIDs.
+>  This feature is under development. All source code and features on the main branch are for the purpose of testing or evaluation and not production ready. Method requires DLLs in `c:\NET_ADAPTER\tools` directory to read OIDs.
 
 - `get_stats(names: Optional[str] = None) -> Dict` - Get a specific or all statistics from a specific network interface.
 
