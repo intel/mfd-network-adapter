@@ -58,8 +58,8 @@ class WindowsStats(BaseFeatureStats):
         """
         src_local_conn = LocalConnection()
         dst_conn = self._connection
-        src_path = src_local_conn.path(Path(__file__).parent / "tools")
-        dst_path = r"c:\NET_ADAPTER"
+        src_path = src_local_conn.path(Path(__file__).parent / "tools" / "*")
+        dst_path = r"c:\NET_ADAPTER\tools"
         rpc_copy_utils.copy(
             src_conn=src_local_conn,
             dst_conn=dst_conn,
@@ -69,7 +69,7 @@ class WindowsStats(BaseFeatureStats):
         oid_dict = {}
         cmd = (
             "Set-ExecutionPolicy -Force -ExecutionPolicy Bypass ; "
-            f" {dst_path}\\tools\\Get-Oids.ps1 -adapter_name '{self._interface().name}' -oid_name '{oid_name or ''}'"
+            f" {dst_path}\\Get-Oids.ps1 -adapter_name '{self._interface().name}' -oid_name '{oid_name or ''}'"
         )
         cmd_output = self._connection.execute_powershell(cmd, expected_return_codes={0})
         pattern = r"\s*Name\s*:\s*(\S+)\s*Value\s*:\s*([a-zA-Z0-9-\(\) \,\r?\n,\?]+)\r?\n\r?\n"
