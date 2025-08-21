@@ -118,3 +118,7 @@ class AnsFeatureProcessException(CalledProcessError):
 
 class AnsFeatureException(NetworkAdapterModuleException):
     """Handle Ans feature exceptions."""
+
+
+class GTPFeatureException(NetworkAdapterModuleException):
+    """Handle GTP feature exceptions."""
