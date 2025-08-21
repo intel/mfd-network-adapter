@@ -14,6 +14,7 @@
        * [VLAN](#vlan)
        * [VxLAN](#vxlan)
        * [GRE](#gre)
+       * [GTP](#gtp)
        * [ARP](#arp)
        * [CPU](#cpu)
        * [DCB](#dcb)
@@ -340,6 +341,16 @@ create_setup_gre(gre_tunnel_name: str, local_ip_addr: IPv4Interface | IPv6Interf
 
 ```python
 delete_gre(gre_tunnel_name: str, namespace_name: str | None = None) -> None
+```
+
+#### GTP
+[Linux] Create a GTP Tunnel.
+```python
+create_setup_gtp_tunnel(tunnel_name: str, namespace_name: str | None = None, role: str = "sgsn") -> None
+```
+[Linux] Delete a GTP Tunnel.
+```python
+delete_gtp_tunnel(tunnel_name: str, namespace_name: str | None = None) -> None
 ```
 
 ### ARP

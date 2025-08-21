@@ -45,6 +45,7 @@ if typing.TYPE_CHECKING:
     from .feature.cpu import CPUFeatureType
     from .feature.mac import MACFeatureType
     from .feature.geneve import GeneveFeatureType
+    from .feature.gtp import GTPFeatureType
 
 logger = logging.getLogger(__name__)
 add_logging_level(level_name="MODULE_DEBUG", level_value=log_levels.MODULE_DEBUG)
@@ -117,6 +118,7 @@ class NetworkAdapterOwner:
         self._cpu: "CPUFeatureType | None" = None
         self._mac: "MACFeatureType | None" = None
         self._geneve: "GeneveFeatureType | None" = None
+        self._gtp: "GTPFeatureType | None" = None
 
     @property
     def arp(self) -> "ARPFeatureType":
@@ -337,6 +339,16 @@ class NetworkAdapterOwner:
             self._geneve = BaseGeneveTunnelFeature(connection=self._connection, owner=self)
 
         return self._geneve
+
+    @property
+    def gtp(self) -> "GTPFeatureType":
+        """GTP Tunnel feature."""
+        if self._gtp is None:
+            from .feature.gtp import BaseGTPTunnelFeature
+
+            self._gtp = BaseGTPTunnelFeature(connection=self._connection, owner=self)
+
+        return self._gtp
 
     def execute_command(self, command: str, **kwargs) -> "ConnectionCompletedProcess":
         """
