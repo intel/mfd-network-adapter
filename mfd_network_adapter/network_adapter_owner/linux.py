@@ -207,6 +207,7 @@ class LinuxNetworkAdapterOwner(NetworkAdapterOwner):
                     )
                     interface.namespace = sys_class_interface.namespace
                     to_be_removed.append(sys_class_interface)
+                    break
 
         # removing PFs already covered
         for iface in to_be_removed:
