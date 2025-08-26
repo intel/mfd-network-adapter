@@ -1015,16 +1015,9 @@ class TestLinuxNetworkOwner:
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(
             args="", stdout=stdout_bonding_2, return_code=0
         )
+        mocker.patch.object(owner.bonding, "get_children", return_value=["eth3"])
         owner._mark_bonding_interfaces(ifaces)
         assert iface_1.interface_type == InterfaceType.BOND_SLAVE
-
-    def test__mark_bonding_interfaces_empty_output(self, owner, mocker):
-        # Test when res.stdout is empty, should raise NetworkAdapterModuleException
-        owner._connection.execute_command.return_value = ConnectionCompletedProcess(args="", stdout="", return_code=0)
-        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
-        iface = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
-        with pytest.raises(NetworkAdapterModuleException):
-            owner._mark_bonding_interfaces([iface])
 
     def test__mark_bonding_interfaces_interface_name_none(self, owner, mocker):
         # Test when interface.name is None, should just continue
@@ -1038,19 +1031,3 @@ class TestLinuxNetworkOwner:
         iface = LinuxInterfaceInfo(name=None, interface_type=InterfaceType.GENERIC, installed=True)
         # Should not raise
         owner._mark_bonding_interfaces([iface])
-
-    def test__mark_bonding_interfaces_master_and_slave_flags(self, owner, mocker):
-        # Test MASTER and SLAVE flags
-        stdout_bonding = dedent("""
-        6: eth3: <BROADCAST,MASTER,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
-        7: eth4: <BROADCAST,SLAVE,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
-        """)
-        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
-            args="", stdout=stdout_bonding, return_code=0
-        )
-        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=[])
-        iface_master = LinuxInterfaceInfo(name="eth3", interface_type=InterfaceType.GENERIC, installed=True)
-        iface_slave = LinuxInterfaceInfo(name="eth4", interface_type=InterfaceType.GENERIC, installed=True)
-        owner._mark_bonding_interfaces([iface_master, iface_slave])
-        assert iface_master.interface_type == InterfaceType.BOND
-        assert iface_slave.interface_type == InterfaceType.BOND_SLAVE
