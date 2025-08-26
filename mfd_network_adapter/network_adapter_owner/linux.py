@@ -578,25 +578,20 @@ class LinuxNetworkAdapterOwner(NetworkAdapterOwner):
         :param interfaces: List of LinuxInterfaceInfo
         """
         bonding_interfaces = self.bonding.get_bond_interfaces()
-        command = "ip addr show"
-        res = self._connection.execute_command(command=command, shell=True)
-        if not res.stdout:
-            raise NetworkAdapterModuleException("Empty output while trying to find bonding interfaces.")
+        if not bonding_interfaces:
+            return
 
-        regex_master = r"^\d+:\s(?P<name>\S+):\s<(?P<flags>.+?)>"
-        interfaces_flags = {
-            match.group("name"): match.group("flags") for match in re.finditer(regex_master, res.stdout, re.MULTILINE)
-        }
+        slaves = []
         for interface in interfaces:
             if interface.name is None:
                 continue
             if interface.name in bonding_interfaces:
                 interface.interface_type = InterfaceType.BOND
-            elif flags := interfaces_flags.get(interface.name):
-                if "MASTER" in flags:  # backup case for bonding interfaces
-                    interface.interface_type = InterfaceType.BOND
-                elif "SLAVE" in flags:
-                    interface.interface_type = InterfaceType.BOND_SLAVE
+                slaves.extend(self.bonding.get_children(bonding_interface=interface.name))
+
+        for interface in interfaces:
+            if interface.name in slaves:
+                interface.interface_type = InterfaceType.BOND_SLAVE
 
     @staticmethod
     def _get_device_from_lspci_output(output: str) -> PCIDevice:
