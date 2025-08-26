@@ -88,7 +88,7 @@ interfaces = owner.get_interfaces()
 ## Exceptions raised by MFD-Network-Adapter module
 - related to module:  `NetworkAdapterModuleException`
 - related to Network Interface:  `InterfaceNameNotFound`, `IPException`, `IPAddressesNotFound`, `NetworkQueuesException`, `RDMADeviceNotFound`, `NumaNodeException`, `DriverInfoNotFound`, `FirmwareVersionNotFound`
-- related to NetworkInterface's features: `VirtualizationFeatureException`
+- related to NetworkInterface's features: `VirtualizationFeatureException`, `VlanNotFoundException`, `VlanAlreadyExistsException`
 - 
 ## Classes
 
@@ -2335,6 +2335,12 @@ All functions are accesible by
 - `interface.capture.pktcap`
 
 #### VLAN
+[Linux]
+- `add_vlan(self, vlan_id: int) -> None:` - Add VLAN interface.
+- `remove_vlan(self, vlan_id: int) -> None:` - Remove VLAN interface.
+- `get_vlan_id(self) -> int:` - Get first collected VLAN ID of the interface.
+- `get_vlan_ids(self) -> List[int]:` - Get all VLAN IDs of the interface.
+
 [ESXi]
 - `set_vlan_tpid(self, tpid: str) -> None:`: Set TPID used for VLAN tagging by VFs.
 
