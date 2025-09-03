@@ -26,6 +26,19 @@ sys_class_stdout = dedent(
 
 """
 )
+sys_class_vmic_stdout = dedent(
+    """
+    total 0
+    lrwxrwxrwx 1 root root 0 Sep 2 12:13 enP3234353 -> ../../devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/bad7fd18-7e57-4561-8392-64ea14aa42e6/pci7e57:00/7e57:00:02.0/net/enP3234353
+    lrwxrwxrwx 1 root root 0 Sep 2 12:13 enP5618552 -> ../../devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/5ecacc75-db79-4e48-87c5-ca5c5a9a70ef/pci4b79:00/db79:00:02.0/net/enP5618552
+    lrwxrwxrwx 1 root root 0 Sep 2 14:09 eth0 -> ../../devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/8229b887-f2a9-4b12-8994-38377a7d1d9a/net/eth0
+    lrwxrwxrwx 1 root root 0 Sep 2 14:09 eth1 -> ../../devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/28995f2f-d495-4f98-b662-088946355eb4/net/eth1
+    lrwxrwxrwx 1 root root 0 Sep 2 14:09 eth2 -> ../../devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/7c6fd2f9-ce6c-43e3-8c41-d44954396dc9/net/eth2
+    lrwxrwxrwx 1 root root 0 Sep 2 14:09 eth3 -> ../../devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/73ffadd9-6b65-4138-88a4-2d281a9b6173/net/eth3
+    lrwxrwxrwx 1 root root 0 Sep 2 14:09 eth4 -> ../../devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/8629f04f-37fc-422a-87e3-85b8b3e61515/net/eth4
+    lrwxrwxrwx 1 root root 0 Sep 2 14:09 lo -> ../../devices/virtual/net/lo
+"""  # noqa: E501
+)
 cmd_output = {
     "lspci -D -nnvvvmm | grep -B1 -A6 '^Class.*Ethernet'": dedent(
         """\
@@ -116,6 +129,43 @@ class TestLinuxNetworkOwner:
         conn = mocker.create_autospec(RPyCConnection)
         conn.get_os_name.return_value = OSName.LINUX
         return LinuxNetworkAdapterOwner(connection=conn)
+
+    def test__gather_all_sys_class_interfaces_not_virtual_vmnic(self, owner, mocker):
+        result = owner._gather_all_sys_class_interfaces_not_virtual(
+            sys_class_net_lines=sys_class_vmic_stdout.splitlines(), namespace=None
+        )
+        assert len(result) == 7
+        assert len([iface for iface in result if iface.interface_type == InterfaceType.VMNIC]) == 5
+        assert all(iface.uuid is not None for iface in result if iface.interface_type == InterfaceType.VMNIC)
+
+    def test__update_interfaces_with_sys_class_net_data_not_virtual_vmnic_handling(self, owner, mocker):
+        """Test that VMNIC interfaces are extended and removed from sys_class_interfaces."""
+        # Prepare sys_class_net_lines with VMNIC and PF
+        sys_class_net_lines = [
+            "lrwxrwxrwx 1 root root 0 Dec 29 17:06 vmnic1 -> ../../devices/pci0000:17/0000:17:01.0/0000:18:00.1/net/vmnic1",  # noqa: E501
+            "lrwxrwxrwx 1 root root 0 Dec 29 17:06 eth3 -> ../../devices/pci0000:17/0000:17:01.0/0000:18:00.1/net/eth3",  # noqa: E501
+        ]
+        namespace = "ns2"
+        # Patch _gather_all_sys_class_interfaces_not_virtual to return VMNIC and PF
+        vmnic_iface = LinuxInterfaceInfo(
+            name="vmnic1", interface_type=InterfaceType.VMNIC, installed=True, namespace=namespace
+        )
+        pf_iface = LinuxInterfaceInfo(name="eth3", interface_type=InterfaceType.PF, installed=True, namespace=namespace)
+        mocker.patch.object(
+            LinuxNetworkAdapterOwner,
+            "_gather_all_sys_class_interfaces_not_virtual",
+            return_value=[vmnic_iface, pf_iface],
+        )
+        # Patch other static methods to no-op
+        mocker.patch.object(LinuxNetworkAdapterOwner, "_update_pci_device_in_sys_class_net")
+        mocker.patch.object(LinuxNetworkAdapterOwner, "_mark_vport_interfaces")
+        mocker.patch.object(LinuxNetworkAdapterOwner, "_update_pfs")
+        mocker.patch.object(LinuxNetworkAdapterOwner, "_gather_all_vmbus_interfaces", return_value=[])
+        interfaces = []
+        owner._update_interfaces_with_sys_class_net_data_not_virtual(interfaces, sys_class_net_lines, namespace)
+        # VMNIC should be added to interfaces, and not present in sys_class_interfaces
+        assert any(iface.name == "vmnic1" and iface.interface_type == InterfaceType.VMNIC for iface in interfaces)
+        assert not any(iface.name == "vmnic1" for iface in [pf_iface])
 
     def test_load_driver_file(self, owner):
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(args="", return_code=0)
@@ -1031,3 +1081,413 @@ class TestLinuxNetworkOwner:
         iface = LinuxInterfaceInfo(name=None, interface_type=InterfaceType.GENERIC, installed=True)
         # Should not raise
         owner._mark_bonding_interfaces([iface])
+
+    def test__mark_bonding_interfaces_no_bonding_interfaces(self, owner, mocker):
+        """Test _mark_bonding_interfaces when no bonding interfaces exist."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=[])
+
+        iface_1 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+        iface_2 = LinuxInterfaceInfo(name="eth1", interface_type=InterfaceType.VF, installed=True)
+        interfaces = [iface_1, iface_2]
+
+        original_types = [iface.interface_type for iface in interfaces]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Interface types should remain unchanged
+        assert iface_1.interface_type == original_types[0]
+        assert iface_2.interface_type == original_types[1]
+
+    def test__mark_bonding_interfaces_multiple_bond_interfaces(self, owner, mocker):
+        """Test _mark_bonding_interfaces with multiple bond interfaces."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0", "bond1"])
+        mocker.patch.object(owner.bonding, "get_children")
+        owner.bonding.get_children.side_effect = lambda bonding_interface: {
+            "bond0": ["eth0", "eth1"],
+            "bond1": ["eth2", "eth3"],
+        }.get(bonding_interface, [])
+
+        bond0 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        bond1 = LinuxInterfaceInfo(name="bond1", interface_type=InterfaceType.VIRTUAL_DEVICE, installed=True)
+        eth0 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+        eth1 = LinuxInterfaceInfo(name="eth1", interface_type=InterfaceType.PF, installed=True)
+        eth2 = LinuxInterfaceInfo(name="eth2", interface_type=InterfaceType.PF, installed=True)
+        eth3 = LinuxInterfaceInfo(name="eth3", interface_type=InterfaceType.VF, installed=True)
+        eth4 = LinuxInterfaceInfo(name="eth4", interface_type=InterfaceType.PF, installed=True)  # Not a slave
+
+        interfaces = [bond0, bond1, eth0, eth1, eth2, eth3, eth4]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Bond interfaces should be marked as BOND
+        assert bond0.interface_type == InterfaceType.BOND
+        assert bond1.interface_type == InterfaceType.BOND
+
+        # Child interfaces should be marked as BOND_SLAVE
+        assert eth0.interface_type == InterfaceType.BOND_SLAVE
+        assert eth1.interface_type == InterfaceType.BOND_SLAVE
+        assert eth2.interface_type == InterfaceType.BOND_SLAVE
+        assert eth3.interface_type == InterfaceType.BOND_SLAVE
+
+        # Non-child interface should remain unchanged
+        assert eth4.interface_type == InterfaceType.PF
+
+    def test__mark_bonding_interfaces_bond_with_no_children(self, owner, mocker):
+        """Test _mark_bonding_interfaces when bond interface has no children."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
+        mocker.patch.object(owner.bonding, "get_children", return_value=[])
+
+        bond0 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        eth0 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+
+        interfaces = [bond0, eth0]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Bond interface should still be marked as BOND
+        assert bond0.interface_type == InterfaceType.BOND
+
+        # Other interface should remain unchanged
+        assert eth0.interface_type == InterfaceType.PF
+
+    def test__mark_bonding_interfaces_empty_interface_list(self, owner, mocker):
+        """Test _mark_bonding_interfaces with empty interface list."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
+
+        interfaces = []
+
+        # Should not raise an exception
+        owner._mark_bonding_interfaces(interfaces)
+
+        assert interfaces == []
+
+    def test__mark_bonding_interfaces_mixed_none_names(self, owner, mocker):
+        """Test _mark_bonding_interfaces with mix of None and valid interface names."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
+        mocker.patch.object(owner.bonding, "get_children", return_value=["eth0"])
+
+        bond0 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        none_iface = LinuxInterfaceInfo(name=None, interface_type=InterfaceType.VF, installed=True)
+        eth0 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+
+        interfaces = [bond0, none_iface, eth0]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Bond interface should be marked as BOND
+        assert bond0.interface_type == InterfaceType.BOND
+
+        # Interface with None name should remain unchanged
+        assert none_iface.interface_type == InterfaceType.VF
+
+        # Child interface should be marked as BOND_SLAVE
+        assert eth0.interface_type == InterfaceType.BOND_SLAVE
+
+    def test__update_mac_addresses_malformed_output(self, owner):
+        """Test _update_mac_addresses with malformed ip addr output."""
+        # Test with output missing MAC addresses
+        ip_a_output_no_mac = dedent(
+            """
+            2: ens801f0np0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 1000
+                link/loopback
+                altname enp94s0f0np0
+            3: ens801f1np1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+                link/ether 00:11:22:33:44:55 brd ff:ff:ff:ff:ff:ff
+                altname enp94s0f1np1
+        """
+        )
+
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            args="", return_code=0, stdout=ip_a_output_no_mac
+        )
+
+        iface_no_mac = LinuxInterfaceInfo(name="ens801f0np0")
+        iface_with_mac = LinuxInterfaceInfo(name="ens801f1np1")
+        interfaces = [iface_no_mac, iface_with_mac]
+
+        owner._update_mac_addresses(interfaces=interfaces, namespace=None)
+
+        # Interface without MAC should remain without MAC address
+        assert iface_no_mac.mac_address is None
+
+        # Interface with MAC should get the MAC address
+        assert iface_with_mac.mac_address == MACAddress(addr="00:11:22:33:44:55")
+
+    def test__update_mac_addresses_empty_output(self, owner):
+        """Test _update_mac_addresses with empty ip addr output."""
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(args="", return_code=0, stdout="")
+
+        iface = LinuxInterfaceInfo(name="eth0")
+        interfaces = [iface]
+
+        owner._update_mac_addresses(interfaces=interfaces, namespace=None)
+
+        # Interface should remain without MAC address
+        assert iface.mac_address is None
+
+    def test__update_mac_addresses_interface_not_in_output(self, owner):
+        """Test _update_mac_addresses when interface is not in ip addr output."""
+        ip_a_output = dedent(
+            """
+            2: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+                link/ether 00:11:22:33:44:55 brd ff:ff:ff:ff:ff:ff
+        """
+        )
+
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            args="", return_code=0, stdout=ip_a_output
+        )
+
+        eth0 = LinuxInterfaceInfo(name="eth0")  # Not in output
+        eth1 = LinuxInterfaceInfo(name="eth1")  # In output
+        interfaces = [eth0, eth1]
+
+        owner._update_mac_addresses(interfaces=interfaces, namespace=None)
+
+        # eth0 should remain without MAC address
+        assert eth0.mac_address is None
+
+        # eth1 should get the MAC address
+        assert eth1.mac_address == MACAddress(addr="00:11:22:33:44:55")
+
+    def test__update_mac_addresses_with_namespace(self, owner):
+        """Test _update_mac_addresses with namespace parameter."""
+        ip_a_output = dedent(
+            """
+            2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+                link/ether aa:bb:cc:dd:ee:ff brd ff:ff:ff:ff:ff:ff
+        """
+        )
+
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            args="", return_code=0, stdout=ip_a_output
+        )
+
+        eth0 = LinuxInterfaceInfo(name="eth0")
+        interfaces = [eth0]
+
+        owner._update_mac_addresses(interfaces=interfaces, namespace="test_ns")
+
+        # Should call with namespace
+        expected_command = "ip netns exec test_ns ip a"
+        owner._connection.execute_command.assert_called_with(command=expected_command)
+
+        # Interface should get the MAC address
+        assert eth0.mac_address == MACAddress(addr="aa:bb:cc:dd:ee:ff")
+
+    def test__update_mac_addresses_complex_interface_names(self, owner):
+        """Test _update_mac_addresses with complex interface names (VLAN, bridge, etc.)."""
+        ip_a_output = dedent(
+            """
+            5: eth0.100@eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+                link/ether 00:11:22:33:44:55 brd ff:ff:ff:ff:ff:ff
+            6: br-12345: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default
+                link/ether 02:42:ac:11:00:01 brd ff:ff:ff:ff:ff:ff
+            7: veth123abc@if8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-12345
+                link/ether 66:77:88:99:aa:bb brd ff:ff:ff:ff:ff:ff
+        """
+        )
+
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            args="", return_code=0, stdout=ip_a_output
+        )
+
+        vlan_iface = LinuxInterfaceInfo(name="eth0.100")
+        bridge_iface = LinuxInterfaceInfo(name="br-12345")
+        veth_iface = LinuxInterfaceInfo(name="veth123abc")
+        interfaces = [vlan_iface, bridge_iface, veth_iface]
+
+        owner._update_mac_addresses(interfaces=interfaces, namespace=None)
+
+        # All interfaces should get their MAC addresses
+        assert vlan_iface.mac_address == MACAddress(addr="00:11:22:33:44:55")
+        assert bridge_iface.mac_address == MACAddress(addr="02:42:ac:11:00:01")
+        assert veth_iface.mac_address == MACAddress(addr="66:77:88:99:aa:bb")
+
+    def test__mark_bonding_interfaces_exception_handling(self, owner, mocker):
+        """Test _mark_bonding_interfaces handles exceptions from bonding feature gracefully."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", side_effect=Exception("Bonding error"))
+
+        eth0 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+        interfaces = [eth0]
+
+        # Should raise the exception from get_bond_interfaces
+        with pytest.raises(Exception, match="Bonding error"):
+            owner._mark_bonding_interfaces(interfaces)
+
+    def test__mark_bonding_interfaces_get_children_exception(self, owner, mocker):
+        """Test _mark_bonding_interfaces handles exceptions from get_children gracefully."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
+        mocker.patch.object(owner.bonding, "get_children", side_effect=Exception("Get children error"))
+
+        bond0 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        interfaces = [bond0]
+
+        # Should raise the exception from get_children
+        with pytest.raises(Exception, match="Get children error"):
+            owner._mark_bonding_interfaces(interfaces)
+
+    def test__mark_bonding_interfaces_interface_type_preservation(self, owner, mocker):
+        """Test that _mark_bonding_interfaces preserves original interface types when appropriate."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
+        mocker.patch.object(owner.bonding, "get_children", return_value=["eth0"])
+
+        # Test various initial interface types
+        bond0 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.ETH_CONTROLLER, installed=True)
+        eth0_pf = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+        eth1_vf = LinuxInterfaceInfo(name="eth1", interface_type=InterfaceType.VF, installed=True)
+        eth2_virtual = LinuxInterfaceInfo(name="eth2", interface_type=InterfaceType.VIRTUAL_DEVICE, installed=True)
+
+        interfaces = [bond0, eth0_pf, eth1_vf, eth2_virtual]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Bond interface should change from ETH_CONTROLLER to BOND
+        assert bond0.interface_type == InterfaceType.BOND
+
+        # Slave interface should change to BOND_SLAVE regardless of original type
+        assert eth0_pf.interface_type == InterfaceType.BOND_SLAVE
+
+        # Non-slave interfaces should keep their original types
+        assert eth1_vf.interface_type == InterfaceType.VF
+        assert eth2_virtual.interface_type == InterfaceType.VIRTUAL_DEVICE
+
+    def test__update_mac_addresses_command_construction(self, owner):
+        """Test that _update_mac_addresses constructs the correct command."""
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(args="", return_code=0, stdout="")
+
+        interfaces = []
+
+        # Test without namespace
+        owner._update_mac_addresses(interfaces=interfaces, namespace=None)
+        owner._connection.execute_command.assert_called_with(command="ip a")
+
+        # Test with namespace
+        owner._update_mac_addresses(interfaces=interfaces, namespace="testns")
+        expected_command = "ip netns exec testns ip a"
+        owner._connection.execute_command.assert_called_with(command=expected_command)
+
+    def test__mark_bonding_interfaces_duplicate_names(self, owner, mocker):
+        """Test _mark_bonding_interfaces with duplicate interface names."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
+        mocker.patch.object(owner.bonding, "get_children", return_value=["eth0"])
+
+        # Create interfaces with duplicate names
+        bond0_1 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        bond0_2 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.ETH_CONTROLLER, installed=True)
+        eth0_1 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+        eth0_2 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.VF, installed=True)
+
+        interfaces = [bond0_1, bond0_2, eth0_1, eth0_2]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Both bond0 interfaces should be marked as BOND
+        assert bond0_1.interface_type == InterfaceType.BOND
+        assert bond0_2.interface_type == InterfaceType.BOND
+
+        # Both eth0 interfaces should be marked as BOND_SLAVE
+        assert eth0_1.interface_type == InterfaceType.BOND_SLAVE
+        assert eth0_2.interface_type == InterfaceType.BOND_SLAVE
+
+    def test__mark_bonding_interfaces_case_sensitivity(self, owner, mocker):
+        """Test _mark_bonding_interfaces with case sensitivity scenarios."""
+        mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["Bond0"])  # Uppercase B
+        mocker.patch.object(owner.bonding, "get_children", return_value=["Eth0"])  # Uppercase E
+
+        bond_lower = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        bond_upper = LinuxInterfaceInfo(name="Bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        eth_lower = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+        eth_upper = LinuxInterfaceInfo(name="Eth0", interface_type=InterfaceType.PF, installed=True)
+
+        interfaces = [bond_lower, bond_upper, eth_lower, eth_upper]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Only exact case matches should be marked
+        assert bond_lower.interface_type == InterfaceType.GENERIC  # Unchanged
+        assert bond_upper.interface_type == InterfaceType.BOND  # Changed
+        assert eth_lower.interface_type == InterfaceType.PF  # Unchanged
+        assert eth_upper.interface_type == InterfaceType.BOND_SLAVE  # Changed
+
+    def test__update_mac_addresses_partial_matches(self, owner):
+        """Test _update_mac_addresses with interfaces that partially match output names."""
+        ip_a_output = dedent(
+            """
+            2: eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+                link/ether 00:11:22:33:44:55 brd ff:ff:ff:ff:ff:ff
+            3: eth01: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+                link/ether aa:bb:cc:dd:ee:ff brd ff:ff:ff:ff:ff:ff
+        """
+        )
+
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            args="", return_code=0, stdout=ip_a_output
+        )
+
+        eth0 = LinuxInterfaceInfo(name="eth0")
+        eth01 = LinuxInterfaceInfo(name="eth01")
+        eth1 = LinuxInterfaceInfo(name="eth1")  # Not in output
+
+        interfaces = [eth0, eth01, eth1]
+
+        owner._update_mac_addresses(interfaces=interfaces, namespace=None)
+
+        # Exact matches should get MAC addresses
+        assert eth0.mac_address == MACAddress(addr="00:11:22:33:44:55")
+        assert eth01.mac_address == MACAddress(addr="aa:bb:cc:dd:ee:ff")
+
+        # Non-matching interface should remain without MAC
+        assert eth1.mac_address is None
+
+    def test__update_mac_addresses_special_characters_in_names(self, owner):
+        """Test _update_mac_addresses with special characters in interface names."""
+        ip_a_output = dedent(
+            """
+            2: eth0-test: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+                link/ether 00:11:22:33:44:55 brd ff:ff:ff:ff:ff:ff
+            3: vlan.100: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+                link/ether aa:bb:cc:dd:ee:ff brd ff:ff:ff:ff:ff:ff
+            4: bridge_test: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+                link/ether 11:22:33:44:55:66 brd ff:ff:ff:ff:ff:ff
+        """
+        )
+
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            args="", return_code=0, stdout=ip_a_output
+        )
+
+        dash_iface = LinuxInterfaceInfo(name="eth0-test")
+        dot_iface = LinuxInterfaceInfo(name="vlan.100")
+        underscore_iface = LinuxInterfaceInfo(name="bridge_test")
+
+        interfaces = [dash_iface, dot_iface, underscore_iface]
+
+        owner._update_mac_addresses(interfaces=interfaces, namespace=None)
+
+        # All interfaces should get their MAC addresses
+        assert dash_iface.mac_address == MACAddress(addr="00:11:22:33:44:55")
+        assert dot_iface.mac_address == MACAddress(addr="aa:bb:cc:dd:ee:ff")
+        assert underscore_iface.mac_address == MACAddress(addr="11:22:33:44:55:66")
+
+    def test__mark_bonding_interfaces_verify_call_sequence(self, owner, mocker):
+        """Test that _mark_bonding_interfaces calls bonding methods in correct sequence."""
+        get_bond_interfaces_mock = mocker.patch.object(owner.bonding, "get_bond_interfaces", return_value=["bond0"])
+        get_children_mock = mocker.patch.object(owner.bonding, "get_children", return_value=["eth0"])
+
+        bond0 = LinuxInterfaceInfo(name="bond0", interface_type=InterfaceType.GENERIC, installed=True)
+        eth0 = LinuxInterfaceInfo(name="eth0", interface_type=InterfaceType.PF, installed=True)
+
+        interfaces = [bond0, eth0]
+
+        owner._mark_bonding_interfaces(interfaces)
+
+        # Verify get_bond_interfaces is called first
+        get_bond_interfaces_mock.assert_called_once()
+
+        # Verify get_children is called for each bond interface
+        get_children_mock.assert_called_once_with(bonding_interface="bond0")
+
+        # Verify call order
+        assert get_bond_interfaces_mock.call_count == 1
+        assert get_children_mock.call_count == 1
