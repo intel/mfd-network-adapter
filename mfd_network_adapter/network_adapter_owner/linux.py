@@ -8,6 +8,7 @@ import time
 from collections import Counter
 from ipaddress import IPv4Interface
 from typing import Dict, Optional, List, TYPE_CHECKING
+from uuid import UUID
 
 from funcy import walk_values, partial
 from mfd_common_libs import os_supported, log_levels, add_logging_level
@@ -17,7 +18,12 @@ from mfd_typing import PCIDevice, PCIAddress, OSName, MACAddress
 from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceType, VlanInterfaceInfo
 
 from .base import NetworkAdapterOwner
-from ..const import LINUX_SYS_CLASS_FULL_REGEX, LINUX_SYS_CLASS_VIRTUAL_DEVICE_REGEX, LINUX_SYS_CLASS_VMBUS_REGEX
+from ..const import (
+    LINUX_SYS_CLASS_FULL_REGEX,
+    LINUX_SYS_CLASS_VIRTUAL_DEVICE_REGEX,
+    LINUX_SYS_CLASS_VMBUS_REGEX,
+    LINUX_SYS_CLASS_FULL_VMNIC_REGEX,
+)
 from ..exceptions import VlanNotFoundException, NetworkAdapterModuleException
 from ..network_interface.exceptions import MacAddressNotFound
 
@@ -61,21 +67,26 @@ class LinuxNetworkAdapterOwner(NetworkAdapterOwner):
         # 1 gather all
         for line in sys_class_net_lines:
             match = re.search(LINUX_SYS_CLASS_FULL_REGEX, line)
+            vmnic_match = re.search(LINUX_SYS_CLASS_FULL_VMNIC_REGEX, line)
 
+            match = match or vmnic_match
             if not match:
                 continue
 
             interface_name = match.group("interface_name")
             pci_data = match.group("pci_data")
-            sys_class_interfaces.append(
-                LinuxInterfaceInfo(
-                    name=interface_name,
-                    pci_address=PCIAddress(data=pci_data),
-                    interface_type=InterfaceType.PF,
-                    installed=True,
-                    namespace=namespace,
-                )
+
+            interface_info = LinuxInterfaceInfo(
+                name=interface_name,
+                pci_address=PCIAddress(data=pci_data) if not vmnic_match else None,
+                interface_type=InterfaceType.PF if not vmnic_match else InterfaceType.VMNIC,
+                installed=True,
+                namespace=namespace,
             )
+            if vmnic_match:
+                interface_info.uuid = UUID(pci_data)
+
+            sys_class_interfaces.append(interface_info)
         return sys_class_interfaces
 
     @staticmethod
@@ -228,12 +239,14 @@ class LinuxNetworkAdapterOwner(NetworkAdapterOwner):
 
         Flow:
         1. create list of InterfaceInfo objects based on all `ls -l /sys/class/net` lines
+           a) add all VMNIC interfaces to source list and remove them from sys_class_interfaces
         2. Update `sys/class/net` objects with pci_device matching from `lspci` list
         3. Detect if there are any objects on `/sys/class/net` list sharing same `PCIAddress` + being on the list
            of MEV DEV IDs:
             a) if so, then mark them as `VPORT`s + remove `ETH_CONTROLLER` InterfaceInfo from the list
         4. Merge data coming from both lists (sys/class/net & lspci) into one.
         5. Extend list of interfaces with VMBUS interfaces
+        6. Extend list of VMNIC interfaces
 
         :param interfaces: List of LinuxInterfaceInfo objects - created based on output from `lspci` command
         :param sys_class_net_lines: lines from /sys/class/net output
@@ -244,6 +257,11 @@ class LinuxNetworkAdapterOwner(NetworkAdapterOwner):
         sys_class_interfaces = LinuxNetworkAdapterOwner._gather_all_sys_class_interfaces_not_virtual(
             sys_class_net_lines=sys_class_net_lines, namespace=namespace
         )
+
+        # ** 1a ** handle VMNIC
+        interfaces.extend([x for x in sys_class_interfaces if x.interface_type == InterfaceType.VMNIC])
+        sys_class_interfaces = [iface for iface in sys_class_interfaces if iface.interface_type != InterfaceType.VMNIC]
+
         # ** 2 **
         LinuxNetworkAdapterOwner._update_pci_device_in_sys_class_net(
             source_list=interfaces, destination_list=sys_class_interfaces
