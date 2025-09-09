@@ -5,6 +5,7 @@
 import logging
 import re
 from typing import TYPE_CHECKING
+from packaging.version import Version
 
 from mfd_common_libs import add_logging_level, log_levels
 
@@ -141,16 +142,25 @@ class ESXiVirtualizationFeature(BaseVirtualizationFeature):
         """
         cmd = "esxcli vm process list"
         output = self._connection.execute_command(cmd).stdout
-        match = re.search(rf"{vm_name}\n.*World ID: (\d*)", output, re.M)
 
+        os_version = self._connection.get_system_info().kernel_version
+        # Prepare a regex that matches both 'World ID' and 'VMX Cartel ID'
+        regex = (
+            rf"{vm_name}\n(?:.*\n)*?\s*World ID: (?P<world_id>\d+)\n(?:.*\n)*?\s*VMX Cartel ID: (?P<vmx_cartel_id>\d+)"
+        )
+        match = re.search(regex, output, re.M)
         if match:
-            world_id = match.group(1)
+            # ESXi 9.0 and later uses VMX Cartel ID instead of World ID to identify VMs in VF list
+            if Version(os_version) >= Version("9.0.0"):
+                vm_id = match.group("vmx_cartel_id")
+            else:
+                vm_id = match.group("world_id")
         else:
-            raise VirtualizationFeatureError(f"Cannot find the World ID of VM {vm_name}.")
+            raise VirtualizationFeatureError(f"Cannot find the ID of VM {vm_name}.")
 
         cmd = f"esxcli network sriovnic vf list -n {interface.name}"
         output = self._connection.execute_command(cmd).stdout
-        matches = re.findall(rf"^\s*(\d+)\s+true\s+\S+\s+{world_id}$", output, re.M)
+        matches = re.findall(rf"^\s*(\d+)\s+true\s+\S+\s+{vm_id}$", output, re.M)
 
         if not matches:
             raise VirtualizationFeatureError(f"No VF used by {vm_name} VM.")
