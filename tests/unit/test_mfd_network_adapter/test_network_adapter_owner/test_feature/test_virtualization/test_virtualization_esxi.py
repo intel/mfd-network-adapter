@@ -5,6 +5,7 @@
 import pytest
 
 from textwrap import dedent
+from unittest.mock import MagicMock
 
 from mfd_connect import RPyCConnection
 from mfd_connect.base import ConnectionCompletedProcess
@@ -139,7 +140,7 @@ class TestESXiVirtualization:
             module_name=driver_name, reload_time=reload_time, params="vmdq=1,1,8"
         )
 
-    def test_get_vm_vf_id(self, owner, interface):
+    def test_get_vm_vf_id_esxi8(self, owner, interface):
         output1 = dedent(
             """\
         FR-9-Sophia
@@ -174,19 +175,62 @@ class TestESXiVirtualization:
             7      true    0000:03:00.7    2381189
             """
         )
-
+        owner._connection.get_system_info.return_value = MagicMock(kernel_version="8.0.0")
         owner._connection.execute_command.side_effect = [
             ConnectionCompletedProcess(return_code=0, args="", stdout=output1),
             ConnectionCompletedProcess(return_code=0, args="", stdout=output2),
         ]
         assert owner.virtualization.get_vm_vf_ids("FR-cli7-monica", interface) == [3, 7]
 
+    def test_get_vm_vf_id_esxi9(self, owner, interface):
+        output1 = dedent(
+            """\
+        FR-9-Sophia
+           World ID: 2104268
+           Process ID: 0
+           VMX Cartel ID: 2104267
+           UUID: 56 4d 67 fa b9 f2 da 11-aa 79 47 50 07 db 8b 71
+           Display Name: FR-9-Sophia
+           Config File: /vmfs/volumes/60403711-c7bb0e92-7219-a4bf01645e6b/zoe/zoe.vmx
+
+        FR-cli7-monica
+           World ID: 2381189
+           Process ID: 0
+           VMX Cartel ID: 2381188
+           UUID: 56 4d 6e 28 c8 5b fe b1-76 37 43 c0 fc 09 36 e4
+           Display Name: FR-cli7-monica
+           Config File: /vmfs/volumes/60403711-c7bb0e92-7219-a4bf01645e6b/FR-cli7-monica/FR-cli7-monica.vmx
+        """
+        )
+
+        output2 = dedent(
+            """\
+            VF ID  Active  PCI Address     Owner World ID
+            -----  ------  --------------  --------------
+            0      true    0000:03:00.0    2104267
+            1      true    0000:03:00.1    2104267
+            2      false   0000:03:00.2    -
+            3      true    0000:03:00.3    2381188
+            4      false   0000:03:00.4    -
+            5      true    0000:03:00.5    2381188
+            6      false   0000:03:00.6    -
+            7      true    0000:03:00.7    2381188
+            """
+        )
+        owner._connection.get_system_info.return_value = MagicMock(kernel_version="9.0.0")
+        owner._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output1),
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output2),
+        ]
+        assert owner.virtualization.get_vm_vf_ids("FR-9-Sophia", interface) == [0, 1]
+
     def test_get_vm_vf_id_no_vm(self, owner, interface):
         output = ""
+        owner._connection.get_system_info.return_value = MagicMock(kernel_version="8.0.0")
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(
             return_code=0, args="", stdout=output
         )
-        with pytest.raises(VirtualizationFeatureError, match="Cannot find the World ID of VM ABCDEF."):
+        with pytest.raises(VirtualizationFeatureError, match="Cannot find the ID of VM ABCDEF."):
             owner.virtualization.get_vm_vf_ids("ABCDEF", interface)
 
     def test_get_vm_vf_id_no_vf(self, owner, interface):
@@ -210,7 +254,7 @@ class TestESXiVirtualization:
         """
         )
         output2 = ""
-
+        owner._connection.get_system_info.return_value = MagicMock(kernel_version="8.0.0")
         owner._connection.execute_command.side_effect = [
             ConnectionCompletedProcess(return_code=0, args="", stdout=output1),
             ConnectionCompletedProcess(return_code=0, args="", stdout=output2),
