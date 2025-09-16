@@ -1,2 +1,2 @@
 -r requirements-test.txt
-mfd-code-quality >= 1.2.0, < 2
+git+https://github.com/intel/mfd-code-quality@ref
