@@ -41,7 +41,7 @@ class LinuxARPFeature(BaseARPFeature):
         if allowed_states is None:
             allowed_states = ["REACHABLE", "DELAY"]
 
-        command = f"ip -{ip_ver} neigh show"
+        command = f"ip -{ip_ver.value} neigh show"
         output = self._connection.execute_command(command).stdout
         if not output:
             return {}
@@ -116,9 +116,9 @@ class LinuxARPFeature(BaseARPFeature):
         :param ip_ver: IPVersion field
         """
         command = add_namespace_call_command(
-            command=f"ip -{ip_ver} neigh show dev {interface.name}", namespace=interface.namespace
+            command=f"ip -{ip_ver.value} neigh show dev {interface.name}", namespace=interface.namespace
         )
-        arp_out = self._connection.execute_command(command, shell=True).stdout
+        arp_out = self._connection.execute_command(command=command, shell=True).stdout
         for line in arp_out.splitlines():
             match = re.match(r"(?P<ip>\S+)\s+(\S+\s+){3}(?P<mac>\S+)\s+(PERMANENT)", line.strip())
             if match:

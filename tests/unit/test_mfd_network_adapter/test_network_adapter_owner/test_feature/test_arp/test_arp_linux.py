@@ -12,6 +12,7 @@ from mfd_connect.base import ConnectionCompletedProcess
 from mfd_network_adapter.data_structures import State
 from mfd_typing import OSName, MACAddress
 from mfd_typing.network_interface import LinuxInterfaceInfo
+from mfd_network_adapter.network_interface.feature.ip.data_structures import IPVersion
 
 from mfd_network_adapter import NetworkInterface
 from mfd_network_adapter.network_adapter_owner.linux import LinuxNetworkAdapterOwner
@@ -68,7 +69,7 @@ ip_link_show_noarp_output = dedent(
 )
 
 
-class TestLinuxVLAN:
+class TestLinuxARP:
     @pytest.fixture
     def owner(self, mocker):
         connection = mocker.create_autospec(RPyCConnection)
@@ -94,6 +95,7 @@ class TestLinuxVLAN:
             IPv4Interface("10.10.10.10"): MACAddress("00:00:00:00:00:00"),
         }
         assert owner.arp.get_arp_table() == expected_dict
+        owner._connection.execute_command.assert_called_once_with("ip -4 neigh show")
 
     def test_get_arp_table_blank_output(self, owner):
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(
@@ -151,21 +153,25 @@ class TestLinuxVLAN:
         owner._connection.execute_command.assert_called_with("ip neigh flush dev interface")
 
     def test_delete_permanent_arp_table_ipv4(self, owner, interface, mocker):
+        interface._interface_info.namespace = None
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(
             return_code=0, args="", stdout=ip_arp_table_output_ipv4_permanent, stderr=""
         )
         owner.arp.del_arp_entry = mocker.Mock()
         owner.arp.delete_permanent_arp_table(interface=interface)
+        owner._connection.execute_command.assert_called_once_with(command="ip -4 neigh show dev interface", shell=True)
         owner.arp.del_arp_entry.assert_called_with(
             interface=interface, ip=IPv4Interface("10.10.10.10"), mac=MACAddress("00:00:00:00:00:00")
         )
 
     def test_delete_permanent_arp_table_ipv6(self, owner, interface, mocker):
+        interface._interface_info.namespace = None
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(
             return_code=0, args="", stdout=ip_arp_table_output_ipv6_permanent, stderr=""
         )
         owner.arp.del_arp_entry = mocker.Mock()
-        owner.arp.delete_permanent_arp_table(interface=interface)
+        owner.arp.delete_permanent_arp_table(interface=interface, ip_ver=IPVersion.V6)
+        owner._connection.execute_command.assert_called_once_with(command="ip -6 neigh show dev interface", shell=True)
         owner.arp.del_arp_entry.assert_called_with(
             interface=interface, ip=IPv6Interface("2001:db8:85a3::8a2e:370:7334"), mac=MACAddress("00:00:00:00:00:00")
         )
