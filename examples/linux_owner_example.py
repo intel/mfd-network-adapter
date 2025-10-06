@@ -5,7 +5,7 @@ from uuid import uuid4
 
 from mfd_network_adapter.network_adapter_owner.linux import LinuxNetworkAdapterOwner
 from mfd_connect import RPyCConnection
-from mfd_typing import PCIAddress
+from mfd_typing import PCIAddress, MACAddress
 
 owner = LinuxNetworkAdapterOwner(connection=RPyCConnection("10.11.12.13"))
 
@@ -38,3 +38,5 @@ owner.virtualization.set_vmdq(driver_name="iavf", value=0)
 # utils - get_same_pci_bus_interfaces example
 interface = owner.get_interface(interface_name="eth1")
 owner.utils.get_same_pci_bus_interfaces(interface=interface)  # get interfaces on the same PCI bus as eth1 interface
+
+interface = owner.get_interfaces(mac_address=MACAddress("00:1A:2B:3C:4D:5E")) # get interfaces by MAC address
