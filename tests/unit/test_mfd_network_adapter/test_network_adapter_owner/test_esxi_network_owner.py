@@ -78,7 +78,7 @@ class TestESXiNetworkOwner:
         vmnic6  0000:31:00.2 igbn        Down 0Mbps      Half   00:00:00:00:00:00 1500   Intel(R) I350 Gigabit Network Connection
         vmnic7  0000:31:00.3 igbn        Down 0Mbps      Half   00:00:00:00:00:00 1500   Intel(R) I350 Gigabit Network Connection
         vmnic8  0000:b1:00.0 ixgben      Up   10000Mbps  Full   00:00:00:00:00:00 1500   Intel(R) 82599 10 Gigabit Dual Port Network Connection
-        vmnic9  0000:b1:00.1 ixgben      Up   10000Mbps  Full   00:00:00:00:00:00 1500   Intel(R) 82599 10 Gigabit Dual Port Network Connection
+        vmnic9  0000:b1:00.1 ixgben      Up   10000Mbps  Full   00:00:00:00:00:01 1500   Intel(R) 82599 10 Gigabit Dual Port Network Connection
         """  # noqa: E501
     )
 
@@ -172,6 +172,14 @@ class TestESXiNetworkOwner:
         )
         assert len(devices) == 1
         assert devices[0].name == "vmnic13"
+
+    def test_filter_interfaces_mac_address(self, owner2):
+        all_interfaces_info = owner2._get_all_interfaces_info()
+        devices = owner2._filter_interfaces_info(
+            all_interfaces_info=all_interfaces_info, mac_address=MACAddress("00:00:00:00:00:01")
+        )
+        assert len(devices) == 1
+        assert devices[0].name == "vmnic9"
 
     def test_filter_interfaces_pci_device_all_1(self, owner2):
         all_interfaces_info = owner2._get_all_interfaces_info()

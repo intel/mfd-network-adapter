@@ -184,6 +184,7 @@ class ESXiNetworkAdapterOwner(NetworkAdapterOwner):
         interface_names: Optional[List[str]] = None,
         random_interface: Optional[bool] = None,
         all_interfaces: Optional[bool] = None,
+        mac_address: MACAddress | None = None,
     ) -> List[InterfaceInfo]:
         """
         Filter all interfaces based on selected criteria.
@@ -197,6 +198,7 @@ class ESXiNetworkAdapterOwner(NetworkAdapterOwner):
         :param interface_names: Names of the interfaces
         :param random_interface: Flag - random interface
         :param all_interfaces: Flag - all interfaces
+        :param mac_address: MAC Address of the interface
         :return: List of Network Interface objects depending on passed args
         """
         selected = []
@@ -225,6 +227,8 @@ class ESXiNetworkAdapterOwner(NetworkAdapterOwner):
                 continue
             if interface_names and interface.name not in interface_names:
                 continue
+            if mac_address and interface.mac_address != mac_address:
+                continue
 
             selected.append(interface)
 
@@ -245,6 +249,7 @@ class ESXiNetworkAdapterOwner(NetworkAdapterOwner):
         interface_index: Optional[int] = None,
         interface_name: Optional[str] = None,
         namespace: Optional[str] = None,
+        mac_address: MACAddress | None = None,
     ) -> "ESXiNetworkInterface":
         """
         Get single interface of network adapter.
@@ -253,6 +258,7 @@ class ESXiNetworkAdapterOwner(NetworkAdapterOwner):
             1) interface_name
             2) pci_address
             3) pci_device / family / speed + interface_index
+            4) mac_address
 
         :param pci_address: PCI address
         :param pci_device: PCI device
@@ -261,6 +267,7 @@ class ESXiNetworkAdapterOwner(NetworkAdapterOwner):
         :param interface_index: Index of interface, like 0 - first interface of adapter
         :param interface_name: Name of the interface
         :param namespace: Linux namespace, in which cmd will be executed
+        :param mac_address: MAC Address of the interface
         :return: Network Interface
         """
         interface_indexes = [interface_index] if interface_index is not None else []
@@ -274,6 +281,7 @@ class ESXiNetworkAdapterOwner(NetworkAdapterOwner):
             speed=speed,
             interface_indexes=interface_indexes,
             interface_names=interface_names,
+            mac_address=mac_address,
         )
         if len(interfaces) < 1:
             raise NetworkAdapterNotFound("Could not find adapter with selected parameters")
