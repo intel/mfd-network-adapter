@@ -11,7 +11,7 @@ from typing import List, Optional, Union
 
 from mfd_common_libs import log_levels, add_logging_level
 from mfd_const import MANAGEMENT_NETWORK, Family, Speed
-from mfd_typing import OSName, PCIDevice, PCIAddress, VendorID
+from mfd_typing import OSName, PCIDevice, PCIAddress, VendorID, MACAddress
 from mfd_typing.network_interface import InterfaceInfo, WindowsInterfaceInfo, LinuxInterfaceInfo
 
 from .exceptions import NetworkAdapterConnectedOSNotSupported, NetworkAdapterIncorrectData
@@ -376,6 +376,7 @@ class NetworkAdapterOwner:
         interface_names: Optional[List[str]] = None,
         random_interface: Optional[bool] = None,
         all_interfaces: Optional[bool] = None,
+        mac_address: MACAddress | None = None,
     ) -> List["NetworkInterface"]:
         """
         Get Network Interface objects.
@@ -388,6 +389,7 @@ class NetworkAdapterOwner:
         3) (`pci_device`|`family`|`speed`|`family`+`speed`) + (`random_interface`|`all_interfaces`)
         4) (`random_interface`|`all_interfaces`)
         5) `interface_names`
+        6) `mac_address`
 
         :param pci_address: PCI address
         :param pci_device: PCI device
@@ -397,6 +399,7 @@ class NetworkAdapterOwner:
         :param interface_names: Names of the interfaces
         :param random_interface: Flag - random interface
         :param all_interfaces: Flag - all interfaces
+        :param mac_address: MAC Address of the interface
         :return: List of Network Interface objects depending on passed args
         """
         all_interfaces_info: List[InterfaceInfoType] = self._get_all_interfaces_info()
@@ -410,6 +413,7 @@ class NetworkAdapterOwner:
             interface_names=interface_names,
             random_interface=random_interface,
             all_interfaces=all_interfaces,
+            mac_address=mac_address,
         )
 
         if not filtered_info:
@@ -427,6 +431,7 @@ class NetworkAdapterOwner:
         interface_index: Optional[int] = None,
         interface_name: Optional[str] = None,
         namespace: Optional[str] = None,
+        mac_address: MACAddress | None = None,
     ) -> "NetworkInterface":
         """
         Get single interface of network adapter.
@@ -435,6 +440,7 @@ class NetworkAdapterOwner:
             1) interface_name
             2) pci_address
             3) pci_device / family / speed + interface_index
+            4) mac_address
 
         :param pci_address: PCI address
         :param pci_device: PCI device
@@ -443,6 +449,7 @@ class NetworkAdapterOwner:
         :param interface_index: Index of interface, like 0 - first interface of adapter
         :param interface_name: Name of the interface
         :param namespace: Linux namespace, in which cmd will be executed
+        :param mac_address: MAC Address of the interface
         :return: Network Interface
         """
         all_interfaces_info: List[InterfaceInfoType] = self._get_all_interfaces_info()
@@ -455,6 +462,7 @@ class NetworkAdapterOwner:
             interface_indexes=[interface_index] if interface_index is not None else [],
             interface_names=[interface_name] if interface_name is not None else [],
             all_interfaces=True,
+            mac_address=mac_address,
         )
 
         if len(filtered_info) > 1:
@@ -479,6 +487,7 @@ class NetworkAdapterOwner:
         interface_names: Optional[List[str]] = None,
         random_interface: Optional[bool] = None,
         all_interfaces: Optional[bool] = None,
+        mac_address: MACAddress | None = None,
     ) -> List[InterfaceInfoType]:
         """
         Filter list based on passed criteria.
@@ -492,6 +501,7 @@ class NetworkAdapterOwner:
         :param interface_names: Names of the interfaces
         :param random_interface: Flag - random interface
         :param all_interfaces: Flag - all interfaces
+        :param mac_address: MAC Address of the interface
         :return: Filtered list of InterfaceInfo objects
         """
         self._validate_filtering_args(
@@ -506,6 +516,8 @@ class NetworkAdapterOwner:
             selected = [info for info in all_interfaces_info if info.name in interface_names]
         elif family is not None or speed is not None:
             selected = self._get_info_by_speed_and_family(all_interfaces_info, family=family, speed=speed)
+        elif mac_address is not None:
+            selected = [info for info in all_interfaces_info if info.mac_address == mac_address]
         else:
             selected = all_interfaces_info
 
@@ -565,6 +577,7 @@ class NetworkAdapterOwner:
         family: Optional[str] = None,
         speed: Optional[str] = None,
         interface_names: Optional[List[str]] = None,
+        mac_address: MACAddress | None = None,
     ) -> None:
         """Validate passed args based on expected combinations."""
         passed_combinations_amount = sum(
@@ -573,6 +586,7 @@ class NetworkAdapterOwner:
                 pci_device is not None,
                 interface_names is not None and interface_names != [],
                 family is not None or speed is not None,
+                mac_address is not None,
             ]
         )
 
@@ -586,7 +600,12 @@ class NetworkAdapterOwner:
             return
 
         NetworkAdapterOwner._log_selection_criteria(
-            pci_address=pci_address, pci_device=pci_device, interface_names=interface_names, family=family, speed=speed
+            pci_address=pci_address,
+            pci_device=pci_device,
+            interface_names=interface_names,
+            family=family,
+            speed=speed,
+            mac_address=mac_address,
         )
 
     def _get_all_interfaces_info(self) -> List[InterfaceInfoType]:
