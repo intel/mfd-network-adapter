@@ -7,11 +7,18 @@ import re
 from typing import List
 
 from mfd_common_libs import add_logging_level, log_levels
-from mfd_typing import MACAddress, DeviceID, SubDeviceID
-from mfd_typing.network_interface import InterfaceType
 from mfd_const.network import DESIGNED_NUMBER_VFS_BY_SPEED, Speed
+from mfd_typing import MACAddress, DeviceID, SubDeviceID, PCIAddress
+from mfd_typing.network_interface import InterfaceType
+
 from mfd_network_adapter.data_structures import State
+from mfd_network_adapter.exceptions import (
+    VirtualFunctionNotFoundException,
+    NetworkAdapterConfigurationException,
+    NetworkInterfaceNotSupported,
+)
 from .base import BaseFeatureVirtualization
+from .data_structures import MethodType
 from ...data_structures import VlanProto, VFDetail, LinkState
 from ...exceptions import VirtualizationFeatureException, VirtualizationWrongInterfaceException, DeviceSetupException
 
@@ -338,3 +345,89 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         self._raise_error_if_not_supported_type()
         cmd = f"ip link set {self._interface().name} vf {vf_id} mac {mac}"
         self._connection.execute_command(command=cmd, custom_exception=VirtualizationFeatureException)
+
+    def get_vf_id_by_pci(self, vf_pci_address: PCIAddress) -> int:
+        """
+        Get ID of VF with the given PCI address on specific PF PCI address using /sys/bus/pci/devices/pci_address.
+
+        :param vf_pci_address: VF interface PCI address.
+        :return: ID of the VF.
+        """
+        result = self._connection.execute_command(
+            f"ls /sys/bus/pci/devices/{self._interface().pci_address}/virtfn* -la",
+            shell=True,
+            expected_return_codes={0, 1},
+        )
+        if result.return_code != 0:
+            raise VirtualFunctionNotFoundException(
+                f"Failed to list VFs for PF PCI Address {self._interface().pci_address}: {result.stderr.strip()}"
+            )
+        vf_number_regex = rf"^.*devices/{self._interface().pci_address}/virtfn(?P<vf_number>\d+).*->.*{vf_pci_address}$"
+        match = re.search(vf_number_regex, result.stdout, re.M)
+        if match:
+            return int(match.group("vf_number"))
+        else:
+            raise VirtualFunctionNotFoundException(f"0 matched VFs for PF PCI Address {self._interface().pci_address}")
+
+    def get_msix_vectors_count(self, method: MethodType = MethodType.DEVLINK) -> int:
+        """
+        Get number of MSI-X vectors for the given interface.
+
+        :param method: Method to use for setting MSI-X vectors count. Options are "devlink" or "sysfs".
+        :return: Number of MSI-X vectors available for the interface.
+        """
+        interface = self._interface()
+        if interface.interface_type is not InterfaceType.PF:
+            raise NetworkInterfaceNotSupported("Getting MSI-X vector count is only supported on PF interface.")
+        logger.log(level=log_levels.MFD_DEBUG, msg=f"Getting MSI-X vectors count for interface {interface.name}")
+        if method == MethodType.DEVLINK:
+            out = self._connection.execute_command(f"devlink resource show pci/{interface.pci_address}").stdout
+            match = re.search(r"name msix_vf size (\d+) ", out)
+            if match:
+                logger.log(
+                    level=log_levels.MFD_INFO,
+                    msg=f"MSI-X vectors count for interface {interface.name}: {match.group(1)}",
+                )
+                return int(match.group(1))
+            else:
+                raise NetworkAdapterConfigurationException(
+                    f"Could not find MSI-X vectors count for interface {interface.name}"
+                )
+
+        if method == MethodType.SYSFS:
+            out = self._connection.execute_command(
+                f"cat /sys/bus/pci/devices/{self._interface().pci_address}/sriov_vf_msix_count"
+            ).stdout
+            if out:
+                logger.log(level=log_levels.MFD_INFO, msg=f"MSI-X vectors count for interface {interface.name}: {out}")
+                return int(out)
+            else:
+                raise NetworkAdapterConfigurationException(
+                    f"Could not find MSI-X vectors count for interface {interface.name}"
+                )
+
+        raise ValueError(f"Unknown method {method} for getting MSI-X vectors count")
+
+    def set_msix_vectors_count(self, count: int, method: MethodType = MethodType.DEVLINK) -> None:
+        """
+        Set number of MSI-X vectors for the given interface.
+
+        :param count: Number of MSI-X vectors to set
+        :param method: Method to use for setting MSI-X vectors count. Options are "devlink" or "sysfs".
+        """
+        interface = self._interface()
+        if interface.interface_type is not InterfaceType.PF:
+            raise NetworkInterfaceNotSupported(
+                "Setting MSI-X vector count on VF is only supported through PF interface."
+            )
+        logger.log(
+            level=log_levels.MFD_DEBUG, msg=f"Setting MSI-X vectors count to {count} for interface {interface.name}"
+        )
+        if method == MethodType.DEVLINK:
+            command = f"devlink resource set pci/{interface.pci_address} path /msix/msix_vf/ size {count}"
+        elif method == MethodType.SYSFS:
+            command = f"echo {count} > /sys/bus/pci/devices/{interface.pci_address}/sriov_vf_msix_count"
+        else:
+            raise ValueError(f"Unknown method {method} for setting MSI-X vectors count")
+        self._connection.execute_command(command, custom_exception=NetworkAdapterConfigurationException)
+        logger.log(level=log_levels.MFD_INFO, msg=f"MSI-X vectors count set to {count} for interface {interface.name}")

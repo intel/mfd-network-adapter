@@ -9,6 +9,7 @@ from mfd_connect import SSHConnection
 from mfd_connect.base import ConnectionCompletedProcess
 from mfd_ethtool import Ethtool
 from mfd_network_adapter.data_structures import State
+from mfd_network_adapter.exceptions import NetworkAdapterConfigurationException, NetworkInterfaceNotSupported
 from mfd_network_adapter.network_interface.exceptions import RSSException
 from mfd_network_adapter.network_interface.feature.link.linux import LinuxLink
 from mfd_network_adapter.network_interface.feature.rss.linux import LinuxRSS, FlowType
@@ -17,7 +18,7 @@ from mfd_network_adapter.network_interface.linux import LinuxNetworkInterface
 from mfd_network_adapter.stat_checker import StatChecker
 from mfd_network_adapter.stat_checker.linux import LinuxStatChecker
 from mfd_typing import OSName, PCIAddress
-from mfd_typing.network_interface import LinuxInterfaceInfo
+from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceType
 
 
 class TestLinuxNetworkInterface:
@@ -184,11 +185,15 @@ class TestLinuxNetworkInterface:
         connection.get_os_name.return_value = OSName.LINUX
         pci_address = PCIAddress(0, 0, 0, 0)
         interface_10g = LinuxNetworkInterface(
-            connection=connection, interface_info=LinuxInterfaceInfo(pci_address=pci_address, name="eno1")
+            connection=connection,
+            interface_info=LinuxInterfaceInfo(pci_address=pci_address, name="eno1", interface_type=InterfaceType.PF),
         )
         pci_address1 = PCIAddress(0, 0, 0, 1)
         interface_100g = LinuxNetworkInterface(
-            connection=connection, interface_info=LinuxInterfaceInfo(pci_address=pci_address1, name="enp59s0f1")
+            connection=connection,
+            interface_info=LinuxInterfaceInfo(
+                pci_address=pci_address1, name="enp59s0f1", interface_type=InterfaceType.VF
+            ),
         )
         stat_checker = StatChecker(network_interface=interface_100g)
         yield [interface_10g, interface_100g, stat_checker]
@@ -712,3 +717,59 @@ class TestLinuxNetworkInterface:
             interface_100g.stats.get_per_queue_stat_string.assert_called()
             interface_100g.rss.get_queues.assert_called_once()
             interface_100g.stats.get_stats.assert_called()
+
+    @pytest.mark.parametrize("rc", [0, 1])
+    def test_set_rss_queues_count_pf(self, linuxrss, rc):
+        linuxrss[0]._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=rc, args="echo", stdout="", stderr=""
+        )
+        linuxrss[0].rss.set_rss_queues_count(32)
+        linuxrss[0]._connection.execute_command.assert_called_once_with(
+            f"echo 32 > /sys/class/net/{linuxrss[0].name}/device/rss_lut_pf_attr",
+            custom_exception=NetworkAdapterConfigurationException,
+        )
+
+    @pytest.mark.parametrize("rc", [0, 1])
+    def test_set_rss_queues_count_vf(self, linuxrss, rc, mocker):
+        mocker.patch.object(linuxrss[0].virtualization, "get_vf_id_by_pci", return_value=1)
+
+        linuxrss[0]._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=rc, args="echo", stdout="", stderr=""
+        )
+
+        linuxrss[0].rss.set_rss_queues_count(64, vf_pci_address="0000:00:01.0")
+        linuxrss[0]._connection.execute_command.assert_called_once_with(
+            f"echo 64 > /sys/class/net/{linuxrss[0].name}/device/virtfn1/rss_lut_pf_attr",
+            custom_exception=NetworkAdapterConfigurationException,
+        )
+
+    def test_set_rss_queues_count_exception(self, linuxrss):
+        with pytest.raises(
+            NetworkInterfaceNotSupported, match="Setting RSS queues count on VF is only supported through PF interface."
+        ):
+            linuxrss[1].rss.set_rss_queues_count(32)
+
+    @pytest.mark.parametrize(
+        "vf_pci_address, vf_num, expected_command",
+        [
+            (None, None, "cat /sys/class/net/eno1/device/rss_lut_pf_attr"),
+            ("0000:00:01.0", "1", "cat /sys/class/net/eno1/device/virtfn1/rss_lut_pf_attr"),
+        ],
+    )
+    def test_get_rss_queues_count_success(self, mocker, linuxrss, vf_pci_address, vf_num, expected_command):
+        mock_execute = mocker.patch.object(linuxrss[0]._connection, "execute_command")
+        mock_execute.return_value.stdout = "8"
+        mock_virtualization = mocker.patch.object(linuxrss[0].virtualization, "get_vf_id_by_pci", return_value=vf_num)
+
+        result = linuxrss[0].rss.get_rss_queues_count(vf_pci_address=vf_pci_address)
+
+        assert result == 8
+        mock_execute.assert_called_once_with(expected_command, expected_return_codes={0})
+        if vf_pci_address:
+            mock_virtualization.assert_called_once_with(vf_pci_address)
+
+    def test_get_rss_queues_count_exception(self, linuxrss):
+        with pytest.raises(
+            NetworkInterfaceNotSupported, match="Getting RSS queues count on VF is only supported through PF interface."
+        ):
+            linuxrss[1].rss.get_rss_queues_count()

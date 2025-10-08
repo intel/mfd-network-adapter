@@ -3,19 +3,20 @@
 """Unit tests for Linux Driver Feature."""
 
 from dataclasses import dataclass
+from textwrap import dedent
 from typing import List
 
 import pytest
-from textwrap import dedent
 from mfd_connect import SSHConnection
 from mfd_connect.base import ConnectionCompletedProcess
 from mfd_ethtool import Ethtool
 from mfd_package_manager import LinuxPackageManager
 from mfd_typing import PCIAddress, OSName
 from mfd_typing.driver_info import DriverInfo
-from mfd_typing.network_interface import LinuxInterfaceInfo
-from mfd_network_adapter.network_interface.feature.utils.base import BaseFeatureUtils
+from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceType
 
+from mfd_network_adapter.exceptions import NetworkAdapterConfigurationException, NetworkInterfaceNotSupported
+from mfd_network_adapter.network_interface.feature.utils.base import BaseFeatureUtils
 from mfd_network_adapter.network_interface.linux import LinuxNetworkInterface
 
 
@@ -51,7 +52,38 @@ class TestDriverLinux:
             mocker.create_autospec(LinuxPackageManager.get_driver_info, return_value=expected_out),
         )
         interface = LinuxNetworkInterface(
-            connection=conn, interface_info=LinuxInterfaceInfo(pci_address=pci_address, name="eth0")
+            connection=conn,
+            interface_info=LinuxInterfaceInfo(pci_address=pci_address, name="eth0", interface_type=InterfaceType.PF),
+        )
+        return interface
+
+    @pytest.fixture()
+    def vf_interface(self, mocker):
+        conn = mocker.create_autospec(SSHConnection)
+        conn.get_os_name.return_value = OSName.LINUX
+        pci_address = PCIAddress(0, 0, 0, 0)
+        mocker.patch("mfd_ethtool.Ethtool.check_if_available", mocker.create_autospec(Ethtool.check_if_available))
+        mocker.patch(
+            "mfd_ethtool.Ethtool.get_version", mocker.create_autospec(Ethtool.get_version, return_value="4.15")
+        )
+        mocker.patch(
+            "mfd_ethtool.Ethtool._get_tool_exec_factory",
+            mocker.create_autospec(Ethtool._get_tool_exec_factory, return_value="ethtool"),
+        )
+        mocker.patch(
+            "mfd_ethtool.Ethtool.get_driver_information",
+            mocker.create_autospec(
+                Ethtool.get_driver_information, return_value=EthtoolDriverInfo(version=["2.22.18"], driver=["ice"])
+            ),
+        )
+        expected_out = DriverInfo(driver_name="ice", driver_version="1.1.1.1")
+        mocker.patch(
+            "mfd_package_manager.LinuxPackageManager.get_driver_info",
+            mocker.create_autospec(LinuxPackageManager.get_driver_info, return_value=expected_out),
+        )
+        interface = LinuxNetworkInterface(
+            connection=conn,
+            interface_info=LinuxInterfaceInfo(pci_address=pci_address, name="eth0", interface_type=InterfaceType.VF),
         )
         return interface
 
@@ -83,3 +115,23 @@ class TestDriverLinux:
             mocker.create_autospec(BaseFeatureUtils.is_speed_eq, return_value=True),
         )
         assert interface.driver.get_formatted_driver_version() == expected_out
+
+    @pytest.mark.parametrize(
+        "enable,value,return_code", [(True, "1", 1), (False, "0", 1), (True, "1", 0), (False, "0", 0)]
+    )
+    def test_set_sriov_drivers_autoprobe(self, interface, enable, value, return_code):
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=return_code, args="echo", stdout="", stderr=""
+        )
+        interface.driver.set_sriov_drivers_autoprobe(enable)
+        interface._connection.execute_command.assert_called_once_with(
+            f"echo {value} > /sys/class/net/{interface.name}/device/sriov_drivers_autoprobe",
+            custom_exception=NetworkAdapterConfigurationException,
+        )
+
+    def test_set_sriov_drivers_autoprobe_exception(self, vf_interface):
+        with pytest.raises(
+            NetworkInterfaceNotSupported,
+            match="Enabling/disabling SRIOV drivers auto probe is only supported on PF interface.",
+        ):
+            vf_interface.driver.set_sriov_drivers_autoprobe(False)

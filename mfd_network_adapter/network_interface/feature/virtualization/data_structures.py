@@ -13,3 +13,11 @@ class VFInfo:
     vf_id: str
     pci_address: PCIAddress
     owner_world_id: str
+
+
+@dataclass
+class MethodType:
+    """Class for method types."""
+
+    DEVLINK: str = "devlink"
+    SYSFS: str = "sysfs"

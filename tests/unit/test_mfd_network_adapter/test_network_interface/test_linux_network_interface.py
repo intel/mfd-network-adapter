@@ -9,8 +9,9 @@ from mfd_connect.base import ConnectionCompletedProcess
 from mfd_connect.exceptions import ConnectionCalledProcessError
 from mfd_ethtool import Ethtool
 from mfd_typing import PCIAddress, OSName, OSBitness
-from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceInfo
+from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceInfo, InterfaceType
 
+from mfd_network_adapter.exceptions import NetworkInterfaceIncomparableObject
 from mfd_network_adapter.network_interface.data_structures import RingBufferSettings, RingBuffer
 from mfd_network_adapter.network_interface.exceptions import (
     BrandingStringException,
@@ -20,7 +21,6 @@ from mfd_network_adapter.network_interface.exceptions import (
     RingBufferSettingException,
     DeviceSetupException,
 )
-from mfd_network_adapter.exceptions import NetworkInterfaceIncomparableObject
 from mfd_network_adapter.network_interface.feature.ip import LinuxIP
 from mfd_network_adapter.network_interface.feature.link import LinuxLink
 from mfd_network_adapter.network_interface.linux import LinuxNetworkInterface
@@ -61,6 +61,30 @@ class TestLinuxNetworkInterface:
                 connection=connection,
                 owner=None,
                 interface_info=InterfaceInfo(name="eth1", pci_address=PCIAddress(data="0000:10:00.0")),
+            )
+        )
+        yield interfaces
+        mocker.stopall()
+
+    @pytest.fixture()
+    def interfaces_with_vf(self, mocker):
+        connection = mocker.create_autospec(RPyCConnection)
+        connection.get_os_name.return_value = OSName.LINUX
+        interfaces = []
+        interfaces.append(
+            LinuxNetworkInterface(
+                connection=connection,
+                owner=None,
+                interface_info=LinuxInterfaceInfo(name="eth0", pci_address=PCIAddress(data="0000:18:00.0")),
+                interface_type=InterfaceType.PF,
+            )
+        )
+        interfaces.append(
+            LinuxNetworkInterface(
+                connection=connection,
+                owner=None,
+                interface_info=LinuxInterfaceInfo(name="eth1", pci_address=PCIAddress(data="0000:10:00.0")),
+                interface_type=InterfaceType.VF,
             )
         )
         yield interfaces
@@ -311,3 +335,15 @@ class TestLinuxNetworkInterface:
             NetworkInterfaceIncomparableObject, match="Incorrect object passed for comparison with PCIAddress"
         ):
             interfaces[0].__gt__("IncorrectObject")
+
+    @pytest.mark.parametrize("return_code", [0, 1])
+    def test_reload_adapter_devlink(self, mocker, interface, return_code):
+        mock_execute = mocker.patch.object(interface._connection, "execute_command")
+        mock_execute.return_value = ConnectionCompletedProcess(
+            return_code=return_code, args="devlink", stdout="", stderr=""
+        )
+        result = interface.reload_adapter_devlink()
+        assert result.return_code == return_code
+        mock_execute.assert_called_once_with(
+            f"devlink dev reload pci/{interface.pci_address}", expected_return_codes={0, 1}
+        )
