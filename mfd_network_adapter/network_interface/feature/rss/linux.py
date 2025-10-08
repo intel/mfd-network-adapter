@@ -10,7 +10,11 @@ from typing import TYPE_CHECKING, List, Optional
 from mfd_common_libs import add_logging_level, log_levels
 from mfd_ethtool import Ethtool
 from mfd_ethtool.exceptions import EthtoolExecutionError
+from mfd_typing import PCIAddress
+from mfd_typing.network_interface import InterfaceType
+
 from mfd_network_adapter.data_structures import State
+from mfd_network_adapter.exceptions import NetworkInterfaceNotSupported, NetworkAdapterConfigurationException
 from mfd_network_adapter.stat_checker.base import Trend
 
 from .base import BaseFeatureRSS
@@ -285,3 +289,54 @@ class LinuxRSS(BaseFeatureRSS):
             # in ethtool then get_stats will throw a RuntimeError. That is expected behavior.
             # If it does exist, it should be zero.
             logger.log(level=log_levels.MODULE_DEBUG, msg=f"Not found {stat_name} statistic, it's expected.")
+
+    def set_rss_queues_count(self, count: int, vf_pci_address: PCIAddress | None = None) -> None:
+        """
+        Set number of RSS queues for the given interface.
+
+        :param vf_pci_address: PCI address of VF to set RSS queues count for. If not provided, sets for PF.
+        :param count: Number of RSS queues to set
+        """
+        interface = self._interface()
+        if interface.interface_type is not InterfaceType.PF:
+            raise NetworkInterfaceNotSupported("Setting RSS queues count on VF is only supported through PF interface.")
+        logger.log(
+            level=log_levels.MFD_DEBUG,
+            msg=f"Setting RSS queues count to {count} for {'VF' if vf_pci_address else interface.name} interface.",
+        )
+        vf_path = ""
+        if vf_pci_address:
+            vf_num = str(interface.virtualization.get_vf_id_by_pci(vf_pci_address))
+            vf_path = f"virtfn{vf_num}/"
+        self._connection.execute_command(
+            f"echo {count} > /sys/class/net/{interface.name}/device/{vf_path}rss_lut_pf_attr",
+            custom_exception=NetworkAdapterConfigurationException,
+        )
+        logger.log(
+            level=log_levels.MFD_INFO,
+            msg=f"Successfully set RSS queues count on interface {interface.name} to {count}",
+        )
+
+    def get_rss_queues_count(self, vf_pci_address: PCIAddress | None = None) -> int:
+        """
+        Get number of RSS queues of the given interface.
+
+        :param vf_pci_address: PCI address of VF to get RSS queues count for. If not provided, gets for PF.
+        :return: Number of RSS queues
+        """
+        interface = self._interface()
+        if interface.interface_type is not InterfaceType.PF:
+            raise NetworkInterfaceNotSupported("Getting RSS queues count on VF is only supported through PF interface.")
+        logger.log(
+            level=log_levels.MFD_DEBUG,
+            msg=f"Retrieving RSS queues count of {'VF' if vf_pci_address else interface.name} interface.",
+        )
+        vf_path = ""
+        if vf_pci_address:
+            vf_num = str(interface.virtualization.get_vf_id_by_pci(vf_pci_address))
+            vf_path = f"virtfn{vf_num}/"
+        out = self._connection.execute_command(
+            f"cat /sys/class/net/{interface.name}/device/{vf_path}rss_lut_pf_attr",
+            expected_return_codes={0},
+        ).stdout
+        return int(out)

@@ -17,3 +17,19 @@ class NetworkInterfaceIncomparableObject(Exception):
 
 class VirtualFunctionCreationException(Exception):
     """Exception raised when VF creation process fails."""
+
+
+class VirtualFunctionNotFoundException(Exception):
+    """Exception raised when VF is not found after creation."""
+
+
+class HypervisorNotSupportedException(Exception):
+    """Exception raised when the hypervisor is not supported."""
+
+
+class NetworkAdapterConfigurationException(Exception):
+    """Exception raised for errors in network adapter configuration."""
+
+
+class NetworkInterfaceNotSupported(Exception):
+    """Exception raised when the operation called on network interface is not supported."""

@@ -87,7 +87,7 @@ interfaces = owner.get_interfaces()
 ```
 ## Exceptions raised by MFD-Network-Adapter module
 - related to module:  `NetworkAdapterModuleException`
-- related to Network Interface:  `InterfaceNameNotFound`, `IPException`, `IPAddressesNotFound`, `NetworkQueuesException`, `RDMADeviceNotFound`, `NumaNodeException`, `DriverInfoNotFound`, `FirmwareVersionNotFound`
+- related to Network Interface:  `InterfaceNameNotFound`, `IPException`, `IPAddressesNotFound`, `NetworkQueuesException`, `RDMADeviceNotFound`, `NumaNodeException`, `DriverInfoNotFound`, `FirmwareVersionNotFound`, `VirtualFunctionNotFoundException`, `HypervisorNotSupportedException`, `NetworkAdapterConfigurationException`, `NetworkInterfaceNotSupported`
 - related to NetworkInterface's features: `VirtualizationFeatureException`
 - 
 ## Classes
@@ -650,6 +650,11 @@ Value of param will be prepared for update for all interfaces using <driver_name
 prepare_values_sharing_same_driver(*, driver_name: str, param: str, value: int) -> str
 ```
 
+[Linux] Enable or disable SRIOV drivers auto probe.
+```python
+set_sriov_driver_autoprobe(self, state: bool) -> None
+```
+
 [Windows]
 
 `change_state_family_interfaces(*, driver_filename: str, enable: State.ENABLED) -> None`
@@ -925,6 +930,16 @@ verify_vmdq(interface: "NetworkInterface", desired_value: int) -> None
 [ESXi]  Get the list of VFs (IDs) of specified physical device used by VM.
 ```python
 get_vm_vf_ids(self, vm_name: str, interface: "ESXiNetworkInterface") -> list[int]
+```
+
+[Linux] Set number of MSI-X vectors for PF interface.
+```python
+set_msix_vectors_count(self, count: int, method: MethodType = MethodType.DEVLINK) -> None
+```
+
+[Linux] Get number of MSI-X vectors of PF interface.
+```python
+get_msix_vectors_count(self, method: MethodType = MethodType.DEVLINK) -> int
 ```
 
 ### Queue
@@ -1258,6 +1273,8 @@ class NetworkInterface(ABC):
 - `get_driver_info() -> 'DriverInfo'` - Get information about driver name and driver version of Network Adapter. Raises `AdapterDriverInfoNotFound` if driver info is incomplete or absent.
 
 - `get_number_of_ports() -> int'` - Get number of ports in tested adapter.
+
+- `reload_adapter_devlink() -> None` - Reload adapter via devlink.
 
 - `restart() -> None` - Restart interface.
 
@@ -2032,6 +2049,18 @@ get_queues_for_rss_engine(self) -> dict[str, list[str]]
 get_netq_defq_rss_queues(self, netq_rss: bool) -> list
 ```
 
+[Linux] Set RSS queues count.
+
+```python
+set_rss_queues_count(self, count: int, vf_pci_address: PCIAddress | None = None) -> None
+```
+
+[Linux] Get RSS queues count.
+
+```python
+get_rss_queues_count(self, vf_pci_address: PCIAddress | None = None) -> int
+```
+
 #### Stats
 
 
@@ -2258,6 +2287,7 @@ Virtualization related functionalities.
 - `set_link_for_vf(vf_id: int, link_state: LinkState) -> None` - Set link for a VF interface.
 - `set_vlan_for_vf(vf_id: int, vlan_id: int, proto: VlanProto) -> None` - Set port VLAN for a VF interface
 - `set_mac_for_vf(vf_id: int, mac: MACAddress) -> None` - Set MAC address for VF interface.
+- `get_vf_id_by_pci(vf_pci_address: PCIAddress) -> int` - Get VF ID based on PCI Address.
 - `get_max_vfs() -> int` - Get maximal number of VFs per interface based on either name or PCI Address (if name not set on the interface).
 - `get_current_vfs() -> int` - Get current number of VFs per interface based on either name or PCI Address (if name not set on the interface).
 - `get_designed_number_vfs() -> tuple[int, int]` - Get designed max number of VFs, total and per PF.

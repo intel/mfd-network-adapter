@@ -5,23 +5,28 @@
 from textwrap import dedent
 
 import pytest
-
 from mfd_connect import RPyCConnection
 from mfd_connect.base import ConnectionCompletedProcess
 from mfd_typing import PCIAddress, OSName, MACAddress
-from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceType
+from mfd_typing.mac_address import get_random_mac
+from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceType, InterfaceInfo
 
 from mfd_network_adapter.data_structures import State
+from mfd_network_adapter.exceptions import (
+    VirtualFunctionNotFoundException,
+    NetworkAdapterConfigurationException,
+    NetworkInterfaceNotSupported,
+)
 from mfd_network_adapter.network_interface.data_structures import VFDetail, LinkState, VlanProto
-from mfd_network_adapter.network_interface.linux import LinuxNetworkInterface
 from mfd_network_adapter.network_interface.exceptions import (
     VirtualizationFeatureException,
     VirtualizationWrongInterfaceException,
 )
-from mfd_typing.mac_address import get_random_mac
+from mfd_network_adapter.network_interface.feature.virtualization.data_structures import MethodType
+from mfd_network_adapter.network_interface.linux import LinuxNetworkInterface
 
 
-class TestQueueLinux:
+class TestVirtualizationLinux:
     @pytest.fixture()
     def interface(self, mocker):
         pci_address = PCIAddress(0, 0, 0, 0)
@@ -35,6 +40,30 @@ class TestQueueLinux:
         )
         mocker.stopall()
         return interface
+
+    @pytest.fixture()
+    def interfaces_with_vf(self, mocker):
+        connection = mocker.create_autospec(RPyCConnection)
+        connection.get_os_name.return_value = OSName.LINUX
+        interfaces = []
+        interfaces.append(
+            LinuxNetworkInterface(
+                connection=connection,
+                owner=None,
+                interface_info=InterfaceInfo(name="eth0", pci_address=PCIAddress(data="0000:18:00.0")),
+                interface_type=InterfaceType.PF,
+            )
+        )
+        interfaces.append(
+            LinuxNetworkInterface(
+                connection=connection,
+                owner=None,
+                interface_info=InterfaceInfo(name="eth1", pci_address=PCIAddress(data="0000:10:00.0")),
+                interface_type=InterfaceType.VF,
+            )
+        )
+        yield interfaces
+        mocker.stopall()
 
     def test_set_max_tx_rate(self, interface, mocker):
         """Test set max tx rate."""
@@ -490,3 +519,145 @@ class TestQueueLinux:
         interface.virtualization._get_current_vfs_by_pci_address = mocker.Mock()
         interface.virtualization.get_current_vfs()
         interface.virtualization._get_current_vfs_by_pci_address.assert_called_once()
+
+    @pytest.mark.parametrize(
+        "stdout,expected_vf_id",
+        [
+            (
+                "root 0 Jan  1 00:00 /sys/bus/pci/devices/0000:18:00.0/virtfn3 -> ../../../0000:10:00.0\n",
+                3,
+            ),
+            (
+                "root root 0 Jan  1 00:00 /sys/bus/pci/devices/0000:18:00.0/virtfn7 -> ../../../0000:10:00.0\n",
+                7,
+            ),
+        ],
+    )
+    def test_retrieves_correct_vf_id_for_matching_pci_address(self, interfaces_with_vf, stdout, expected_vf_id):
+        pf, vf = interfaces_with_vf
+        pf._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="ls", stdout=stdout, stderr=""
+        )
+        assert pf.virtualization.get_vf_id_by_pci(vf.pci_address) == expected_vf_id
+
+    def test_raises_exception_when_no_matching_vf_found(self, interfaces_with_vf):
+        pf, vf = interfaces_with_vf
+        stdout = "root 0 Jan  1 00:00 /sys/bus/pci/devices/0000:00:00.0/virtfn3 -> ../../../0000:de:ad:be.ef\n"
+        pf._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="ls", stdout=stdout, stderr=""
+        )
+        with pytest.raises(
+            VirtualFunctionNotFoundException,
+            match=f"0 matched VFs for PF PCI Address {pf.pci_address}",
+        ):
+            pf.virtualization.get_vf_id_by_pci(vf.pci_address)
+
+    def test_raises_exception_when_command_fails(self, interfaces_with_vf):
+        pf, vf = interfaces_with_vf
+        pf._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=1, args="ls", stdout="", stderr="Error"
+        )
+        with pytest.raises(VirtualFunctionNotFoundException):
+            pf.virtualization.get_vf_id_by_pci(vf.pci_address)
+
+    @pytest.mark.parametrize(
+        "stdout, expected",
+        [("resource pci/0000:00:00.0:\n  name msix_vf size 128 occ 0 unit entry\n", 128)],
+    )
+    def test_get_msix_vectors_count_devlink_success(self, interface, stdout, expected):
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="devlink", stdout=stdout, stderr=""
+        )
+        assert interface.virtualization.get_msix_vectors_count(method=MethodType.DEVLINK) == expected
+        called_cmd = (
+            interface._connection.execute_command.call_args.kwargs.get("command")
+            or interface._connection.execute_command.call_args.args[0]
+        )
+        assert f"devlink resource show pci/{interface.pci_address}" in called_cmd
+
+    @pytest.mark.parametrize(
+        "stdout",
+        ["resource pci/0000:00:00.0:\n  name something_else size 64 occ 0\n"],
+    )
+    def test_get_msix_vectors_count_devlink_failed(self, interface, stdout):
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="devlink", stdout=stdout, stderr=""
+        )
+        with pytest.raises(
+            NetworkAdapterConfigurationException,
+            match=f"Could not find MSI-X vectors count for interface {interface.name}",
+        ):
+            interface.virtualization.get_msix_vectors_count(method=MethodType.DEVLINK)
+
+    @pytest.mark.parametrize(
+        "stdout,expected",
+        [("256\n", 256)],
+    )
+    def test_get_msix_vectors_count_sysfs(self, interface, stdout, expected):
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="cat", stdout=stdout, stderr=""
+        )
+        assert interface.virtualization.get_msix_vectors_count(method=MethodType.SYSFS) == expected
+        called_cmd = (
+            interface._connection.execute_command.call_args.kwargs.get("command")
+            or interface._connection.execute_command.call_args.args[0]
+        )
+        assert f"/sys/bus/pci/devices/{interface.pci_address}/sriov_vf_msix_count" in called_cmd
+
+    @pytest.mark.parametrize(
+        "stdout",
+        [("")],
+    )
+    def test_get_msix_vectors_count_sysfs_failed(self, interface, stdout):
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="devlink", stdout=stdout, stderr=""
+        )
+        with pytest.raises(
+            NetworkAdapterConfigurationException,
+            match=f"Could not find MSI-X vectors count for interface {interface.name}",
+        ):
+            interface.virtualization.get_msix_vectors_count(method=MethodType.SYSFS)
+
+    def test_get_msix_vectors_count_invalid_method(self, interface):
+        with pytest.raises(ValueError, match="Unknown method"):
+            interface.virtualization.get_msix_vectors_count(method="invalid")
+
+    def test_get_msix_vectors_count_exception(self, interfaces_with_vf):
+        with pytest.raises(
+            NetworkInterfaceNotSupported,
+            match="Getting MSI-X vector count is only supported on PF interface.",
+        ):
+            interfaces_with_vf[1].virtualization.get_msix_vectors_count()
+
+    @pytest.mark.parametrize("rc", [0, 1])
+    def test_set_msix_vectors_count_devlink(self, interface, rc):
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=rc, args="devlink", stdout="", stderr=""
+        )
+        interface.virtualization.set_msix_vectors_count(256, method=MethodType.DEVLINK)
+        interface._connection.execute_command.assert_called_once_with(
+            f"devlink resource set pci/{interface.pci_address} path /msix/msix_vf/ size 256",
+            custom_exception=NetworkAdapterConfigurationException,
+        )
+
+    @pytest.mark.parametrize("rc", [0, 1])
+    def test_set_msix_vectors_count_sysfs(self, interface, rc):
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=rc, args="echo", stdout="", stderr=""
+        )
+        interface.virtualization.set_msix_vectors_count(128, method=MethodType.SYSFS)
+        interface._connection.execute_command.assert_called_once_with(
+            f"echo 128 > /sys/bus/pci/devices/{interface.pci_address}/sriov_vf_msix_count",
+            custom_exception=NetworkAdapterConfigurationException,
+        )
+
+    def test_set_msix_vectors_count_invalid_method(self, interface):
+        with pytest.raises(ValueError, match="Unknown method"):
+            interface.virtualization.set_msix_vectors_count(64, method="bad_method")
+
+    def test_set_msix_vectors_count_exception(self, interfaces_with_vf):
+        with pytest.raises(
+            NetworkInterfaceNotSupported,
+            match="Setting MSI-X vector count on VF is only supported through PF interface.",
+        ):
+            interfaces_with_vf[1].virtualization.set_msix_vectors_count(32)

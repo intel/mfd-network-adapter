@@ -8,6 +8,7 @@ from dataclasses import fields
 from typing import Dict, Optional, TYPE_CHECKING, Union
 
 from mfd_common_libs import add_logging_level, log_levels
+from mfd_connect.base import ConnectionCompletedProcess
 from mfd_connect.exceptions import ConnectionCalledProcessError
 from mfd_kernel_namespace import add_namespace_call_command
 from mfd_typing import MACAddress
@@ -316,6 +317,17 @@ class LinuxNetworkInterface(NetworkInterface):
             return int(regex.group("number_ports"))
         else:
             raise DeviceSetupException("Can't find number of ports in tested adapter.")
+
+    def reload_adapter_devlink(self) -> ConnectionCompletedProcess:
+        """
+        Reload adapter using devlink.
+
+        :return: ConnectionCompletedProcess
+        """
+        logger.log(level=log_levels.MFD_DEBUG, msg=f"Reloading adapter {self.name} using devlink")
+        return self._connection.execute_command(
+            f"devlink dev reload pci/{self.pci_address}", expected_return_codes={0, 1}
+        )
 
     def restart(self) -> None:
         """Restart interface."""

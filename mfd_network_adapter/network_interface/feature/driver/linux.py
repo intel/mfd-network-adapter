@@ -2,12 +2,16 @@
 # SPDX-License-Identifier: MIT
 """Module for Driver feature for Linux."""
 
+import logging
 import re
 from typing import Dict, TYPE_CHECKING
 
+from mfd_common_libs import add_logging_level, log_levels
 from mfd_const import Speed
 from mfd_ethtool import Ethtool
+from mfd_typing.network_interface import InterfaceType
 
+from mfd_network_adapter.exceptions import NetworkInterfaceNotSupported, NetworkAdapterConfigurationException
 from .base import BaseFeatureDriver
 from ...exceptions import DriverInfoNotFound
 
@@ -15,6 +19,9 @@ if TYPE_CHECKING:
     from mfd_connect import Connection
     from mfd_network_adapter import NetworkInterface
     from mfd_typing.driver_info import DriverInfo
+
+logger = logging.getLogger(__name__)
+add_logging_level(level_name="MODULE_DEBUG", level_value=log_levels.MODULE_DEBUG)
 
 
 class LinuxDriver(BaseFeatureDriver):
@@ -67,3 +74,28 @@ class LinuxDriver(BaseFeatureDriver):
 
             return ver_dict
         raise DriverInfoNotFound(f"Driver version not available for {self._interface().name}")
+
+    def set_sriov_drivers_autoprobe(self, state: bool) -> None:
+        """
+        Enable or disable SRIOV drivers auto probe.
+
+        :param state: State to set (True or False)
+        """
+        interface = self._interface()
+        if interface.interface_type is not InterfaceType.PF:
+            raise NetworkInterfaceNotSupported(
+                "Enabling/disabling SRIOV drivers auto probe is only supported on PF interface."
+            )
+        status = "enabled" if state else "disabled"
+        logger.log(
+            level=log_levels.MFD_DEBUG,
+            msg=f"{status} sriov_drivers_autoprobe on interface {interface.name}",
+        )
+        self._connection.execute_command(
+            f"echo {int(state)} > /sys/class/net/{interface.name}/device/sriov_drivers_autoprobe",
+            custom_exception=NetworkAdapterConfigurationException,
+        )
+        logger.log(
+            level=log_levels.MFD_INFO,
+            msg=f"Successfully {status} sriov_drivers_autoprobe on interface {interface.name}",
+        )
