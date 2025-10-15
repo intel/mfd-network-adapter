@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v14.2.0 (2025-10-15)
+
+### Features
+
+- MFD Const Internal introduction.
+  ([`731c833`](https://github.com/intel/mfd-network-adapter/commit/731c8332cc8e330b14dd6bbaa0c859dc8ec297ce))
+
+
 ## v14.1.0 (2025-09-26)
 
 ### Bug Fixes
