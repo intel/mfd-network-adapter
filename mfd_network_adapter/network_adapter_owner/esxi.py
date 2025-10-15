@@ -10,7 +10,7 @@ from typing import List, Dict, Optional, Union, TYPE_CHECKING
 
 from funcy import walk_values, partial
 from mfd_common_libs import TimeoutCounter, add_logging_level, log_levels
-from mfd_const import SPEED_IDS, DEVICE_IDS, Family, Speed
+from mfd_const import Family, Speed
 from mfd_typing import PCIDevice, PCIAddress, MACAddress, DeviceID
 from mfd_typing import VendorID
 from mfd_typing.network_interface import InterfaceInfo
@@ -19,6 +19,11 @@ from .base import NetworkAdapterOwner
 from .exceptions import NetworkAdapterNotFound, ESXiInterfacesLinkUpTimeout
 from ..network_interface.esxi import ESXiNetworkInterface
 from ..network_interface.feature.link import LinkState
+
+try:
+    from mfd_const_internal import SPEED_IDS, DEVICE_IDS
+except ImportError:
+    from mfd_const import SPEED_IDS, DEVICE_IDS
 
 if TYPE_CHECKING:
     from mfd_connect import Connection
