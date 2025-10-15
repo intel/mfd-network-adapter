@@ -10,12 +10,17 @@ from ipaddress import IPv4Interface
 from typing import List, Optional, Union
 
 from mfd_common_libs import log_levels, add_logging_level
-from mfd_const import SPEED_IDS, DEVICE_IDS, MANAGEMENT_NETWORK, Family, Speed
+from mfd_const import MANAGEMENT_NETWORK, Family, Speed
 from mfd_typing import OSName, PCIDevice, PCIAddress, VendorID
 from mfd_typing.network_interface import InterfaceInfo, WindowsInterfaceInfo, LinuxInterfaceInfo
 
 from .exceptions import NetworkAdapterConnectedOSNotSupported, NetworkAdapterIncorrectData
 from ..network_interface.base import NetworkInterface
+
+try:
+    from mfd_const_internal import SPEED_IDS, DEVICE_IDS
+except ImportError:
+    from mfd_const import SPEED_IDS, DEVICE_IDS
 
 if typing.TYPE_CHECKING:
     from mfd_connect import Connection

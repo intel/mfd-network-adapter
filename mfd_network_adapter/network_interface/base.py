@@ -10,7 +10,7 @@ from functools import lru_cache, cached_property
 from typing import Optional, Union, Any
 
 from mfd_common_libs import add_logging_level, log_levels
-from mfd_const import Family, DEVICE_IDS, Speed, SPEED_IDS
+from mfd_const import Family, Speed
 from mfd_typing import MACAddress, PCIAddress, OSName, PCIDevice
 from mfd_typing.network_interface import (
     InterfaceType,
@@ -22,6 +22,11 @@ from mfd_network_adapter.exceptions import NetworkAdapterModuleException, Networ
 from .exceptions import NetworkInterfaceConnectedOSNotSupported, DeviceIDException
 
 from ..stat_checker import StatChecker
+
+try:
+    from mfd_const_internal import SPEED_IDS, DEVICE_IDS
+except ImportError:
+    from mfd_const import SPEED_IDS, DEVICE_IDS
 
 if typing.TYPE_CHECKING:
     from mfd_model.config import NetworkInterfaceModelBase

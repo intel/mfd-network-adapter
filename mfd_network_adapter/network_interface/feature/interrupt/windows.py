@@ -20,7 +20,7 @@ from .data_structures import (
     StatusToQuery,
 )
 from .const import timestamp_data_pattern
-from mfd_const import Speed, DEVICE_IDS
+from mfd_const import Speed
 from mfd_network_adapter.network_interface.feature.utils.base import BaseFeatureUtils
 from mfd_network_adapter.network_interface.feature.ip.data_structures import IPFlag
 from mfd_typing.utils import strtobool
@@ -31,6 +31,11 @@ from ..link import LinkState
 from ...exceptions import InterruptFeatureException
 
 from .base import BaseFeatureInterrupt
+
+try:
+    from mfd_const_internal import DEVICE_IDS
+except ImportError:
+    from mfd_const import DEVICE_IDS
 
 if TYPE_CHECKING:
     from mfd_connect import Connection

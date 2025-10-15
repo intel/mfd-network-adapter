@@ -12,7 +12,6 @@ from uuid import UUID
 
 from funcy import walk_values, partial
 from mfd_common_libs import os_supported, log_levels, add_logging_level
-from mfd_const.mfd_const import MEV_IDs
 from mfd_kernel_namespace import add_namespace_call_command
 from mfd_typing import PCIDevice, PCIAddress, OSName, MACAddress
 from mfd_typing.network_interface import LinuxInterfaceInfo, InterfaceType, VlanInterfaceInfo
@@ -26,6 +25,11 @@ from ..const import (
 )
 from ..exceptions import VlanNotFoundException, NetworkAdapterModuleException
 from ..network_interface.exceptions import MacAddressNotFound
+
+try:
+    from mfd_const_internal.mfd_const import MEV_IDs
+except ImportError:
+    from mfd_const.mfd_const import MEV_IDs
 
 if TYPE_CHECKING:
     from pathlib import Path
