@@ -53,7 +53,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
 
         command = f"ip link show dev {self._interface().name}"
         pattern = (
-            r"vf\s*(?P<vf_id>\d+)\s*link/ether\s*(?P<mac_address>[0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})\s*.*?,"
+            r"vf\s*(?P<vf_id>\d+)\s*(link/ether|MAC)\s*(?P<mac_address>[0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})\s*.*?,"
             r"\s*spoof checking\s*(?P<spoofchk>\w+),\s*link-state\s*(?P<link_state>\w+),\s*trust\s*("
             r"?P<trust>\w+)"
         )

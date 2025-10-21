@@ -220,7 +220,7 @@ class TestVirtualizationLinux:
         with pytest.raises(VirtualizationFeatureException):
             interface.virtualization.set_mac_for_vf(vf_id=vf_id, mac=mac)
 
-    def test__get_vfs_details_pass(self, interface, mocker):
+    def test__get_vfs_details_link_ether_pass(self, interface, mocker):
         interface._interface_info.name = "eth1"
         interface.virtualization._raise_error_if_not_supported_type = mocker.Mock()
         expected_command = f"ip link show dev {interface._interface_info.name}"
@@ -231,6 +231,53 @@ class TestVirtualizationLinux:
         vf 0     link/ether 00:00:00:00:00:00 brd 00:00:00:00:00:00, spoof checking on, link-state auto, trust off
         vf 1     link/ether 00:00:00:00:00:00 brd 00:00:00:00:00:00, spoof checking on, link-state enable, trust off
         vf 9     link/ether 00:00:00:00:00:00 brd 00:00:00:00:00:00, spoof checking on, link-state auto, trust off`
+        """
+        )
+
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            args="", stdout=output, return_code=0
+        )
+
+        expected_details = [
+            VFDetail(
+                id=0,
+                mac_address=MACAddress("00:00:00:00:00:00"),
+                spoofchk=State.ENABLED,
+                link_state=LinkState.AUTO,
+                trust=State.DISABLED,
+            ),
+            VFDetail(
+                id=1,
+                mac_address=MACAddress("00:00:00:00:00:00"),
+                spoofchk=State.ENABLED,
+                link_state=LinkState.ENABLE,
+                trust=State.DISABLED,
+            ),
+            VFDetail(
+                id=9,
+                mac_address=MACAddress("00:00:00:00:00:00"),
+                spoofchk=State.ENABLED,
+                link_state=LinkState.AUTO,
+                trust=State.DISABLED,
+            ),
+        ]
+
+        assert interface.virtualization._get_vfs_details() == expected_details
+        interface._connection.execute_command.assert_called_with(
+            command=expected_command, custom_exception=VirtualizationFeatureException
+        )
+
+    def test__get_vfs_details_mac_pass(self, interface, mocker):
+        interface._interface_info.name = "eth1"
+        interface.virtualization._raise_error_if_not_supported_type = mocker.Mock()
+        expected_command = f"ip link show dev {interface._interface_info.name}"
+        output = dedent(
+            """
+        3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+        link/ether 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        vf 0 MAC 00:00:00:00:00:00, spoof checking on, link-state auto, trust off, query_rss off
+        vf 1 MAC 00:00:00:00:00:00, spoof checking on, link-state enable, trust off, query_rss off
+        vf 9 MAC 00:00:00:00:00:00, spoof checking on, link-state auto, trust off, query_rss off`
         """
         )
 
