@@ -18,20 +18,27 @@ add_logging_level(level_name="MODULE_DEBUG", level_value=log_levels.MODULE_DEBUG
 class LinuxIP(BaseIPFeature):
     """Linux class for IP feature."""
 
-    def create_bridge(self, bridge_name: str, namespace: Optional[str] = None) -> None:
+    def create_bridge(
+        self, bridge_name: str, additional_parameters: str | None = None, namespace: str | None = None
+    ) -> None:
         """
         Create bridge.
 
         :param bridge_name: Bridge name.
+        :param additional_parameters: Additional parameters for bridge creation.
         :param namespace: Name of network namespace
         """
         self._connection.execute_command(
-            add_namespace_call_command(f"ip link add name {bridge_name} type bridge", namespace=namespace)
+            add_namespace_call_command(
+                f"ip link add name {bridge_name} type bridge"
+                f"{' ' + additional_parameters if additional_parameters else ''}",
+                namespace=namespace,
+            )
         )
 
-    def delete_bridge(self, bridge_name: str, namespace: Optional[str] = None) -> None:
+    def delete_bridge(self, bridge_name: str, namespace: str | None = None) -> None:
         """
-        Create bridge.
+        Delete bridge.
 
         :param bridge_name: Bridge name.
         :param namespace: Name of network namespace
@@ -60,7 +67,7 @@ class LinuxIP(BaseIPFeature):
         """
         self._connection.execute_command(f"ip netns add {namespace_name}")
 
-    def add_to_namespace(self, namespace_name: str, interface_name: str, namespace: Optional[str] = None) -> None:
+    def add_to_namespace(self, namespace_name: str, interface_name: str, namespace: str | None = None) -> None:
         """
         Add interface to namespace.
 
@@ -80,7 +87,7 @@ class LinuxIP(BaseIPFeature):
         """
         self._connection.execute_command(f"ip netns delete {namespace_name}")
 
-    def add_virtual_link(self, device_name: str, device_type: str, namespace: Optional[str] = None) -> None:
+    def add_virtual_link(self, device_name: str, device_type: str, namespace: str | None = None) -> None:
         """
         Add device/interface with given device type.
 
@@ -93,7 +100,7 @@ class LinuxIP(BaseIPFeature):
             add_namespace_call_command(f"ip link add dev {device_name} type {device_type}", namespace=namespace)
         )
 
-    def create_veth_interface(self, interface_name: str, peer_name: str, namespace: Optional[str] = None) -> None:
+    def create_veth_interface(self, interface_name: str, peer_name: str, namespace: str | None = None) -> None:
         """
         Create Virtual Ethernet Interface.
 
@@ -118,7 +125,7 @@ class LinuxIP(BaseIPFeature):
         """
         self._connection.execute_command(f"ip netns pids {namespace} | xargs kill", shell=True)
 
-    def delete_virtual_link(self, device_name: str, namespace: Optional[str] = None) -> None:
+    def delete_virtual_link(self, device_name: str, namespace: str | None = None) -> None:
         """
         Delete device/interface.
 

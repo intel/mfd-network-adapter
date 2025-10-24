@@ -26,6 +26,17 @@ class TestLinuxIP:
         owner.ip.create_bridge(bridge_name)
         owner._connection.execute_command.assert_called_once_with(f"ip link add name {bridge_name} type bridge")
 
+    def test_create_bridge_with_additional_parameters(self, owner):
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="", stdout="", stderr=""
+        )
+        bridge_name = "br1"
+        additional_parameters = "ageing_time 0"
+        owner.ip.create_bridge(bridge_name, additional_parameters)
+        owner._connection.execute_command.assert_called_once_with(
+            f"ip link add name {bridge_name} type bridge ageing_time 0"
+        )
+
     def test_delete_bridge(self, owner):
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(
             return_code=0, args="", stdout="", stderr=""
