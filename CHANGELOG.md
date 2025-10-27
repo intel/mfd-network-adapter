@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v14.3.0 (2025-10-27)
+
+### Features
+
+- Add devlink commands and RSS queues settings
+  ([`4cd5f2c`](https://github.com/intel/mfd-network-adapter/commit/4cd5f2c05357dfa895e518230de1df9f4f229aae))
+
+
 ## v14.2.0 (2025-10-15)
 
 ### Features
