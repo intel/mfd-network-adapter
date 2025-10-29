@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v14.3.1 (2025-10-29)
+
+### Bug Fixes
+
+- Add optional additional parameters for bridge creation
+  ([`0a7533d`](https://github.com/intel/mfd-network-adapter/commit/0a7533d55860961b54859c122dba8adc743ff263))
+
+
 ## v14.3.0 (2025-10-27)
 
 ### Features
