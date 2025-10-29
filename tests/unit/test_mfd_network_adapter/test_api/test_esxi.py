@@ -11,7 +11,7 @@ from mfd_network_adapter.api.link.esxi import (
     set_administrative_privileges,
     get_administrative_privileges,
 )
-from mfd_network_adapter.api.vlan.esxi import set_vlan_tpid
+from mfd_network_adapter.api.vlan.esxi import set_vlan_tpid, get_vlan_tpid
 from mfd_network_adapter.data_structures import State
 from mfd_network_adapter.network_interface.exceptions import LinkStateException
 
@@ -20,6 +20,18 @@ class TestESXiAPI:
     @pytest.fixture()
     def connection(self):
         yield mock.create_autospec(RPyCConnection)
+
+    def test_get_vlan_tpid(self, connection):
+        output = "\n0x8100\n"
+        connection.execute_command.return_value = ConnectionCompletedProcess(return_code=0, args="", stdout=output)
+        tpid = get_vlan_tpid(connection, "vmnic1")
+        assert tpid == "0x8100"
+
+    def test_get_vlan_tpid_incorrect_vmnic(self, connection):
+        output = "ERROR: Vmnic specified doesn't exist or is unsupported"
+        connection.execute_command.return_value = ConnectionCompletedProcess(return_code=0, args="", stdout=output)
+        with pytest.raises(RuntimeError):
+            get_vlan_tpid(connection, "vmnic1")
 
     def test_set_vlan_tpid_incorrect_tpid(self, connection):
         with pytest.raises(ValueError):

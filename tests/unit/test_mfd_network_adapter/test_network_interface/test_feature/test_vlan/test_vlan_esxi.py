@@ -22,3 +22,8 @@ class TestVlanEsxi:
         set_vlan_tpid_mock = mocker.patch("mfd_network_adapter.network_interface.feature.vlan.esxi.set_vlan_tpid")
         interface.vlan.set_vlan_tpid("0x8100")
         set_vlan_tpid_mock.assert_called_once_with(interface._connection, "0x8100", "vmnic1")
+
+    def test_get_vlan_tpid(self, interface, mocker):
+        get_vlan_tpid_mock = mocker.patch("mfd_network_adapter.network_interface.feature.vlan.esxi.get_vlan_tpid")
+        interface.vlan.get_vlan_tpid()
+        get_vlan_tpid_mock.assert_called_once_with(interface._connection, "vmnic1")
