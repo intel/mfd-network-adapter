@@ -49,8 +49,8 @@ if typing.TYPE_CHECKING:
     from .feature.ans import AnsFeatureType
     from .feature.cpu import CPUFeatureType
     from .feature.mac import MACFeatureType
-    from .feature.geneve import GeneveFeatureType
-    from .feature.gtp import GTPFeatureType
+    from .feature.geneve import GeneveTunnelFeatureType
+    from .feature.gtp import GTPTunnelFeatureType
 
 logger = logging.getLogger(__name__)
 add_logging_level(level_name="MODULE_DEBUG", level_value=log_levels.MODULE_DEBUG)
@@ -103,7 +103,7 @@ class NetworkAdapterOwner:
         # features of owner to be lazy initialized
         self._arp: "ARPFeatureType | None" = None
         self._dcb: "LinuxDcb | WindowsDcb | None" = None
-        self._driver: "DriverFeatureType " | None = None
+        self._driver: "DriverFeatureType | None" = None
         self._firewall: "FirewallFeatureType | None" = None
         self._ip: "IPFeatureType | None" = None
         self._nm: "NMFeatureType | None" = None
@@ -122,8 +122,8 @@ class NetworkAdapterOwner:
         self._ans: "AnsFeatureType | None" = None
         self._cpu: "CPUFeatureType | None" = None
         self._mac: "MACFeatureType | None" = None
-        self._geneve: "GeneveFeatureType | None" = None
-        self._gtp: "GTPFeatureType | None" = None
+        self._geneve: "GeneveTunnelFeatureType | None" = None
+        self._gtp: "GTPTunnelFeatureType | None" = None
 
     @property
     def arp(self) -> "ARPFeatureType":
@@ -136,7 +136,7 @@ class NetworkAdapterOwner:
         return self._arp
 
     @property
-    def dcb(self) -> Union["Dcb", "LinuxDcb", "WindowsDcb"]:
+    def dcb(self) -> "Dcb | LinuxDcb | WindowsDcb":
         """DCB feature."""
         if self._dcb is None:
             from mfd_dcb import Dcb
@@ -336,7 +336,7 @@ class NetworkAdapterOwner:
         return self._mac
 
     @property
-    def geneve(self) -> "GeneveFeatureType":
+    def geneve(self) -> "GeneveTunnelFeatureType":
         """Geneve Tunnel feature."""
         if self._geneve is None:
             from .feature.geneve import BaseGeneveTunnelFeature
@@ -346,7 +346,7 @@ class NetworkAdapterOwner:
         return self._geneve
 
     @property
-    def gtp(self) -> "GTPFeatureType":
+    def gtp(self) -> "GTPTunnelFeatureType":
         """GTP Tunnel feature."""
         if self._gtp is None:
             from .feature.gtp import BaseGTPTunnelFeature
