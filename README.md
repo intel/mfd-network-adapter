@@ -119,6 +119,7 @@ To filter out specific Network Interfaces you can use following combinations of 
 3) (`pci_device`|`family`|`speed`|`family`+`speed`) + (`random_interface`|`all_interfaces`)
 4) (`random_interface`|`all_interfaces`) 
 5) `interface_names`
+6) `mac_address`
 
 - `family`:
   - key of `DEVICE_IDS` from `mfd-const` e.g. `CPK`, `FVL`
@@ -144,6 +145,7 @@ def get_interfaces(
         random_interface: Optional[bool] = None,
         all_interfaces: Optional[bool] = None,
         namespace: Optional[str] = None,
+        mac_address:  MACAddress | None = None
     ) -> List["NetworkInterface"]
 ```
 
@@ -159,6 +161,7 @@ Expected combinations are:
 1) interface_name
 2) pci_address
 3) pci_device / family / speed + interface_index
+4) mac_address
 
 * source code:
 ```python
@@ -172,6 +175,7 @@ def get_interface(
         interface_index: Optional[int] = None,
         interface_name: Optional[str] = None,
         namespace: Optional[str] = None,
+        mac_address:  MACAddress | None = None
     ) -> "NetworkInterface"
 ```
 
