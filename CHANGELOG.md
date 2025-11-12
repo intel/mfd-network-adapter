@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v14.4.0 (2025-11-12)
+
+### Bug Fixes
+
+- Update feature type imports and improve type annotations in NetworkAdapterOwner and ARP feature
+  ([`109b74e`](https://github.com/intel/mfd-network-adapter/commit/109b74e0944ee879cac2fa9ef9d3eb20069ab8b9))
+
+### Features
+
+- [ESXi] Method for getting QinQ VLAN TPID
+  ([`e7e3f55`](https://github.com/intel/mfd-network-adapter/commit/e7e3f5566f11a8eafb74738de963a99c16321844))
+
+- Add MAC address support for interface retrieval in NetworkAdapterOwner
+  ([`3c84b62`](https://github.com/intel/mfd-network-adapter/commit/3c84b62d2346839a7f6d1c965224a239491f1172))
+
+
 ## v14.3.1 (2025-10-29)
 
 ### Bug Fixes
