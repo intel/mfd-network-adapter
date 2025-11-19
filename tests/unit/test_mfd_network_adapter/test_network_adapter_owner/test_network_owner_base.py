@@ -364,6 +364,29 @@ class TestNetworkAdapterOwner:
         assert len(filtered) == 1
         assert filtered[0].pci_address == _pci_address
 
+        # additional coverage: check that interface_indexes are counted against naturally sorted names
+        # prepare non-lexicographic names: eth0, eth9, eth10, eth1
+        extra_infos = [
+            InterfaceInfo(pci_address=_pci_address, pci_device=_pci_device, name="eth0"),
+            InterfaceInfo(pci_address=_pci_address, pci_device=_pci_device, name="eth9"),
+            InterfaceInfo(pci_address=_pci_address, pci_device=_pci_device, name="eth10"),
+            InterfaceInfo(pci_address=_pci_address, pci_device=_pci_device, name="eth1"),
+        ]
+
+        filtered_extra = owner._filter_interfaces_info(
+            extra_infos,
+            pci_address=_pci_address,
+            interface_indexes=[0, 1, 2, 3],
+        )
+        assert [i.name for i in filtered_extra] == ["eth0", "eth1", "eth9", "eth10"]
+
+        filtered_middle = owner._filter_interfaces_info(
+            extra_infos,
+            pci_address=_pci_address,
+            interface_indexes=[1, 2],
+        )
+        assert [i.name for i in filtered_middle] == ["eth1", "eth9"]
+
 
 class TestSortedInterfaces:
     @pytest.fixture
@@ -426,3 +449,30 @@ class TestSortedInterfaces:
             NetworkInterfaceIncomparableObject, match="Incorrect object passed for comparison with PCIAddress"
         ):
             sorted(interfaces)
+
+
+class TestNaturalKey:
+    def test_natural_key_simple_eth(self):
+        from mfd_network_adapter.network_adapter_owner.base import natural_key
+
+        names = ["eth0", "eth9", "eth10", "eth1"]
+        assert sorted(names, key=natural_key) == ["eth0", "eth1", "eth9", "eth10"]
+
+    def test_natural_key_mixed_patterns(self):
+        from mfd_network_adapter.network_adapter_owner.base import natural_key
+
+        names = [
+            "enp0s10f1v2",
+            "enp0s2f1v10",
+            "enp0s2f1v2",
+            "Ethernet 10",
+            "Ethernet 2",
+        ]
+
+        assert sorted(names, key=natural_key) == [
+            "Ethernet 2",
+            "Ethernet 10",
+            "enp0s2f1v2",
+            "enp0s2f1v10",
+            "enp0s10f1v2",
+        ]
