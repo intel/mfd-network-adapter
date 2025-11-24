@@ -30,7 +30,9 @@ class WindowsUtils(BaseFeatureUtils):
         ).stdout
         return parse_powershell_list(ps_output)
 
-    def get_advanced_property(self, advanced_property: str, use_registry: bool = False) -> str:
+    def get_advanced_property(
+        self, advanced_property: str, use_registry: bool = False
+    ) -> str:
         """
         Get specified interface advanced property.
 
@@ -42,7 +44,11 @@ class WindowsUtils(BaseFeatureUtils):
         value = "RegistryValue" if use_registry else "DisplayValue"
 
         properties = self.get_advanced_properties()
-        found_property = [item for item in properties if advanced_property.lower() in item[name].lower()]
+        found_property = [
+            item
+            for item in properties
+            if advanced_property.lower() in item[name].lower()
+        ]
 
         if not found_property:
             raise UtilsException(f"Advanced Property {advanced_property} not found.")
@@ -65,7 +71,9 @@ class WindowsUtils(BaseFeatureUtils):
         ).stdout
         return ps_output.strip().split()
 
-    def set_advanced_property(self, registry_keyword: str, registry_value: Union[str, int]) -> None:
+    def set_advanced_property(
+        self, registry_keyword: str, registry_value: Union[str, int]
+    ) -> None:
         """
         Set interface advanced property accessed by registry_keyword.
 
@@ -92,6 +100,97 @@ class WindowsUtils(BaseFeatureUtils):
         :return: Read interface index
         """
         result = self._connection.execute_powershell(
-            f"(Get-NetAdapter '{self._interface().name}').InterfaceIndex", expected_return_codes={0}
+            f"(Get-NetAdapter '{self._interface().name}').InterfaceIndex",
+            expected_return_codes={0},
         )
         return result.stdout.strip()
+
+    def get_phy_info(self, adapter_interface_description: str | None = None) -> dict[str, str | bool]:
+        """
+        Get PHY information and check auto-negotiation bits using WMI.
+
+        :param adapter_interface_description: Optional specific adapter description to match
+        :return: Dictionary containing PHY information and auto-negotiation status
+        :raises: UtilsException if PHY info command execution failed
+        """
+        cmd = (
+            'gwmi -namespace "root\\WMI" IntlLan_GetPhyInfo -property InstanceName,PhyInfo | '
+            'Format-Table InstanceName, @{n="PhyInfo";e={($_ | select -expand PhyInfo) -join ","}} -auto'
+        )
+        result = self._connection.execute_powershell(
+            cmd, custom_exception=UtilsException
+        )
+        phy_data = {}
+        phy_info_found = auto_neg_bits_detected = False
+
+        # Only process if we have output
+        if result.stdout:
+            lines = [
+                line.strip()
+                for line in result.stdout.splitlines()
+                if line.strip()
+                and not any(x in line for x in ["InstanceName", "PhyInfo", "----"])
+            ]
+
+            # Normalize adapter name (strip "for ..." and trailing #N)
+            base_name = None
+            if adapter_interface_description:
+                base_name = adapter_interface_description.split(" for ")[0].strip()
+                base_name = re.sub(r"\s+#\d+$", "", base_name).strip().lower()
+
+            matching_line = None
+            if base_name:
+                for line in lines:
+                    # Extract full InstanceName part (everything before two or more spaces)
+                    instance_match = re.match(r"^(.*?)\s{2,}", line)
+                    if not instance_match:
+                        continue
+                    instance_name = instance_match.group(1).strip()
+                    normalized_name = (
+                        re.sub(r"\s+#\d+$", "", instance_name, flags=re.IGNORECASE)
+                        .strip()
+                        .lower()
+                    )
+
+                    # Match exact normalized name
+                    if normalized_name == base_name:
+                        matching_line = line
+                        break
+
+            # Fallback if no exact match, use first line
+            if not matching_line and lines:
+                matching_line = lines[0]
+
+            if matching_line and "," in matching_line:
+                # Extract the comma-separated PHY values (rightmost part)
+                phy_info_str = matching_line.split(None, 1)[-1]
+                if "," in phy_info_str:
+                    phy_values = phy_info_str.split(",")
+                    phy_data = {"raw_values": phy_values}
+
+                    # Extract third value (auto-negotiation bits live here)
+                    if len(phy_values) >= 3:
+                        try:
+                            third_value = int(phy_values[2].strip())
+                            auto_neg_bits = {
+                                f"bit_{bit}": bool(third_value & (1 << bit))
+                                for bit in [0, 1]
+                            }
+                            phy_data.update(
+                                {
+                                    "third_value_decimal": third_value,
+                                    "third_value_binary": bin(third_value)[2:],
+                                    "auto_neg_bits": auto_neg_bits,
+                                }
+                            )
+                            phy_info_found = True
+                            auto_neg_bits_detected = any(auto_neg_bits.values())
+                        except ValueError as e:
+                            phy_data["parse_error"] = str(e)
+
+        return {
+            "phy_info_found": phy_info_found,
+            "auto_neg_bits_detected": auto_neg_bits_detected,
+            "phy_data": phy_data,
+            "raw_output": result.stdout or "",
+        }

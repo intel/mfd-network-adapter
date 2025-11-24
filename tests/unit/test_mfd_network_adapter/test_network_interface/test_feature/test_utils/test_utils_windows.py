@@ -22,7 +22,8 @@ class TestUtilsWindows:
         _connection.get_os_name.return_value = OSName.WINDOWS
 
         interface = WindowsNetworkInterface(
-            connection=_connection, interface_info=WindowsInterfaceInfo(pci_address=pci_address, name=name)
+            connection=_connection,
+            interface_info=WindowsInterfaceInfo(pci_address=pci_address, name=name),
         )
         mocker.stopall()
         return interface
@@ -102,8 +103,10 @@ CimSystemProperties       : Microsoft.Management.Infrastructure.CimSystemPropert
         ]
 
         for output in outputs:
-            interface._connection.execute_powershell.return_value = ConnectionCompletedProcess(
-                return_code=0, args="", stdout=output, stderr=""
+            interface._connection.execute_powershell.return_value = (
+                ConnectionCompletedProcess(
+                    return_code=0, args="", stdout=output, stderr=""
+                )
             )
             actual_result = interface.utils.get_advanced_properties()
             expected_result = parse_powershell_list(output)
@@ -180,29 +183,38 @@ CimSystemProperties       : Microsoft.Management.Infrastructure.CimSystemPropert
 
         for pair in data:
             output, expected_result = pair
-            interface._connection.execute_powershell.return_value = ConnectionCompletedProcess(
-                return_code=0, args="", stdout=output, stderr=""
+            interface._connection.execute_powershell.return_value = (
+                ConnectionCompletedProcess(
+                    return_code=0, args="", stdout=output, stderr=""
+                )
             )
             actual_result = interface.utils.get_advanced_property_valid_values("test")
 
             assert actual_result == expected_result
 
-        command = '(Get-NetAdapterAdvancedProperty -Name "Ethernet 4"' " -RegistryKeyword test).ValidRegistryValues"
+        command = (
+            '(Get-NetAdapterAdvancedProperty -Name "Ethernet 4"'
+            " -RegistryKeyword test).ValidRegistryValues"
+        )
         calls = [mocker.call(command), mocker.call(command)]
         interface._connection.execute_powershell.assert_has_calls(calls)
 
     def test_set_advanced_property(self, interface):
-        interface._connection.execute_powershell.return_value = ConnectionCompletedProcess(
-            return_code=0, args="", stdout="", stderr=""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr="")
         )
         interface.utils.set_advanced_property("keyword", "value")
         interface._connection.execute_powershell.assert_called_once_with(
-            ('Set-NetAdapterAdvancedProperty -Name "Ethernet 4"' " -RegistryKeyword keyword" " -RegistryValue value")
+            (
+                'Set-NetAdapterAdvancedProperty -Name "Ethernet 4"'
+                " -RegistryKeyword keyword"
+                " -RegistryValue value"
+            )
         )
 
     def test_reset_advanced_properties(self, interface):
-        interface._connection.execute_powershell.return_value = ConnectionCompletedProcess(
-            return_code=0, args="", stdout="", stderr=""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr="")
         )
         interface.utils.reset_advanced_properties()
         interface._connection.execute_powershell.assert_called_once_with(
@@ -211,25 +223,285 @@ CimSystemProperties       : Microsoft.Management.Infrastructure.CimSystemPropert
 
     def test_get_interface_index(self, interface):
         expected_index = "10"
-        interface._connection.execute_powershell.return_value = ConnectionCompletedProcess(
-            return_code=0, args="", stdout=expected_index, stderr=""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(
+                return_code=0, args="", stdout=expected_index, stderr=""
+            )
         )
 
         actual_index = interface.utils.get_interface_index()
 
         assert actual_index == expected_index.strip()
         interface._connection.execute_powershell.assert_called_once_with(
-            f"(Get-NetAdapter '{interface.name}').InterfaceIndex", expected_return_codes={0}
+            f"(Get-NetAdapter '{interface.name}').InterfaceIndex",
+            expected_return_codes={0},
         )
 
     def test_get_interface_index_error(self, interface):
-        interface._connection.execute_powershell.side_effect = ConnectionCalledProcessError(
-            returncode=1, cmd="", output="", stderr="Error message"
+        interface._connection.execute_powershell.side_effect = (
+            ConnectionCalledProcessError(
+                returncode=1, cmd="", output="", stderr="Error message"
+            )
         )
 
         with pytest.raises(Exception):
             interface.utils.get_interface_index()
 
         interface._connection.execute_powershell.assert_called_once_with(
-            f"(Get-NetAdapter '{interface.name}').InterfaceIndex", expected_return_codes={0}
+            f"(Get-NetAdapter '{interface.name}').InterfaceIndex",
+            expected_return_codes={0},
         )
+
+    def test_get_phy_info_with_valid_output_and_matching_adapter(
+        self, mocker, interface
+    ):
+        """Test get_phy_info with valid WMI output and matching adapter description."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              1,2,3,4,5,6,7,8
+Intel(R) Ethernet Controller E810-C for QSFP #2                          9,10,11,12,13
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info(
+            "Intel(R) Ethernet Network Adapter E810-XXV-2"
+        )
+
+        assert result["phy_info_found"] is True
+        assert result["auto_neg_bits_detected"] is True
+        assert result["phy_data"]["raw_values"] == [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+        ]
+        assert result["phy_data"]["third_value_decimal"] == 3
+        assert result["phy_data"]["third_value_binary"] == "11"
+        assert result["phy_data"]["auto_neg_bits"] == {"bit_0": True, "bit_1": True}
+        assert result["raw_output"] == output
+
+        expected_cmd = (
+            'gwmi -namespace "root\\WMI" IntlLan_GetPhyInfo -property InstanceName,PhyInfo | '
+            'Format-Table InstanceName, @{n="PhyInfo";e={($_ | select -expand PhyInfo) -join ","}} -auto'
+        )
+        interface._connection.execute_powershell.assert_called_once_with(
+            expected_cmd, custom_exception=UtilsException
+        )
+
+    def test_get_phy_info_with_adapter_name_with_suffix(self, mocker, interface):
+        """Test get_phy_info with adapter name containing #N suffix."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Controller E810-C for QSFP #2                          10,20,5,40,50
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info(
+            "Intel(R) Ethernet Controller E810-C for QSFP #2"
+        )
+
+        assert result["phy_info_found"] is True
+        assert result["auto_neg_bits_detected"] is True
+        assert result["phy_data"]["raw_values"] == ["10", "20", "5", "40", "50"]
+        assert result["phy_data"]["third_value_decimal"] == 5
+        assert result["phy_data"]["third_value_binary"] == "101"
+        assert result["phy_data"]["auto_neg_bits"] == {"bit_0": True, "bit_1": False}
+
+    def test_get_phy_info_with_adapter_name_with_for_clause(self, mocker, interface):
+        """Test get_phy_info with adapter name containing 'for ...' clause."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Controller E810-C for QSFP                              15,25,2,45,55
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info(
+            "Intel(R) Ethernet Controller E810-C for QSFP for something"
+        )
+
+        assert result["phy_info_found"] is True
+        assert result["auto_neg_bits_detected"] is False
+        assert result["phy_data"]["third_value_decimal"] == 2
+        assert result["phy_data"]["auto_neg_bits"] == {"bit_0": False, "bit_1": True}
+
+    def test_get_phy_info_without_adapter_description_uses_first_line(
+        self, mocker, interface
+    ):
+        """Test get_phy_info without adapter description falls back to first line."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              100,200,7,400,500
+Intel(R) Ethernet Controller E810-C for QSFP                              1,2,3,4,5
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is True
+        assert result["auto_neg_bits_detected"] is True
+        assert result["phy_data"]["raw_values"] == ["100", "200", "7", "400", "500"]
+        assert result["phy_data"]["third_value_decimal"] == 7
+        assert result["phy_data"]["auto_neg_bits"] == {"bit_0": True, "bit_1": True}
+
+    def test_get_phy_info_with_no_auto_neg_bits(self, mocker, interface):
+        """Test get_phy_info when auto-negotiation bits are not set."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              1,2,0,4,5
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is True
+        assert result["auto_neg_bits_detected"] is False
+        assert result["phy_data"]["third_value_decimal"] == 0
+        assert result["phy_data"]["auto_neg_bits"] == {"bit_0": False, "bit_1": False}
+
+    def test_get_phy_info_with_empty_output(self, mocker, interface):
+        """Test get_phy_info with empty output."""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is False
+        assert result["auto_neg_bits_detected"] is False
+        assert result["phy_data"] == {}
+        assert result["raw_output"] == ""
+
+    def test_get_phy_info_with_only_headers(self, mocker, interface):
+        """Test get_phy_info with only header lines, no data."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is False
+        assert result["auto_neg_bits_detected"] is False
+        assert result["phy_data"] == {}
+
+    def test_get_phy_info_with_line_without_comma(self, mocker, interface):
+        """Test get_phy_info when PHY values don't contain commas."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              NoCommaHere
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is False
+        assert result["auto_neg_bits_detected"] is False
+        assert result["phy_data"] == {}
+
+    def test_get_phy_info_with_insufficient_phy_values(self, mocker, interface):
+        """Test get_phy_info when PHY values array has less than 3 elements."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              1,2
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is False
+        assert result["auto_neg_bits_detected"] is False
+        assert result["phy_data"] == {"raw_values": ["1", "2"]}
+
+    def test_get_phy_info_with_invalid_third_value(self, mocker, interface):
+        """Test get_phy_info when third value cannot be converted to int."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              1,2,invalid,4,5
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is False
+        assert result["auto_neg_bits_detected"] is False
+        assert "parse_error" in result["phy_data"]
+        assert "invalid literal" in result["phy_data"]["parse_error"]
+
+    def test_get_phy_info_with_no_matching_adapter(self, mocker, interface):
+        """Test get_phy_info when adapter description doesn't match, falls back to first line."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              1,2,3,4,5
+Intel(R) Ethernet Controller E810-C for QSFP                              6,7,8,9,10
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info("NonExistentAdapter")
+
+        # Falls back to first line
+        assert result["phy_info_found"] is True
+        assert result["phy_data"]["raw_values"] == ["1", "2", "3", "4", "5"]
+
+    def test_get_phy_info_command_execution_error(self, mocker, interface):
+        """Test get_phy_info when PowerShell command fails."""
+        interface._connection.execute_powershell.side_effect = UtilsException(
+            "WMI query failed"
+        )
+
+        with pytest.raises(UtilsException) as exc_info:
+            interface.utils.get_phy_info()
+
+        assert "WMI query failed" in str(exc_info.value)
+
+    def test_get_phy_info_with_large_third_value(self, mocker, interface):
+        """Test get_phy_info with large third value to check bit operations."""
+        output = """
+InstanceName                                                              PhyInfo
+------------                                                              -------
+Intel(R) Ethernet Network Adapter E810-XXV-2                              1,2,255,4,5
+"""
+        interface._connection.execute_powershell.return_value = (
+            ConnectionCompletedProcess(return_code=0, args="", stdout=output, stderr="")
+        )
+
+        result = interface.utils.get_phy_info()
+
+        assert result["phy_info_found"] is True
+        assert result["auto_neg_bits_detected"] is True
+        assert result["phy_data"]["third_value_decimal"] == 255
+        assert result["phy_data"]["third_value_binary"] == "11111111"
+        assert result["phy_data"]["auto_neg_bits"] == {"bit_0": True, "bit_1": True}
