@@ -311,6 +311,7 @@ class LinuxRSS(BaseFeatureRSS):
         self._connection.execute_command(
             f"echo {count} > /sys/class/net/{interface.name}/device/{vf_path}rss_lut_pf_attr",
             custom_exception=NetworkAdapterConfigurationException,
+            shell=True,
         )
         logger.log(
             level=log_levels.MFD_INFO,

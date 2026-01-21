@@ -727,6 +727,7 @@ class TestLinuxNetworkInterface:
         linuxrss[0]._connection.execute_command.assert_called_once_with(
             f"echo 32 > /sys/class/net/{linuxrss[0].name}/device/rss_lut_pf_attr",
             custom_exception=NetworkAdapterConfigurationException,
+            shell=True,
         )
 
     @pytest.mark.parametrize("rc", [0, 1])
@@ -741,6 +742,7 @@ class TestLinuxNetworkInterface:
         linuxrss[0]._connection.execute_command.assert_called_once_with(
             f"echo 64 > /sys/class/net/{linuxrss[0].name}/device/virtfn1/rss_lut_pf_attr",
             custom_exception=NetworkAdapterConfigurationException,
+            shell=True,
         )
 
     def test_set_rss_queues_count_exception(self, linuxrss):
