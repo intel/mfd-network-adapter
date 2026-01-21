@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v14.4.1 (2026-01-21)
+
+### Bug Fixes
+
+- Fix regex to get vfs details properly
+  ([`b301ff1`](https://github.com/intel/mfd-network-adapter/commit/b301ff19b9f63ba5bd192cb292b71fe10aaa0aa0))
+
+- Fix set_rss_queues_count for Linux based hosts
+  ([`0866003`](https://github.com/intel/mfd-network-adapter/commit/08660035a471d684f653236aa859d3679603eb25))
+
+
 ## v14.4.0 (2025-11-12)
 
 ### Bug Fixes
