@@ -26,7 +26,8 @@ class TestIPFreeBSD:
         _connection.get_os_name.return_value = OSName.FREEBSD
 
         interface = FreeBSDNetworkInterface(
-            connection=_connection, interface_info=LinuxInterfaceInfo(pci_address=pci_address, name=name)
+            connection=_connection,
+            interface_info=LinuxInterfaceInfo(pci_address=pci_address, name=name, installed=True),
         )
         mocker.stopall()
         return interface
@@ -171,3 +172,9 @@ class TestIPFreeBSD:
         timeout_mocker.return_value.__bool__.side_effect = [False, False, False, False, True]
         with pytest.raises(IPFeatureException, match=re.escape(f"Not found 1.1.1.4 on {interface.name}.")):
             interface.ip.wait_till_tentative_exit(ip=IPv4Interface("1.1.1.4/8"), timeout=5)
+
+    def test_installed_wrapper(self, interface):
+        interface._interface_info = LinuxInterfaceInfo(name="eth0", pci_address=PCIAddress(0, 0, 0, 0), installed=False)
+
+        with pytest.raises(IPFeatureException, match=re.escape("Interface eth0 is not installed")):
+            interface.ip.add_ip(IPv4Interface("192.168.1.1/24"))
