@@ -123,7 +123,10 @@ class BaseFeatureIP(BaseFeature, ABC):
 
         :param ip: IP address to set
         """
-        self.release_ip(IPVersion.V4 if isinstance(ip, IPv4Interface) else IPVersion.V6)
+        try:
+            self.release_ip(IPVersion.V4 if isinstance(ip, IPv4Interface) else IPVersion.V6)
+        except Exception as exc:
+            logger.log(level=logging.WARNING, msg=f"Failed to release IP: {exc}")
         self.add_ip(ip)
 
     @abstractmethod
