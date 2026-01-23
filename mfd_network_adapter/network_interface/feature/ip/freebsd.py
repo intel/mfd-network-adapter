@@ -4,26 +4,45 @@
 
 import logging
 import re
+from functools import wraps
 from ipaddress import IPv4Interface, IPv6Interface
 from time import sleep
-from typing import Union, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
-from mfd_common_libs import add_logging_level, log_levels, TimeoutCounter
+from mfd_common_libs import TimeoutCounter, add_logging_level, log_levels
 from mfd_typing import MACAddress
 
 from mfd_network_adapter.data_structures import State
-from .base import BaseFeatureIP
-from .data_structures import IPs, IPVersion, DynamicIPType
-from ..link import LinkState
+
 from ...exceptions import IPFeatureException
+from ..link import LinkState
+from .base import BaseFeatureIP
+from .data_structures import DynamicIPType, IPs, IPVersion
 
 if TYPE_CHECKING:
     from mfd_connect import Connection
     from mfd_connect.base import ConnectionCompletedProcess
+
     from mfd_network_adapter import NetworkInterface
 
 logger = logging.getLogger(__name__)
 add_logging_level(level_name="MODULE_DEBUG", level_value=log_levels.MODULE_DEBUG)
+
+
+def require_installed(func: Callable) -> Callable:
+    """
+    Check if the interface is installed before executing the method.
+
+    :raises IPFeatureException: When interface is not installed
+    """
+
+    @wraps(func)
+    def wrapper(self: "FreeBsdIP", *args, **kwargs) -> Any:
+        if not self._interface()._interface_info.installed:
+            raise IPFeatureException(f"Interface {self._interface().name} is not installed")
+        return func(self, *args, **kwargs)
+
+    return wrapper
 
 
 class FreeBsdIP(BaseFeatureIP):
@@ -38,6 +57,7 @@ class FreeBsdIP(BaseFeatureIP):
         """
         super().__init__(connection=connection, interface=interface)
 
+    @require_installed
     def get_ips(self) -> IPs:
         """
         Get IPs from the interface.
@@ -60,6 +80,7 @@ class FreeBsdIP(BaseFeatureIP):
 
         return ips
 
+    @require_installed
     def add_ip(self, ip: Union[IPv4Interface, IPv6Interface]) -> None:
         """
         Add IP to interface.
@@ -72,6 +93,7 @@ class FreeBsdIP(BaseFeatureIP):
         self._connection.execute_command(cmd)
         logger.log(level=log_levels.MODULE_DEBUG, msg=f"IP: {ip} added to {self._interface().name}")
 
+    @require_installed
     def del_ip(self, ip: Union[IPv4Interface, IPv6Interface]) -> None:
         """
         Add IP to interface.
@@ -97,6 +119,7 @@ class FreeBsdIP(BaseFeatureIP):
         """Set DNS for interface."""
         raise NotImplementedError("Configure DNS not implemented for FreeBSD.")
 
+    @require_installed
     def enable_dynamic_ip(self, ip_version: IPVersion, ip6_autoconfig: bool = True) -> None:
         """
         Enable DHCP.
@@ -130,6 +153,7 @@ class FreeBsdIP(BaseFeatureIP):
         """
         return f"{int(mask, base=16):b}".count("1")
 
+    @require_installed
     def set_ipv6_autoconf(self, state: State = State.ENABLED) -> None:
         """
         Set ipv6 autoconfiguration.
@@ -223,6 +247,7 @@ class FreeBsdIP(BaseFeatureIP):
         """
         raise NotImplementedError("Get IP sec rule state not implemented for FreeBSD.")
 
+    @require_installed
     def has_tentative_address(self) -> bool:
         """
         Check whether a tentative IP address is present on the adapter.
@@ -232,6 +257,7 @@ class FreeBsdIP(BaseFeatureIP):
         cmd = f"ifconfig {self._interface().name}"
         return "tentative" in self._connection.execute_command(cmd).stdout.casefold()
 
+    @require_installed
     def wait_till_tentative_exit(self, ip: Union[IPv4Interface, IPv6Interface], timeout: int = 15) -> None:
         """
         Wait till the given address will exit tentative state.
@@ -255,6 +281,7 @@ class FreeBsdIP(BaseFeatureIP):
             sleep(1)
         raise IPFeatureException(f"{ip.ip} still in tentative mode after {timeout}s.")
 
+    @require_installed
     def get_ipv6_autoconf(self) -> State:
         """
         Get ipv6 autoconfiguration state.
