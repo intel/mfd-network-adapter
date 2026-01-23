@@ -171,3 +171,12 @@ class TestIPFreeBSD:
         timeout_mocker.return_value.__bool__.side_effect = [False, False, False, False, True]
         with pytest.raises(IPFeatureException, match=re.escape(f"Not found 1.1.1.4 on {interface.name}.")):
             interface.ip.wait_till_tentative_exit(ip=IPv4Interface("1.1.1.4/8"), timeout=5)
+
+    def test_set_new_ip_address(self, interface, mocker):
+        interface.ip.release_ip = mocker.MagicMock()
+        interface.ip.add_ip = mocker.MagicMock()
+        interface.ip.set_new_ip_address(IPv4Interface("192.168.1.100/24"))
+        interface.ip.release_ip.assert_called_once_with(IPVersion.V4)
+        interface.ip.add_ip.assert_called_once_with(IPv4Interface("192.168.1.100/24"))
+        interface.ip.release_ip = mocker.MagicMock(side_effect=Exception("Release failed"))
+        interface.ip.set_new_ip_address(IPv6Interface("fe80::1/64"))
