@@ -26,7 +26,8 @@ class TestIPFreeBSD:
         _connection.get_os_name.return_value = OSName.FREEBSD
 
         interface = FreeBSDNetworkInterface(
-            connection=_connection, interface_info=LinuxInterfaceInfo(pci_address=pci_address, name=name)
+            connection=_connection,
+            interface_info=LinuxInterfaceInfo(pci_address=pci_address, name=name, installed=True),
         )
         mocker.stopall()
         return interface
@@ -180,3 +181,9 @@ class TestIPFreeBSD:
         interface.ip.add_ip.assert_called_once_with(IPv4Interface("192.168.1.100/24"))
         interface.ip.release_ip = mocker.MagicMock(side_effect=Exception("Release failed"))
         interface.ip.set_new_ip_address(IPv6Interface("fe80::1/64"))
+
+    def test_installed_wrapper(self, interface):
+        interface._interface_info = LinuxInterfaceInfo(name="eth0", pci_address=PCIAddress(0, 0, 0, 0), installed=False)
+
+        with pytest.raises(IPFeatureException, match=re.escape("Interface eth0 is not installed")):
+            interface.ip.add_ip(IPv4Interface("192.168.1.1/24"))
