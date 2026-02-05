@@ -327,3 +327,75 @@ class TestIPLinux:
         interface._connection.execute_command.assert_called_once_with(
             "ip neigh del 10.10.10.10 lladdr 00:00:00:00:00:00 dev eth0", expected_return_codes={}
         )
+
+    def test_enable_ipv6_persistence_path_not_exists(self, interface):
+        """Test enable_ipv6_persistence when the sysctl path doesn't exist (cat returns non-zero)."""
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=1,
+            args="",
+            stdout="",
+            stderr="cat: /proc/sys/net/ipv6/conf/eth0/keep_addr_on_down: " "No such file or directory",
+        )
+        interface.ip.enable_ipv6_persistence()
+        # Should only call execute_command once with the cat command (early return)
+        interface._connection.execute_command.assert_called_once_with(
+            f"cat /proc/sys/net/ipv6/conf/{interface.name}/keep_addr_on_down", expected_return_codes={}
+        )
+
+    def test_enable_ipv6_persistence_path_exists(self, interface, mocker):
+        """Test enable_ipv6_persistence when the sysctl path exists (cat returns zero)."""
+        mocker_log = mocker.patch("mfd_network_adapter.network_interface.feature.ip.linux.logger.log")
+
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="", stdout="", stderr=""
+        )
+        interface.ip.enable_ipv6_persistence()
+
+        # Should call execute_command twice: cat and echo
+        interface._connection.execute_command.assert_has_calls(
+            [
+                call(f"cat /proc/sys/net/ipv6/conf/{interface.name}/keep_addr_on_down", expected_return_codes={}),
+                call(f"echo 1 > /proc/sys/net/ipv6/conf/{interface.name}/keep_addr_on_down", shell=True),
+            ]
+        )
+        # Verify logging occurred
+        mocker_log.assert_called_with(level=log_levels.MODULE_DEBUG, msg="Enable the ipv6 persistent")
+
+    def test_enable_ipv6_persistence_with_namespace(self, interface_ns, mocker):
+        """Test enable_ipv6_persistence with namespace."""
+        mocker_log = mocker.patch("mfd_network_adapter.network_interface.feature.ip.linux.logger.log")
+
+        interface_ns._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="", stdout="", stderr=""
+        )
+        interface_ns.ip.enable_ipv6_persistence()
+
+        # Verify the cat command is called with namespace
+        cat_cmd = (
+            f"ip netns exec {interface_ns.namespace} cat "
+            f"/proc/sys/net/ipv6/conf/{interface_ns.name}/keep_addr_on_down"
+        )
+        # First call should be the cat command
+        assert interface_ns._connection.execute_command.call_count == 2
+        first_call = interface_ns._connection.execute_command.call_args_list[0]
+        assert first_call[0][0] == cat_cmd
+        assert first_call[1] == {"expected_return_codes": {}}
+
+        # Second call should use shell=True
+        second_call = interface_ns._connection.execute_command.call_args_list[1]
+        assert "ip netns exec" in second_call[0][0]
+        assert "echo 1 >" in second_call[0][0]
+        assert second_call[1] == {"shell": True}
+
+        # Verify logging occurred
+        mocker_log.assert_called_with(level=log_levels.MODULE_DEBUG, msg="Enable the ipv6 persistent")
+
+    def test_enable_ipv6_persistence_call_count(self, interface):
+        """Test enable_ipv6_persistence verifies correct number of calls."""
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="", stdout="", stderr=""
+        )
+        interface.ip.enable_ipv6_persistence()
+
+        # Verify exactly 2 calls when path exists
+        assert interface._connection.execute_command.call_count == 2
