@@ -71,9 +71,8 @@ class LinuxIP(BaseFeatureIP):
         :param ip: IP v4 or v6.
         :raises IPFeatureException: When unknown msg returned, while setting IP
         """
-        cmd = add_namespace_call_command(
-            f"ip link set {self._interface().name} dynamic off", namespace=self._interface().namespace
-        )
+        interface = self._interface()
+        cmd = add_namespace_call_command(f"ip link set {interface.name} dynamic off", namespace=interface.namespace)
         try:
             self._connection.execute_command(cmd)
         except ConnectionCalledProcessError:
@@ -82,9 +81,7 @@ class LinuxIP(BaseFeatureIP):
         self.enable_ipv6_persistence()
 
         ip_ver, error_ip_ver_prefix = (" -6 ", "6") if isinstance(ip, IPv6Interface) else (" ", "4")
-        cmd = add_namespace_call_command(
-            f"ip{ip_ver}addr add {ip} dev {self._interface().name}", namespace=self._interface().namespace
-        )
+        cmd = add_namespace_call_command(f"ip{ip_ver}addr add {ip} dev {interface.name}", namespace=interface.namespace)
         output = self._connection.execute_command(cmd, expected_return_codes={})
         already_assigned_messages = [
             "rtnetlink answers: file exists",
@@ -93,10 +90,10 @@ class LinuxIP(BaseFeatureIP):
         already_assigned_error_check = any(message in output.stderr.lower() for message in already_assigned_messages)
         if output.return_code and not already_assigned_error_check:
             raise IPFeatureException(
-                f"Unknown error msg returned, while setting IP on {self._interface().name} - {output.stderr}"
+                f"Unknown error msg returned, while setting IP on {interface.name} - {output.stderr}"
             )
 
-        logger.log(level=log_levels.MODULE_DEBUG, msg=f"IP: {ip} added to {self._interface().name}")
+        logger.log(level=log_levels.MODULE_DEBUG, msg=f"IP: {ip} added to {interface.name}")
 
     def del_ip(self, ip: Union[IPv4Interface, IPv6Interface]) -> None:
         """
@@ -129,9 +126,10 @@ class LinuxIP(BaseFeatureIP):
 
     def enable_ipv6_persistence(self) -> None:
         """Enable IPv6 persistent."""
+        interface = self._interface()
         cmd = add_namespace_call_command(
-            f"cat /proc/sys/net/ipv6/conf/{self._interface().name}/keep_addr_on_down",
-            namespace=self._interface().namespace,
+            f"cat /proc/sys/net/ipv6/conf/{interface.name}/keep_addr_on_down",
+            namespace=interface.namespace,
         )
         output = self._connection.execute_command(cmd, expected_return_codes={})
         if output.return_code:
@@ -139,8 +137,8 @@ class LinuxIP(BaseFeatureIP):
 
         logger.log(level=log_levels.MODULE_DEBUG, msg="Enable the ipv6 persistent")
         cmd = add_namespace_call_command(
-            f"echo 1 > /proc/sys/net/ipv6/conf/{self._interface().name}/keep_addr_on_down",
-            namespace=self._interface().namespace,
+            f"echo 1 > /proc/sys/net/ipv6/conf/{interface.name}/keep_addr_on_down",
+            namespace=interface.namespace,
         )
         self._connection.execute_command(cmd, shell=True)
 
