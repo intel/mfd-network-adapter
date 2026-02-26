@@ -40,10 +40,11 @@ class LinuxIP(BaseFeatureIP):
         """
         super().__init__(connection=connection, interface=interface)
 
-    def get_ips(self) -> IPs:
+    def get_ips(self, check_tentative: bool = True) -> IPs:
         """
         Get IPs from the interface.
 
+        :param check_tentative: Whether to skip tentative IPs
         :return: IPs object.
         """
         output = self._ip_addr_show()
@@ -55,7 +56,7 @@ class LinuxIP(BaseFeatureIP):
             if not match:
                 continue
             ip_with_mask = f"{match['ip']}/{match['mask']}"
-            if "tentative" in line.casefold():
+            if check_tentative and "tentative" in line.casefold():
                 continue
             if "6" in match["version"]:
                 ips.v6.append(IPv6Interface(ip_with_mask))
