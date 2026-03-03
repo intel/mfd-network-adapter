@@ -8,6 +8,7 @@ from unittest.mock import call
 import pytest
 from mfd_connect import RPyCConnection
 from mfd_connect.base import ConnectionCompletedProcess
+from mfd_kernel_namespace import add_namespace_call_command
 from mfd_package_manager import LinuxPackageManager
 from mfd_typing import MACAddress
 from mfd_typing import OSName
@@ -95,3 +96,37 @@ class TestLinuxVLAN:
             return_code=0, args="", stdout=output, stderr=""
         )
         owner.vlan.set_ingress_egress_map(interface_name="eth1", priority_map=egress_map, direction="egress")
+
+    def test_set_ingress_egress_map_in_namespace(self, owner):
+        egress_map = "0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7"
+        output = dedent(
+            """\
+        eth1.4  VID: 4   REORDER_HDR: 1  dev->priv_flags: 1021
+        total frames received            0
+        total bytes received             0
+        Broadcast/Multicast Rcvd         0
+
+        total frames transmitted         0
+        total bytes transmitted          0
+        Device: eth1
+        INGRESS priority mappings: 0:0  1:0  2:0  3:0  4:0  5:0  6:0 7:0
+        EGRESS priority mappings: 0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7"""
+        )
+        owner._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="", stdout=output, stderr=""
+        )
+        owner.vlan.set_ingress_egress_map(
+            interface_name="eth1", priority_map=egress_map, direction="egress", namespace_name="vm1"
+        )
+        owner._connection.execute_command.assert_any_call(
+            add_namespace_call_command(
+                command=f"ip link set eth1 type vlan egress {egress_map}", namespace="vm1"
+            ),
+            expected_return_codes={0},
+            shell=True,
+        )
+        owner._connection.execute_command.assert_any_call(
+            add_namespace_call_command(command="cat /proc/net/vlan/eth1", namespace="vm1"),
+            expected_return_codes={0},
+            shell=True,
+        )
