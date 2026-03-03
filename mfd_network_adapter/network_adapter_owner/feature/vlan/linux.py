@@ -4,7 +4,7 @@
 
 import logging
 import re
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from mfd_common_libs import add_logging_level, log_levels
 from mfd_connect.base import ConnectionCompletedProcess
@@ -44,10 +44,10 @@ class LinuxVLAN(BaseVLANFeature):
         self,
         vlan_id: int,
         interface_name: str,
-        vlan_name: Optional[str] = None,
-        protocol: Optional[str] = None,
+        vlan_name: str | None = None,
+        protocol: str | None = None,
         reorder: bool = True,
-        namespace_name: Optional[str] = None,
+        namespace_name: str | None = None,
     ) -> ConnectionCompletedProcess:
         """
         Create VLAN with desired ID on interface.
@@ -71,10 +71,10 @@ class LinuxVLAN(BaseVLANFeature):
 
     def remove_vlan(
         self,
-        vlan_name: Optional[str] = None,
-        vlan_id: Optional[int] = None,
-        interface_name: Optional[str] = None,
-        namespace_name: Optional[str] = None,
+        vlan_name: str | None = None,
+        vlan_id: int | None = None,
+        interface_name: str | None = None,
+        namespace_name: str | None = None,
     ) -> ConnectionCompletedProcess:
         """
         Remove desired VLAN.
@@ -113,7 +113,12 @@ class LinuxVLAN(BaseVLANFeature):
         return self._connection.execute_command(command, expected_return_codes={0}, shell=True)
 
     def set_ingress_egress_map(
-        self, interface_name: str, priority_map: str, direction: str, verify: bool = True
+        self,
+        interface_name: str,
+        priority_map: str,
+        direction: str,
+        verify: bool = True,
+        namespace_name: str | None = None,
     ) -> None:
         """
         Set and verify ingress/egress map.
@@ -122,6 +127,7 @@ class LinuxVLAN(BaseVLANFeature):
         :param priority_map: Priority map, for example: 0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7
         :param direction: Mapping direction - can be 'ingress', 'egress' or 'both'.
         :param verify: Determines whether verification should be performed.
+        :param namespace_name: Namespace where VLAN interface exists.
         :raises VLANFeatureException: When invalid mapping direction provided.
         """
         if direction not in ["egress", "ingress", "both"]:
@@ -134,26 +140,40 @@ class LinuxVLAN(BaseVLANFeature):
                 msg=f"Set {_dir} map ({priority_map}) on the {interface_name} interface.",
             )
             self._connection.execute_command(
-                f"ip link set {interface_name} type vlan {_dir} {priority_map}",
+                add_namespace_call_command(
+                    command=f"ip link set {interface_name} type vlan {_dir} {priority_map}", namespace=namespace_name
+                ),
                 expected_return_codes={0},
                 shell=True,
             )
             if verify and not self._verify_ingress_egress_map(
-                priority_map=priority_map, direction=_dir, interface_name=interface_name
+                priority_map=priority_map,
+                direction=_dir,
+                interface_name=interface_name,
+                namespace_name=namespace_name,
             ):
                 raise VLANFeatureException(f"Cannot properly set {_dir} map")
 
-    def _verify_ingress_egress_map(self, interface_name: str, priority_map: str, direction: str) -> bool:
+    def _verify_ingress_egress_map(
+        self,
+        interface_name: str,
+        priority_map: str,
+        direction: str,
+        namespace_name: str | None = None,
+    ) -> bool:
         """
         Verify ingress/egress map.
 
         :param interface_name: Network interface name.
         :param priority_map: Priority map, for example: 0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7
         :param direction: Mapping direction - can be 'ingress', 'egress' or 'both'.
+        :param namespace_name: Namespace where VLAN interface exists.
         :return: True if provided map is set, False otherwise.
         """
         result = self._connection.execute_command(
-            f"cat /proc/net/vlan/{interface_name}", expected_return_codes={0}, shell=True
+            add_namespace_call_command(command=f"cat /proc/net/vlan/{interface_name}", namespace=namespace_name),
+            expected_return_codes={0},
+            shell=True,
         )
         pattern = rf" *{direction.upper()}.*$"
         try:
