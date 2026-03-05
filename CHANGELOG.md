@@ -2,6 +2,20 @@
 
 <!-- version list -->
 
+## v14.4.2 (2026-03-05)
+
+### Bug Fixes
+
+- Add possibility to set ips where releasing ip is not available
+  ([`b03bfff`](https://github.com/intel/mfd-network-adapter/commit/b03bfff3f21fe01fe24451616e82a91000361779))
+
+- Add require_installed decorator to FreeBsdIP methods for interface validation
+  ([`b5cc78f`](https://github.com/intel/mfd-network-adapter/commit/b5cc78f41a71e280e7a945dc869199a1a2cf8ed7))
+
+- Safe assigned interface in add ip methods.
+  ([`612643e`](https://github.com/intel/mfd-network-adapter/commit/612643e86fb9475f3b2face11f8ac2460b7fa452))
+
+
 ## v14.4.1 (2026-01-21)
 
 ### Bug Fixes
