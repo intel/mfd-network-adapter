@@ -5,6 +5,7 @@ from textwrap import dedent
 import pytest
 from mfd_connect import RPyCConnection
 from mfd_connect.base import ConnectionCompletedProcess
+from mfd_connect.exceptions import ConnectionCalledProcessError
 from mfd_network_adapter.exceptions import NetworkAdapterModuleException
 from mfd_network_adapter.network_adapter_owner.windows import WindowsNetworkAdapterOwner
 from mfd_typing import PCIDevice, PCIAddress, OSName, VendorID, DeviceID, SubDeviceID, SubVendorID, MACAddress
@@ -450,6 +451,45 @@ class TestWindowsNetworkOwner:
         returned_nics = owner._get_all_interfaces_info()
 
         assert returned_nics == expected_nics
+
+    def test__get_all_interfaces_info_cluster_service_unavailable(self, owner, mocker):
+        nics = [
+            WindowsInterfaceInfo(name="vSMB1", mac_address=MACAddress("00:00:00:00:00:00")),
+            WindowsInterfaceInfo(name="vSMB2", mac_address=MACAddress("00:00:00:00:00:00")),
+            WindowsInterfaceInfo(name="Ethernet 2", mac_address=MACAddress("00:00:00:00:00:00")),
+        ]
+        owner._get_interfaces_and_verify_states = mocker.Mock(return_value=nics)
+
+        mocker.patch(
+            "mfd_network_adapter.network_adapter_owner.windows.WindowsNetworkAdapterOwner._get_pci_device",
+            mocker.Mock(return_value=PCIDevice(data="8086:1572")),
+        )
+        mocker.patch(
+            "mfd_network_adapter.network_adapter_owner.windows.WindowsNetworkAdapterOwner._update_nic_if_virtual",
+            mocker.Mock(return_value=None),
+        )
+        mocker.patch(
+            "mfd_network_adapter.network_adapter_owner.windows.WindowsNetworkAdapterOwner._update_pci_addresses",
+            mocker.Mock(return_value=None),
+        )
+        mock_update_cluster = mocker.patch.object(owner, "_update_cluster")
+
+        # execute_powershell raises on Get-Cluster but succeeds for everything else
+        def _execute_powershell_side_effect(command, *args, **kwargs):
+            if "Get-Cluster" in command and "NetworkInterface" not in command:
+                raise ConnectionCalledProcessError(returncode=1, cmd=command)
+            return ConnectionCompletedProcess(return_code=0, args=command, stdout="", stderr="")
+
+        owner._connection.execute_powershell.side_effect = _execute_powershell_side_effect
+
+        # Must not raise
+        returned_nics = owner._get_all_interfaces_info()
+
+        # _update_cluster must never have been called since Get-Cluster failed
+        mock_update_cluster.assert_not_called()
+
+        # All three NICs (with mac_address set) should be returned
+        assert len(returned_nics) == 3
 
     def test_get_log_cpu_no(self, owner):
         output = dedent(
