@@ -11,6 +11,7 @@ from time import sleep
 from typing import List, Dict, DefaultDict, Optional
 
 from mfd_common_libs import os_supported, add_logging_level, log_levels
+from mfd_connect.exceptions import ConnectionCalledProcessError
 from mfd_connect.util.powershell_utils import parse_powershell_list
 from mfd_typing import PCIDevice, OSName, VendorID, DeviceID, SubVendorID, SubDeviceID, PCIAddress, MACAddress
 from mfd_typing.network_interface import (
@@ -44,6 +45,7 @@ class WindowsNetworkAdapterOwner(NetworkAdapterOwner):
         nic_list: List[WindowsInterfaceInfo] = self._get_interfaces_and_verify_states()
         return_list: List[WindowsInterfaceInfo] = []
         is_ashci_cluster: bool = False
+        cluster_check_attempted: bool = False
 
         for nic in nic_list:
             if nic.mac_address is None:
@@ -53,8 +55,16 @@ class WindowsNetworkAdapterOwner(NetworkAdapterOwner):
             WindowsNetworkAdapterOwner._update_nic_if_virtual(nic)
 
             return_list.append(nic)
-            if nic.name.startswith("vSMB"):
-                is_ashci_cluster = True
+            if nic.name.startswith("vSMB") and not cluster_check_attempted:
+                cluster_check_attempted = True
+                try:
+                    self._connection.execute_powershell("Get-Cluster")
+                    is_ashci_cluster = True
+                except ConnectionCalledProcessError as e:
+                    logger.log(
+                        level=log_levels.MODULE_DEBUG,
+                        msg=f"Get-Cluster failed, assuming non-cluster environment: {e}",
+                    )
 
         self._update_vlan_info(nics=return_list)
         self._update_pci_addresses(nics=return_list)
