@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v14.5.0 (2026-04-15)
+
+### Features
+
+- Add namespace support for ingress and egress priority map
+  ([`11f3194`](https://github.com/intel/mfd-network-adapter/commit/11f319478cecc736e90687e88983b8a59efe5427))
+
+- Guard Get-Cluster call and log when cluster service is unavailable
+  ([`152de47`](https://github.com/intel/mfd-network-adapter/commit/152de4702c5de8250ba827636dacaa527ef3396c))
+
+
 ## v14.4.2 (2026-03-05)
 
 ### Bug Fixes
