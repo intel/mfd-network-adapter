@@ -69,6 +69,10 @@ class LinuxNetworkInterface(NetworkInterface):
         """Get namespace."""
         return self._interface_info.namespace
 
+    @namespace.setter
+    def namespace(self, value: Optional[str]) -> None:
+        self._interface_info.namespace = value
+
     @property
     def vsi_info(self) -> Union[VsiInfo, None]:
         """Get VSI Info."""
