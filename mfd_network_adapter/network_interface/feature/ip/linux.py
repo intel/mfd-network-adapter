@@ -183,30 +183,201 @@ class LinuxIP(BaseFeatureIP):
         for cmd in cmds:
             self._connection.execute_command(cmd)
 
+    def _release_with_dhclient(self) -> None:
+        """
+        Release DHCP lease using dhclient.
+
+        :raises IPFeatureException: When dhclient returns an unexpected error
+        """
+        cmd = f"dhclient -r {self._interface().name}"
+        output = self._connection.execute_command(cmd, expected_return_codes={})
+        output_text = f"{output.stdout}\n{output.stderr}"
+        lowered_output = output_text.casefold()
+        dhclient_not_running = "dhcpcd not running" in lowered_output or "no such process" in lowered_output
+        if output.return_code and not dhclient_not_running:
+            raise IPFeatureException(
+                f"Unknown error msg returned, while releasing IP on {self._interface().name} - {output.stderr}"
+            )
+
+    def _nm_manages_dhcp(self, ip_version: IPVersion) -> bool:
+        """
+        Check whether NetworkManager manages DHCP for this interface and IP version.
+
+        :param ip_version: IP version for which DHCP management should be validated
+        :return: True when NetworkManager manages this interface and requested DHCP mode, otherwise False
+        """
+        nm_managed_output = self._connection.execute_command(
+            f"nmcli -g GENERAL.NM-MANAGED device show {self._interface().name}", expected_return_codes={0, 1}
+        )
+        nm_managed = nm_managed_output.return_code == 0 and nm_managed_output.stdout.strip().casefold() == "yes"
+        if not nm_managed:
+            logger.warning(msg=f"NetworkManager does not manage {self._interface().name}; skipping NM release.")
+            return False
+
+        conn_name_output = self._connection.execute_command(
+            f"nmcli -g GENERAL.CONNECTION device show {self._interface().name}",
+            expected_return_codes={0, 1},
+        )
+        connection_name = conn_name_output.stdout.strip()
+        connection_active = conn_name_output.return_code == 0 and bool(connection_name) and connection_name != "--"
+        if not connection_active:
+            logger.warning(
+                msg=f"No active NetworkManager connection for {self._interface().name}; skipping NM release."
+            )
+            return False
+
+        methods_output = self._connection.execute_command(
+            f'nmcli -g ipv4.method,ipv6.method connection show "{connection_name}"',
+            expected_return_codes={0, 1},
+        )
+        method_lines = [line.strip().casefold() for line in methods_output.stdout.splitlines()]
+        v4_method = method_lines[0] if len(method_lines) > 0 else ""
+        v6_method = method_lines[1] if len(method_lines) > 1 else ""
+        nm_has_dhcp = methods_output.return_code == 0 and (
+            (ip_version is IPVersion.V4 and v4_method == "auto") or (ip_version is IPVersion.V6 and v6_method == "auto")
+        )
+        if not nm_has_dhcp:
+            logger.warning(
+                msg=f"NetworkManager is not configured for DHCP on {self._interface().name}; skipping NM release."
+            )
+            return False
+
+        return True
+
+    def _release_with_network_manager(self) -> None:
+        """
+        Release DHCP lease using NetworkManager/nmcli.
+
+        :raises IPFeatureException: When nmcli returns an unexpected error
+        """
+        nmcli_release = self._connection.execute_command(
+            f"nmcli device disconnect {self._interface().name}",
+            expected_return_codes={},
+        )
+        nmcli_output_text = f"{nmcli_release.stdout}\n{nmcli_release.stderr}"
+        lowered_nmcli_output = nmcli_output_text.casefold()
+        nmcli_non_fatal = (
+            "not active" in lowered_nmcli_output
+            or "not connected" in lowered_nmcli_output
+            or "not managed" in lowered_nmcli_output
+            or "unknown device" in lowered_nmcli_output
+            or "device disconnect failed" in lowered_nmcli_output
+        )
+        if nmcli_release.return_code and not nmcli_non_fatal:
+            raise IPFeatureException(
+                "Unknown error msg returned, while releasing IP with NetworkManager on "
+                f"{self._interface().name} - {nmcli_release.stderr}"
+            )
+
+    def _release_with_wicked(self) -> None:
+        """
+        Release DHCP lease using wicked.
+
+        The method first tries ``ifreload`` and falls back to
+        ``ifdown --release --no-delete`` when reload fails with a fatal error.
+
+        :raises IPFeatureException: When both wicked commands return unexpected errors
+        """
+        wicked_reload = self._connection.execute_command(
+            f"wicked ifreload {self._interface().name}",
+            expected_return_codes={},
+        )
+        reload_output_text = f"{wicked_reload.stdout}\n{wicked_reload.stderr}"
+        lowered_reload_output = reload_output_text.casefold()
+        wicked_non_fatal = (
+            "already down" in lowered_reload_output
+            or "is down" in lowered_reload_output
+            or "no such device" in lowered_reload_output
+            or "not configured" in lowered_reload_output
+            or "no matching interfaces" in lowered_reload_output
+        )
+        if wicked_reload.return_code and not wicked_non_fatal:
+            wicked_fallback = self._connection.execute_command(
+                f"wicked ifdown --release --no-delete {self._interface().name}",
+                expected_return_codes={},
+            )
+            fallback_output_text = f"{wicked_fallback.stdout}\n{wicked_fallback.stderr}"
+            lowered_fallback_output = fallback_output_text.casefold()
+            fallback_non_fatal = (
+                "already down" in lowered_fallback_output
+                or "is down" in lowered_fallback_output
+                or "no such device" in lowered_fallback_output
+                or "not configured" in lowered_fallback_output
+                or "no matching interfaces" in lowered_fallback_output
+            )
+            if wicked_fallback.return_code and not fallback_non_fatal:
+                raise IPFeatureException(
+                    f"Unknown error msg returned, while releasing IP with wicked on {self._interface().name} - "
+                    f"reload error: {wicked_reload.stderr}; fallback error: {wicked_fallback.stderr}"
+                )
+
+    def _detect_release_manager(self, ip_version: IPVersion) -> str:
+        """
+        Detect which DHCP manager can be used to release lease.
+
+        Selection order is: ``dhclient``, ``network_manager``, ``wicked``, ``none``.
+
+        :param ip_version: IP version used to verify NetworkManager DHCP settings
+        :return: Manager identifier used by ``release_ip`` dispatcher
+        """
+        dhclient_output = self._connection.execute_command("command -v dhclient", expected_return_codes={0, 1})
+        if dhclient_output.return_code == 0:
+            return "dhclient"
+
+        logger.warning(msg=f"dhclient is not available on {self._interface().name}; trying NetworkManager.")
+        nmcli_output = self._connection.execute_command("command -v nmcli", expected_return_codes={0, 1})
+        if nmcli_output.return_code == 0:
+            if self._nm_manages_dhcp(ip_version):
+                return "network_manager"
+        else:
+            logger.warning(msg=f"nmcli is not available on {self._interface().name}; skipping NM lease release flow.")
+
+        logger.warning(msg=f"NetworkManager DHCP flow unavailable on {self._interface().name}; trying wicked.")
+        wicked_output = self._connection.execute_command("command -v wicked", expected_return_codes={0, 1})
+        if wicked_output.return_code == 0:
+            return "wicked"
+
+        logger.warning(msg=f"wicked is not available on {self._interface().name}; skipping lease release command.")
+        return "none"
+
+    def _flush_released_ip(self, ip_version: IPVersion) -> None:
+        """
+        Flush interface IPs as final release fallback.
+
+        :param ip_version: IP version to flush from the interface
+        """
+        cmd = f"ip -{ip_version.value} addr flush dev {self._interface().name}"
+        self._connection.execute_command(cmd)
+
     def release_ip(self, ip_version: IPVersion) -> None:
         """
         Remove DHCP address.
 
         :param ip_version: IP version to use
         """
-        # release current lease
-        cmd = f"dhclient -r {self._interface().name}"
-        output = self._connection.execute_command(cmd, expected_return_codes={})
-        if output.return_code and "dhcpcd not running" not in output.stdout:
-            raise IPFeatureException(
-                f"Unknown error msg returned, while releasing IP on {self._interface().name} - {output.stderr}"
-            )
+        manager = self._detect_release_manager(ip_version)
+        match manager:
+            case "dhclient":
+                self._release_with_dhclient()
+            case "network_manager":
+                self._release_with_network_manager()
+            case "wicked":
+                self._release_with_wicked()
+            case _:
+                pass
 
-        # RHEL7 still keeps IP after releasing it, so we need to remove it
-        cmd = f"ip -{ip_version.value} addr flush dev {self._interface().name}"
-        self._connection.execute_command(cmd)
+        # RHEL7 may keep IP after lease release, so always flush the interface IPs.
+        self._flush_released_ip(ip_version)
 
     def renew_ip(self) -> None:
         """Refresh Ip address."""
         # release current lease
         cmd = f"dhclient -r {self._interface().name}"
         output = self._connection.execute_command(cmd, expected_return_codes={})
-        if output.return_code and "dhcpcd not running" not in output.stdout.casefold():
+        output_text = f"{output.stdout}\n{output.stderr}"
+        lowered_output = output_text.casefold()
+        dhclient_not_running = "dhcpcd not running" in lowered_output or "no such process" in lowered_output
+        if output.return_code and not dhclient_not_running:
             raise IPFeatureException(
                 f"Unknown error msg returned, while releasing current lease on {self._interface().name} - "
                 f"{output.stderr}"

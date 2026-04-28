@@ -172,12 +172,15 @@ class TestIPLinux:
         )
 
     def test_release_ip(self, interface):
-        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
-            return_code=0, args="", stdout="", stderr=""
-        )
+        interface._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=0, args="", stdout="/usr/sbin/dhclient", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+        ]
         interface.ip.release_ip(IPVersion.V4)
         interface._connection.execute_command.assert_has_calls(
             [
+                call("command -v dhclient", expected_return_codes={0, 1}),
                 call(f"dhclient -r {interface.name}", expected_return_codes={}),
                 call(f"ip -4 addr flush dev {interface.name}"),
             ]
@@ -192,6 +195,94 @@ class TestIPLinux:
             [
                 call(f"dhclient -r {interface.name}", expected_return_codes={}),
                 call(f"dhclient {interface.name}"),
+            ]
+        )
+
+    def test_release_ip_without_dhclient(self, interface):
+        interface._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+        ]
+
+        interface.ip.release_ip(IPVersion.V4)
+
+        interface._connection.execute_command.assert_has_calls(
+            [
+                call("command -v dhclient", expected_return_codes={0, 1}),
+                call("command -v nmcli", expected_return_codes={0, 1}),
+                call("command -v wicked", expected_return_codes={0, 1}),
+                call(f"ip -4 addr flush dev {interface.name}"),
+            ]
+        )
+
+    def test_release_ip_with_wicked(self, interface):
+        interface._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="/usr/sbin/wicked", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+        ]
+
+        interface.ip.release_ip(IPVersion.V4)
+
+        interface._connection.execute_command.assert_has_calls(
+            [
+                call("command -v dhclient", expected_return_codes={0, 1}),
+                call("command -v nmcli", expected_return_codes={0, 1}),
+                call("command -v wicked", expected_return_codes={0, 1}),
+                call(f"wicked ifreload {interface.name}", expected_return_codes={}),
+                call(f"ip -4 addr flush dev {interface.name}"),
+            ]
+        )
+
+    def test_release_ip_with_wicked_fallback(self, interface):
+        interface._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="/usr/sbin/wicked", stderr=""),
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr="reload failed"),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+        ]
+
+        interface.ip.release_ip(IPVersion.V4)
+
+        interface._connection.execute_command.assert_has_calls(
+            [
+                call("command -v dhclient", expected_return_codes={0, 1}),
+                call("command -v nmcli", expected_return_codes={0, 1}),
+                call("command -v wicked", expected_return_codes={0, 1}),
+                call(f"wicked ifreload {interface.name}", expected_return_codes={}),
+                call(f"wicked ifdown --release --no-delete {interface.name}", expected_return_codes={}),
+                call(f"ip -4 addr flush dev {interface.name}"),
+            ]
+        )
+
+    def test_release_ip_with_nmcli_managed_dhcp(self, interface):
+        interface._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="/usr/bin/nmcli", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="yes\n", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="br0\n", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="auto\nignore\n", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+        ]
+
+        interface.ip.release_ip(IPVersion.V4)
+
+        interface._connection.execute_command.assert_has_calls(
+            [
+                call("command -v dhclient", expected_return_codes={0, 1}),
+                call("command -v nmcli", expected_return_codes={0, 1}),
+                call(f"nmcli -g GENERAL.NM-MANAGED device show {interface.name}", expected_return_codes={0, 1}),
+                call(f"nmcli -g GENERAL.CONNECTION device show {interface.name}", expected_return_codes={0, 1}),
+                call('nmcli -g ipv4.method,ipv6.method connection show "br0"', expected_return_codes={0, 1}),
+                call(f"nmcli device disconnect {interface.name}", expected_return_codes={}),
+                call(f"ip -4 addr flush dev {interface.name}"),
             ]
         )
 
