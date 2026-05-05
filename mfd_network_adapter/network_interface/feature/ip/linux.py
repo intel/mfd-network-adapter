@@ -189,17 +189,21 @@ class LinuxIP(BaseFeatureIP):
 
         :param ip_version: IP version to use
         """
-        # release current lease
-        cmd = f"dhclient -r {self._interface().name}"
-        output = self._connection.execute_command(cmd, expected_return_codes={})
-        if output.return_code and "dhcpcd not running" not in output.stdout:
-            raise IPFeatureException(
-                f"Unknown error msg returned, while releasing IP on {self._interface().name} - {output.stderr}"
-            )
+        dhclient_output = self._connection.execute_command("command -v dhclient", expected_return_codes={0, 1})
+        if dhclient_output.return_code == 0:
+            # release current lease
+            cmd = f"dhclient -r {self._interface().name}"
+            output = self._connection.execute_command(cmd, expected_return_codes={})
+            if output.return_code and "dhcpcd not running" not in output.stdout.casefold():
+                raise IPFeatureException(
+                    f"Unknown error msg returned, while releasing IP on {self._interface().name} - {output.stderr}"
+                )
+        else:
+            logger.log(level=log_levels.MODULE_DEBUG, msg="dhclient not found, skipping DHCP release step.")
 
         # RHEL7 still keeps IP after releasing it, so we need to remove it
         cmd = f"ip -{ip_version.value} addr flush dev {self._interface().name}"
-        self._connection.execute_command(cmd)
+        self._connection.execute_command(add_namespace_call_command(cmd, namespace=self._interface().namespace))
 
     def renew_ip(self) -> None:
         """Refresh Ip address."""

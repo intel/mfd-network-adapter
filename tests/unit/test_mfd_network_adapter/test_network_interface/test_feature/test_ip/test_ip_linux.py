@@ -183,6 +183,22 @@ class TestIPLinux:
             ]
         )
 
+    def test_release_ip_dhclient_not_found(self, interface):
+        interface._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=1, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+        ]
+        interface.ip.release_ip(IPVersion.V4)
+        interface._connection.execute_command.assert_called_with(f"ip -4 addr flush dev {interface.name}")
+
+    def test_release_ip_raises_on_dhclient_error(self, interface):
+        interface._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(return_code=0, args="", stdout="", stderr=""),
+            ConnectionCompletedProcess(return_code=1, args="", stdout="some error", stderr="some error"),
+        ]
+        with pytest.raises(IPFeatureException):
+            interface.ip.release_ip(IPVersion.V4)
+
     def test_renew_ip(self, interface):
         interface._connection.execute_command.return_value = ConnectionCompletedProcess(
             return_code=0, args="", stdout="", stderr=""
