@@ -160,6 +160,10 @@ class TestVirtualizationLinux:
         interface._interface_info.interface_type = InterfaceType.BTS
         assert interface.virtualization._raise_error_if_not_supported_type() is None
 
+    def test__raise_error_if_not_pf_passes_vport(self, interface):
+        interface._interface_info.interface_type = InterfaceType.VPORT
+        assert interface.virtualization._raise_error_if_not_supported_type() is None
+
     def test_set_link_for_vf_pass(self, interface, mocker):
         interface._interface_info.name = "foo"
         vf_id = 2

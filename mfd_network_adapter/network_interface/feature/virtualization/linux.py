@@ -31,21 +31,22 @@ class LinuxVirtualization(BaseFeatureVirtualization):
 
     def _raise_error_if_not_supported_type(self) -> None:
         """
-        Raise error in case current interface is not PF/BTS.
+        Raise error in case current interface is not PF/BTS/VPORT.
 
-        :raises VirtualizationWrongInterfaceException: if method is called on non PF/BTS interface
+        :raises VirtualizationWrongInterfaceException: if method is called on non PF/BTS/VPORT interface
         """
         current_type = self._interface().interface_type
-        if current_type not in (InterfaceType.PF, InterfaceType.BTS):
+        if current_type not in (InterfaceType.PF, InterfaceType.BTS, InterfaceType.VPORT):
             raise VirtualizationWrongInterfaceException(
-                f"Current interface type is {current_type} but should be InterfaceType.PF or InterfaceType.BTS"
+                f"Current interface type is {current_type} but should be "
+                f"InterfaceType.PF, InterfaceType.BTS or InterfaceType.VPORT"
             )
 
     def _get_vfs_details(self) -> List[VFDetail]:
         """
-        Get VF details of PF interface.
+        Get VF details of PF/BTS/VPORT interface.
 
-        :raises VirtualizationWrongInterfaceException: if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException: if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException: in case of command failure (rc != 0)
         :return: List of VFDetail objects
         """
@@ -80,7 +81,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         """
         Get maximal number of VFs per interface based on name.
 
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of error
         :return: number of VFs
         """
@@ -94,7 +95,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         """
         Get maximal number of VFs per interface based on PCI Address.
 
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of error
         :return: number of VFs
         """
@@ -108,7 +109,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         """
         Get number of current VFs per interface based on name.
 
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of error
         :return: number of VFs
         """
@@ -122,7 +123,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         """
         Get number of current VFs per interface based on PCI Address.
 
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of error
         :return: number of VFs
         """
@@ -201,7 +202,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
 
         :param: vf_id: VF (virtual function) ID
         :param value: max_tx_rate value (Mbits)
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises VirtualizationFeatureException if command execution fails
         """
         self._raise_error_if_not_supported_type()
@@ -216,7 +217,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
 
         :param vf_id: VF (virtual function) ID
         :param value: min_tx_rate value (Mbits)
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises VirtualizationFeatureException if command execution fails
         """
         self._raise_error_if_not_supported_type()
@@ -230,7 +231,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
 
         :param vf_id: Virtual Function ID
         :param state: State to be set: Enabled or Disabled (On/Off)
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of command error
         """
         self._raise_error_if_not_supported_type()
@@ -246,7 +247,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         Turning off spoofchk allows the VF to change its MAC address.
         :param vf_id: Virtual Function ID
         :param state: State to be set: Enabled or Disabled (On/Off)
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of error
         """
         self._raise_error_if_not_supported_type()
@@ -260,7 +261,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         Get trust setting per VF.
 
         :param vf_id: Virtual Function ID
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :return: State of trust setting
         """
         for vf in self._get_vfs_details():
@@ -272,7 +273,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         Get spoofhck setting per VF.
 
         :param vf_id: Virtual Function ID
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :return: State of spoofhck setting
         """
         for vf in self._get_vfs_details():
@@ -284,7 +285,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         Get mac_address per VF.
 
         :param vf_id: Virtual Function ID
-        :raises VirtualizationWrongInterfaceException: if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException: if method is called on non PF/BTS/VPORT interface
         :return: Mac Address of VF
         """
         for vf in self._get_vfs_details():
@@ -296,7 +297,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         Get link-state per VF.
 
         :param vf_id: Virtual Function ID
-        :raises VirtualizationWrongInterfaceException: if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException: if method is called on non PF/BTS/VPORT interface
         :return: Link State setting of VF
         """
         for vf in self._get_vfs_details():
@@ -310,7 +311,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
         :param vf_id: Virtual Function ID
         :param vlan_id: VLAN to set the VF to
         :param proto: Specify 802.1ad or 802.1Q type of VLAN
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of error
         """
         self._raise_error_if_not_supported_type()
@@ -324,7 +325,7 @@ class LinuxVirtualization(BaseFeatureVirtualization):
 
         :param vf_id: Virtual Function ID
         :param link_state: requested link state (one of auto, enabled, disabled)
-        :raises VirtualizationWrongInterfaceException if method is called on non PF interface
+        :raises VirtualizationWrongInterfaceException if method is called on non PF/BTS/VPORT interface
         :raises: VirtualizationFeatureException in case of error
         """
         self._raise_error_if_not_supported_type()
