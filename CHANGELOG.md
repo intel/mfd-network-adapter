@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v14.6.0 (2026-05-19)
+
+### Features
+
+- Add InterfaceType.VPORT to supported interface types for Virtualization feature
+  ([`be9f7fb`](https://github.com/intel/mfd-network-adapter/commit/be9f7fbc5667707bb42cfc8c56a4299e0b62899b))
+
+- Enhance DHCP release process with dhclient check and logging
+  ([`62129d2`](https://github.com/intel/mfd-network-adapter/commit/62129d258d559c994e7d60ad079b85d1865f70f2))
+
+
 ## v14.5.0 (2026-04-15)
 
 ### Features
