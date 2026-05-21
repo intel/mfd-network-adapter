@@ -72,3 +72,28 @@ class LinuxLLDP(BaseFeatureLLDP):
             return strtobool(flag_status)
         elif BaseFeatureUtils.is_speed_eq(self, Speed.G40):
             return not strtobool(flag_status)
+
+    def set_transmit_lldp_on_interface(self, enabled: State) -> None:
+        """
+        Set transmit LLDP on interface.
+
+        :param enabled: enable/disable setting
+        """
+        enable = "1" if enabled is State.ENABLED else "0"
+        cmd = f"echo {enable} > /sys/class/net/{self._interface().name}/device/transmit_lldp"
+        self._connection.execute_command(cmd, shell=True)
+
+    def get_transmit_lldp_status(self) -> bool:
+        """
+        Get transmit LLDP status on interface.
+
+        :return: True if transmit LLDP is on else False
+        """
+        cmd = f"cat /sys/class/net/{self._interface().name}/device/transmit_lldp"
+        output = self._connection.execute_command(cmd)
+        status = output.stdout.strip()
+        if status == "1":
+            return True
+        if status == "0":
+            return False
+        raise ValueError(f"Unexpected transmit_lldp status: {status!r}")
