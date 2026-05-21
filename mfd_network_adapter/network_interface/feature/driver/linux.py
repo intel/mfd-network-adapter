@@ -45,7 +45,10 @@ class LinuxDriver(BaseFeatureDriver):
         :return: DriverInfo dataclass that contains driver_name and driver_version.
         """
         return self.package_manager.get_driver_info(
-            self._ethtool.get_driver_information(self._interface().name).driver[0]
+            self._ethtool.get_driver_information(
+                device_name=self._interface().name,
+                namespace=self._interface().namespace,
+            ).driver[0]
         )
 
     def get_formatted_driver_version(self) -> Dict:

@@ -347,3 +347,7 @@ class TestLinuxNetworkInterface:
         mock_execute.assert_called_once_with(
             f"devlink dev reload pci/{interface.pci_address}", expected_return_codes={0, 1}
         )
+
+    def test_namespace_setter(self, interface):
+        interface.namespace = "new_ns"
+        assert interface.namespace == "new_ns"
