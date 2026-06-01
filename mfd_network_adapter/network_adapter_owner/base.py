@@ -57,6 +57,21 @@ add_logging_level(level_name="MODULE_DEBUG", level_value=log_levels.MODULE_DEBUG
 
 InterfaceInfoType = Union[InterfaceInfo, WindowsInterfaceInfo, LinuxInterfaceInfo]
 
+_nat_key_re = re.compile(r"(\d+)")
+
+
+def natural_key(interface_name: str) -> list[str | int]:
+    """
+    Use as a sorter key to properly sort interfaces.
+
+    This resolves sorting cases like ["eth0", "eth9", "eth10", "eth1"].
+
+    :param interface_name: interface name
+    :return: list of strings and integers
+    """
+    parts = _nat_key_re.split(interface_name)
+    return [int(p) if p.isdigit() else p for p in parts]
+
 
 class NetworkAdapterOwner:
     """Class for utility."""
@@ -525,7 +540,8 @@ class NetworkAdapterOwner:
             return []
 
         if interface_indexes:
-            return [selected[idx] for idx in interface_indexes]
+            sorted_selected = sorted(selected, key=lambda i: natural_key(i.name))
+            return [sorted_selected[idx] for idx in interface_indexes]
 
         # by default ALL flag will be set
         if random_interface is None and all_interfaces is None:
