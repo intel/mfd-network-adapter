@@ -104,7 +104,28 @@ class TestIPLinux:
             ]
         )
 
-    def test_get_ips(self, interface):
+    def test_get_ips_tentative(self, interface):
+        output = dedent(
+            """\
+        link/ether 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        inet 192.168.0.0/25 brd 10.10.10.107 scope global dynamic noprefixroute br0
+        valid_lft 15450348sec preferred_lft 15450348sec
+        inet6 fe80::a6bf:1ff:fe3f:f575/64 scope link noprefixroute tentative
+        valid_lft forever preferred_lft forever"""
+        )
+        interface._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="", stdout=output, stderr=""
+        )
+        ips_tentative_checked = IPs([IPv4Interface("192.168.0.0/25")])
+        assert interface.ip.get_ips() == ips_tentative_checked
+
+        ips_tentative_not_checked = IPs(
+            [IPv4Interface("192.168.0.0/25")],
+            [IPv6Interface("fe80::a6bf:1ff:fe3f:f575/64")],
+        )
+        assert interface.ip.get_ips(False) == ips_tentative_not_checked
+
+    def test_get_ips_no_tentative(self, interface):
         output = dedent(
             """\
         link/ether 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -116,8 +137,14 @@ class TestIPLinux:
         interface._connection.execute_command.return_value = ConnectionCompletedProcess(
             return_code=0, args="", stdout=output, stderr=""
         )
-        ips = IPs([IPv4Interface("192.168.0.0/25")], [IPv6Interface("fe80::a6bf:1ff:fe3f:f575/64")])
-        assert interface.ip.get_ips() == ips
+        ips_tentative_checked = IPs([IPv4Interface("192.168.0.0/25")], [IPv6Interface("fe80::a6bf:1ff:fe3f:f575/64")])
+        assert interface.ip.get_ips() == ips_tentative_checked
+
+        ips_tentative_not_checked = IPs(
+            [IPv4Interface("192.168.0.0/25")],
+            [IPv6Interface("fe80::a6bf:1ff:fe3f:f575/64")],
+        )
+        assert interface.ip.get_ips(False) == ips_tentative_not_checked
 
     def test_del_ip(self, interface):
         interface._connection.execute_command.return_value = ConnectionCompletedProcess(
