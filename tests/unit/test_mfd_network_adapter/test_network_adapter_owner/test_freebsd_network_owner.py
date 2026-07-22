@@ -540,6 +540,42 @@ class TestFreeBSDNetworkOwner:
         inet_info_mock.assert_called_once()
         wa_mock.assert_not_called()
 
+    def test__get_all_interfaces_info_empty_device_data(self, owner, mocker):
+        expected_output = [
+            LinuxInterfaceInfo(
+                pci_address=PCIAddress(domain=0, bus=24, slot=0, func=0),
+                pci_device=PCIDevice(
+                    vendor_id=VendorID("8086"),
+                    device_id=DeviceID("1563"),
+                    sub_vendor_id=SubVendorID("8086"),
+                    sub_device_id=SubDeviceID("35D4"),
+                ),
+                name="ix0",
+                interface_type=InterfaceType.PF,
+                mac_address=None,
+                installed=True,
+                branding_string="",
+                vlan_info=None,
+            )
+        ]
+        pciconf_output = dedent(
+            """\
+        ix0@pci0:24:0:0:\tclass=0x020000 rev=0x01 hdr=0x00 vendor=0x8086 device=0x1563 subvendor=0x8086 subdevice=0x35d4
+        vendor     = 'Intel Corporation'
+        class      = network
+        subclass   = ethernet"""
+        )
+        owner._connection.execute_command.side_effect = [
+            ConnectionCompletedProcess(args="", return_code=0, stdout=pciconf_output),
+            ConnectionCompletedProcess(args="", return_code=0, stdout="1300086"),
+        ]
+        mocker.patch.object(owner, "_get_vlan_interfaces_data", mocker.Mock(return_value=[]))
+        mocker.patch.object(owner, "_get_inet_information", mocker.Mock(return_value=iter(())))
+        logger_log_mock = mocker.patch("mfd_network_adapter.network_adapter_owner.freebsd.logger.log")
+
+        assert expected_output == owner._get_all_interfaces_info()
+        logger_log_mock.assert_any_call(level=log_levels.MODULE_DEBUG, msg="Device data is empty for interface ix0.")
+
     def test__load_config_file(self, owner):
         owner._connection.execute_command.return_value = ConnectionCompletedProcess(args="", return_code=0)
         owner._load_config_file(interface_name="ice0", config_name="iovctl_ice0.conf", config_dir="/home/user")

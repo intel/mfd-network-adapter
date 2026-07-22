@@ -104,7 +104,9 @@ class FreeBSDNetworkAdapterOwner(NetworkAdapterOwner):
                     # - most probably it's not the interface we're looking for
                     continue
                 name = self._virtio_mlx_wa_name(name, result.stdout)
-
+            device_data = match.group("device") or ""
+            if not device_data:
+                logger.log(level=log_levels.MODULE_DEBUG, msg=f"Device data is empty for interface {name}.")
             data = {
                 "pci_device": PCIDevice(
                     VendorID(match.group("vid")),
@@ -115,9 +117,9 @@ class FreeBSDNetworkAdapterOwner(NetworkAdapterOwner):
                 "pci_address": PCIAddress(data=match.group("pci")),
                 "name": name,
                 "installed": not name.startswith("none"),
-                "branding_string": match.group("device").strip(),
+                "branding_string": device_data.strip(),
                 "interface_type": InterfaceType.VF
-                if "virtual function" in match.group("device").casefold()
+                if "virtual function" in device_data.casefold()
                 else InterfaceType.PF,
             }
             info.append(LinuxInterfaceInfo(**data))
