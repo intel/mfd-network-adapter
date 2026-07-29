@@ -491,6 +491,34 @@ class TestWindowsNetworkOwner:
         # All three NICs (with mac_address set) should be returned
         assert len(returned_nics) == 3
 
+    def test__get_all_interfaces_info_sorted_by_pci_address(self, owner, mocker):
+        nics = [
+            WindowsInterfaceInfo(name="port 1", mac_address=MACAddress("00:00:00:00:00:01")),
+            WindowsInterfaceInfo(name="virtual 1", mac_address=MACAddress("00:00:00:00:00:02")),
+            WindowsInterfaceInfo(name="port 0", mac_address=MACAddress("00:00:00:00:00:03")),
+            WindowsInterfaceInfo(name="virtual 2", mac_address=MACAddress("00:00:00:00:00:04")),
+        ]
+        owner._get_interfaces_and_verify_states = mocker.Mock(return_value=nics)
+        mocker.patch(
+            "mfd_network_adapter.network_adapter_owner.windows.WindowsNetworkAdapterOwner._get_pci_device",
+            return_value=PCIDevice(data="8086:1592"),
+        )
+        mocker.patch(
+            "mfd_network_adapter.network_adapter_owner.windows.WindowsNetworkAdapterOwner._update_nic_if_virtual"
+        )
+        mocker.patch.object(owner, "_update_vlan_info")
+        mocker.patch.object(owner, "_mark_mng_interface")
+
+        def update_pci_addresses(nics):
+            nics[0].pci_address = PCIAddress(data="0000:18:00.1")
+            nics[2].pci_address = PCIAddress(data="0000:18:00.0")
+
+        mocker.patch.object(owner, "_update_pci_addresses", side_effect=update_pci_addresses)
+
+        returned_nics = owner._get_all_interfaces_info()
+
+        assert [nic.name for nic in returned_nics] == ["port 0", "port 1", "virtual 1", "virtual 2"]
+
     def test_get_log_cpu_no(self, owner):
         output = dedent(
             """

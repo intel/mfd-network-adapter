@@ -71,6 +71,7 @@ class WindowsNetworkAdapterOwner(NetworkAdapterOwner):
         if is_ashci_cluster:
             self._update_cluster(nics=return_list)
         self._mark_mng_interface(nics=return_list)
+        return_list.sort(key=lambda nic: (nic.pci_address is None, nic.pci_address))
         return return_list
 
     def _update_cluster(self, nics: List[WindowsInterfaceInfo]) -> None:
