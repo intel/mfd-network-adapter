@@ -2,6 +2,35 @@
 
 <!-- version list -->
 
+## v14.7.0 (2026-11-10)
+
+### Bug Fixes
+
+- Cover handling of missing match.group("device") in FreeBSD interface parsing
+  ([`724618e`](https://github.com/intel/mfd-network-adapter/commit/724618e8aa421ef96cab36cd3cec08994ec1b4b3))
+
+- Return DORMANT link state on Linux
+  ([`b5f462a`](https://github.com/intel/mfd-network-adapter/commit/b5f462a258edcc515840f0f3a464bac6e56bfaa1))
+
+### Chores
+
+- Bump pytest and mfd-code-quality requirements
+  ([`0213a79`](https://github.com/intel/mfd-network-adapter/commit/0213a7976bdf099945b6fa061a9bb06505bd3e3b))
+
+- Fix pyproject.toml after CI actions
+  ([`ad471ea`](https://github.com/intel/mfd-network-adapter/commit/ad471ead33c876ba1b74d8744b123a332fac233f))
+
+### Continuous Integration
+
+- Align GitHub Actions with shared workflows
+  ([`426fe27`](https://github.com/intel/mfd-network-adapter/commit/426fe27db0ade91863fba4ddf2f828bdb200b354))
+
+### Features
+
+- Configure transmit LLDP on interface
+  ([`497c25e`](https://github.com/intel/mfd-network-adapter/commit/497c25efe4b3908a62b66c4deb95056468331db2))
+
+
 ## v14.6.0 (2026-05-19)
 
 ### Features
