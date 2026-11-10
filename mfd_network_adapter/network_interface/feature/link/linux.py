@@ -61,10 +61,10 @@ class LinuxLink(BaseFeatureLink):
             add_namespace_call_command(cmd, namespace=self._interface().namespace), custom_exception=LinkException
         ).stdout
 
-        state = re.findall(r"state (DOWN|UP)", output)[0]
+        state = re.findall(r"state (DOWN|UP|DORMANT)", output)[0]
         if state == "DOWN" or re.findall("NO-CARRIER", output):
             return LinkState.DOWN
-        return LinkState.UP
+        return LinkState[state]
 
     def get_link_speed(self) -> Union[str, None]:
         """

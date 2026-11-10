@@ -79,6 +79,17 @@ class TestLinuxNetworkPort:
         )
         assert port.link.get_link() is LinkState.DOWN
 
+    def test_get_link_dormant(self, port):
+        output_link_dormant = dedent(
+            """\
+        2: eth0: <BROADCAST,MULT,UP,LOWER_UP> mtu 1500 qdisc mq master br0 state DORMANT mode DEFAULT group default qlen 1000
+        link/ether 00:00:00:00:00:00 brd 00:00:00:00:00:00"""
+        )
+        port._connection.execute_command.return_value = ConnectionCompletedProcess(
+            return_code=0, args="", stdout=output_link_dormant, stderr=""
+        )
+        assert port.link.get_link() is LinkState.DORMANT
+
     def test_set_link_up(self, mocker, port):
         mocker.patch(
             "mfd_network_adapter.network_interface.feature.link.linux.LinuxLink.get_link",

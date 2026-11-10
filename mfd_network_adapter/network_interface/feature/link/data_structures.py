@@ -65,6 +65,7 @@ class LinkState(Enum):
 
     UP = auto()
     DOWN = auto()
+    DORMANT = auto()
 
 
 @dataclass
