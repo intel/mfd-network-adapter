@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v14.8.0 (2026-11-20)
+
+### Features
+
+- Add support for setting XMIT_HASH_POLICY for bond adapter
+  ([`880c5f2`](https://github.com/intel/mfd-network-adapter/commit/880c5f28048f5fc5cf4fcb001960df9ac5f5a6f3))
+
+
 ## v14.7.0 (2026-11-10)
 
 ### Bug Fixes
