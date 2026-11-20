@@ -42,7 +42,7 @@ class LinuxDriver(BaseDriverFeature):
         :param params: Optional parameters for loading process.
         :return: Result of operation
         """
-        return self._package_manager.load_module(module_name=module_name, params=params)
+        return self._package_manager.load_module(module_name=module_name, params="" if params is None else params)
 
     def load_module_file(
         self, *, module_filepath: "Path", params: Optional[str] = None
@@ -54,7 +54,7 @@ class LinuxDriver(BaseDriverFeature):
         :param params: Optional parameters for loading process.
         :return: Result of operation
         """
-        return self._package_manager.insert_module(module_path=module_filepath, params=params)
+        return self._package_manager.insert_module(module_path=module_filepath, params="" if params is None else params)
 
     def unload_module(
         self, *, module_name: str, params: Optional[str] = None, with_dependencies: bool = False
