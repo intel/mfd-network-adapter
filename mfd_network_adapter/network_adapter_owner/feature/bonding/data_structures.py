@@ -12,3 +12,4 @@ class BondingParams(Enum):
     MODE = auto()
     UPDELAY = auto()
     DOWNDELAY = auto()
+    XMIT_HASH_POLICY = auto()
